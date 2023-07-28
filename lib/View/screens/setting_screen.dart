@@ -1,5 +1,5 @@
-import 'package:FoodApp/View/widgets/drawer.dart';
-import 'package:FoodApp/View/widgets/filters.dart';
+import 'package:food_app/View/widgets/drawer.dart';
+import 'package:food_app/View/widgets/filters.dart';
 import 'package:flutter/material.dart';
 
 class SettingScreeen extends StatelessWidget {

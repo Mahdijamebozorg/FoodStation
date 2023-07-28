@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:FoodApp/Controller/settings.dart';
+import 'package:food_app/Controller/settings.dart';
 import 'package:get/get.dart';
 
 class Filters extends StatelessWidget {

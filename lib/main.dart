@@ -1,11 +1,11 @@
-import 'package:FoodApp/Controller/settings.dart';
-import 'package:FoodApp/Theme/app_theme.dart';
-import 'package:FoodApp/View/screens/food_screen.dart';
-import 'package:FoodApp/View/screens/setting_screen.dart';
-import 'package:FoodApp/View/screens/tabs_screen.dart';
-import 'package:FoodApp/View/screens/category_meals_screen.dart';
-import 'package:FoodApp/View/widgets/Favorite_meal.dart';
-import 'package:FoodApp/View/widgets/filters.dart';
+import 'package:food_app/Controller/settings.dart';
+import 'package:food_app/Theme/app_theme.dart';
+import 'package:food_app/View/screens/food_screen.dart';
+import 'package:food_app/View/screens/setting_screen.dart';
+import 'package:food_app/View/screens/tabs_screen.dart';
+import 'package:food_app/View/screens/category_meals_screen.dart';
+import 'package:food_app/View/widgets/Favorite_meal.dart';
+import 'package:food_app/View/widgets/filters.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

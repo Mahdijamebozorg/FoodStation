@@ -1,4 +1,4 @@
-import 'package:FoodApp/Model/meal.dart';
+import 'package:food_app/Model/meal.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +8,7 @@ class SearchItem extends StatelessWidget {
   const SearchItem({Key? key, required this.meal, required this.remove}) : super(key: key);
 
   void selectmeal(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed('/foodScreen', arguments: {'Meal': meal});
+    Navigator.of(ctx).pushNamed('/foodScreen', arguments: {"meal": meal});
   }
 
   @override

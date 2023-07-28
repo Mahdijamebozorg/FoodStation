@@ -1,9 +1,9 @@
-import 'package:FoodApp/Controller/settings.dart';
-import 'package:FoodApp/Model/meal.dart';
-import 'package:FoodApp/View/widgets/categories_grid.dart';
-import 'package:FoodApp/View/widgets/Drawer.dart';
-import 'package:FoodApp/View/widgets/Favorite_meal.dart';
-import 'package:FoodApp/View/widgets/search_item.dart';
+import 'package:food_app/Controller/settings.dart';
+import 'package:food_app/Model/meal.dart';
+import 'package:food_app/View/widgets/categories_grid.dart';
+import 'package:food_app/View/widgets/Drawer.dart';
+import 'package:food_app/View/widgets/Favorite_meal.dart';
+import 'package:food_app/View/widgets/search_item.dart';
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -76,7 +76,7 @@ class TabsScreen extends StatelessWidget {
                   ),
       ),
       // --------------------------------------------------------------
-      drawer: Drwer(),
+      drawer: const Drwer(),
       drawerEdgeDragWidth: 160,
     );
   }

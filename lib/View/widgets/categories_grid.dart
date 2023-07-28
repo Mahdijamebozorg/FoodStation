@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:FoodApp/Controller/settings.dart';
+import 'package:food_app/Controller/settings.dart';
 import 'category_item.dart';
 
 class Categories extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:FoodApp/Controller/Settings.dart';
+import 'package:food_app/Controller/Settings.dart';
 import 'package:get/get.dart';
 
 class MainBinding extends Bindings {

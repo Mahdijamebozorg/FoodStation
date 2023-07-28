@@ -1,8 +1,8 @@
-import 'package:FoodApp/Model/meal.dart';
+import 'package:food_app/Model/meal.dart';
 import 'package:flutter/material.dart';
 
-import 'package:FoodApp/Model/category.dart';
-import 'package:FoodApp/Helpers/dummy_data.dart';
+import 'package:food_app/Model/category.dart';
+import 'package:food_app/Helpers/dummy_data.dart';
 import 'package:get/get.dart';
 
 class Settings extends GetxController {
@@ -12,8 +12,8 @@ class Settings extends GetxController {
   final RxList<Meal> _favoriteMeals = RxList();
 
   Settings() {
-    _availableCategories.value = DUMMY_CATEGORIES;
-    _availableMeals.value = DUMMY_MEALS;
+    _availableCategories.value = dummyData;
+    _availableMeals.value = dummyMeals;
     _filters = {
       'isGlutenFree': false,
       'isVegan': false,
@@ -33,7 +33,7 @@ class Settings extends GetxController {
     _filters.value = filterdata;
 
     //set available meals according to filters
-    var newAvailableMeals = DUMMY_MEALS.where((element) {
+    var newAvailableMeals = dummyMeals.where((element) {
       if (_filters['isGlutenFree']! && !element.isGlutenFree) {
         return false;
       } else if (_filters['isVegan']! && !element.isVegan) {

@@ -1,8 +1,8 @@
-import 'package:FoodApp/View/screens/food_screen.dart';
-import 'package:FoodApp/View/screens/setting_screen.dart';
-import 'package:FoodApp/View/screens/tabs_screen.dart';
-import 'package:FoodApp/View/widgets/Favorite_meal.dart';
-import 'package:FoodApp/View/widgets/filters.dart';
+import 'package:food_app/View/screens/food_screen.dart';
+import 'package:food_app/View/screens/setting_screen.dart';
+import 'package:food_app/View/screens/tabs_screen.dart';
+import 'package:food_app/View/widgets/Favorite_meal.dart';
+import 'package:food_app/View/widgets/filters.dart';
 import 'package:get/get.dart';
 
 class AppPages {

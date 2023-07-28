@@ -1,4 +1,4 @@
-import 'package:FoodApp/Model/meal.dart';
+import 'package:food_app/Model/meal.dart';
 import 'package:flutter/material.dart';
 
 class MealItem extends StatelessWidget {
@@ -10,7 +10,7 @@ class MealItem extends StatelessWidget {
   void selectmeal(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
       '/foodScreen',
-      arguments: {'Meal': meal},
+      arguments: {"meal": meal},
     );
   }
 
@@ -29,20 +29,23 @@ class MealItem extends StatelessWidget {
               Stack(
                 children: <Widget>[
                   //Image shape
-                  SizedBox(
-                    width: size.maxWidth * 1,
-                    height: size.maxHeight * 0.83,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15),
-                      ),
-                      //Image
-                      child: Image.asset(
-                        meal.imageUrl,
-                        height: size.maxHeight * 1,
-                        width: double.infinity,
-                        fit: BoxFit.fill,
+                  Hero(
+                    tag: meal.id,
+                    child: SizedBox(
+                      width: size.maxWidth * 1,
+                      height: size.maxHeight * 0.83,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15),
+                        ),
+                        //Image
+                        child: Image.asset(
+                          meal.imageUrl,
+                          height: size.maxHeight * 1,
+                          width: double.infinity,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                   ),
