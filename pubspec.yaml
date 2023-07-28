@@ -18,25 +18,27 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.15.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   intl: ^0.18.1
   anim_search_bar: ^2.0.3
-  provider: ^6.0.5
+  get: ^4.6.5
   # parse_server_sdk_flutter: any
   # connectivity_plus: ^2.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_gen: ^5.3.1
+  flutter_lints: ^2.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -52,17 +54,7 @@ flutter:
         - asset: assets/fonts/(49).ttf
 
   assets:
-    - assets/images/waiting.png
-    - assets/images/Asparagus_Salad.jpg
-    - assets/images/Chocolate_Souffle.jpg
-    - assets/images/Classic_Hamburger.jpg
-    - assets/images/Creamy_Indian_Chicken_Curry.jpg
-    - assets/images/Delicious_Orange_Mousse.jpg
-    - assets/images/Pancakes.jpg
-    - assets/images/salmon.jpg
-    - assets/images/Spaghetti.jpg
-    - assets/images/Toast_Hawaii.jpg
-    - assets/images/Wiener_Schnitzel.jpg
+    - assets/images/
 
     #- assets/images/img1.JPG
 
