@@ -103,10 +103,12 @@ class Settings extends GetxController {
   List<Meal> simpleMealSearch({required String text, bool inFavs = false}) {
     return inFavs
         ? _favoriteMeals
-            .where((meal) => meal.title.contains(text.toLowerCase()))
+            .where(
+                (meal) => meal.title.toLowerCase().contains(text.toLowerCase()))
             .toList()
         : _availableMeals
-            .where((meal) => meal.title.contains(text.toLowerCase()))
+            .where(
+                (meal) => meal.title.toLowerCase().contains(text.toLowerCase()))
             .toList();
   }
 }

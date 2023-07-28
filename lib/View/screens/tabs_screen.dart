@@ -10,13 +10,13 @@ import 'package:get/get.dart';
 
 RxInt _currentPage = 0.obs;
 RxList<Meal> _mealsFound = RxList();
-Rx<TextEditingController> _searchtext = TextEditingController().obs;
-bool _searchListener = false;
+TextEditingController _searchtext = TextEditingController();
+RxString _text = "".obs;
 
 // change index
 void _selectPage(int index) {
   _currentPage.value = index;
-  _searchtext.value.clear();
+  _searchtext.clear();
 }
 
 class TabsScreen extends StatelessWidget {
@@ -43,12 +43,11 @@ class TabsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // add search listener
-    if (!_searchListener) {
-      _searchtext.value.addListener(() {
-        _searchdMeal(_searchtext.value.text);
-      });
-      _searchListener = true;
-    }
+    _searchtext.addListener(() {
+      _text.value = _searchtext.text;
+      _searchdMeal(_text.value);
+      debugPrint("listen");
+    });
 
     return Scaffold(
       // --------------------------------------------------------------
@@ -57,7 +56,7 @@ class TabsScreen extends StatelessWidget {
       bottomNavigationBar: const BottomNav(),
       // --------------------------------------------------------------
       body: Obx(
-        () => _searchtext.value.text.isEmpty
+        () => _text.value.isEmpty
 
             // if not searching
             ? _pages[_currentPage.value]['page'] as Widget
@@ -102,12 +101,12 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           searchIconColor: Theme.of(context).colorScheme.onPrimary,
           helpText: "Enter food name",
           width: 400,
-          textController: _searchtext.value,
+          textController: _searchtext,
           autoFocus: true,
           boxShadow: false,
           suffixIcon: const Icon(Icons.clear),
           onSuffixTap: () {
-            _searchtext.value.clear();
+            _searchtext.clear();
           },
           onSubmitted: (str) {},
         ),
