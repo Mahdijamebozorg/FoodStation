@@ -22,5 +22,5 @@ ThemeData appTheme() {
             ),
           ),
       colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.pink)
-          .copyWith(background: Colors.white));
+          .copyWith(background: Colors.white, onBackground: Colors.black54));
 }

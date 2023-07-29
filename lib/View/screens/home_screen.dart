@@ -19,9 +19,9 @@ void _selectPage(int index) {
   _searchtext.clear();
 }
 
-class TabsScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   static const routeName = "/home";
-  const TabsScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
   // pages
   static const List<Map<String, Object>> _pages = [
     {'page': Categories(), 'title': 'Categories'},
@@ -49,34 +49,36 @@ class TabsScreen extends StatelessWidget {
       debugPrint("listen");
     });
 
-    return Scaffold(
-      // --------------------------------------------------------------
-      appBar: const HomeAppBar(pages: _pages),
-      // --------------------------------------------------------------
-      bottomNavigationBar: const BottomNav(),
-      // --------------------------------------------------------------
-      body: Obx(
-        () => _text.value.isEmpty
+    return SafeArea(
+      child: Scaffold(
+        // --------------------------------------------------------------
+        appBar: const HomeAppBar(pages: _pages),
+        // --------------------------------------------------------------
+        bottomNavigationBar: const BottomNav(),
+        // --------------------------------------------------------------
+        body: Obx(
+          () => _text.value.isEmpty
 
-            // if not searching
-            ? _pages[_currentPage.value]['page'] as Widget
+              // if not searching
+              ? _pages[_currentPage.value]['page'] as Widget
 
-            // if searching...
-            : _mealsFound.isEmpty
-                ? const Center(
-                    child: Text("No match found"),
-                  )
-                : ListView.builder(
-                    itemBuilder: (context, index) => SearchItem(
-                      meal: _mealsFound.elementAt(index),
-                      remove: _temporaryRemoveMeal,
+              // if searching...
+              : _mealsFound.isEmpty
+                  ? const Center(
+                      child: Text("No match found"),
+                    )
+                  : ListView.builder(
+                      itemBuilder: (context, index) => SearchItem(
+                        meal: _mealsFound.elementAt(index),
+                        remove: _temporaryRemoveMeal,
+                      ),
+                      itemCount: _mealsFound.length,
                     ),
-                    itemCount: _mealsFound.length,
-                  ),
+        ),
+        // --------------------------------------------------------------
+        drawer: const Drwer(),
+        drawerEdgeDragWidth: 160,
       ),
-      // --------------------------------------------------------------
-      drawer: const Drwer(),
-      drawerEdgeDragWidth: 160,
     );
   }
 }
@@ -93,6 +95,15 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      // apply gradient
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[Colors.black, Colors.blue]),
+        ),
+      ),
       title: Text(_pages[_currentPage.value]['title'] as String),
       centerTitle: true,
       actions: [

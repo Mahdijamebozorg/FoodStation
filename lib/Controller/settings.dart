@@ -88,6 +88,10 @@ class Settings extends GetxController {
     return copy;
   }
 
+  bool isFavorite(Meal meal) {
+    return _favoriteMeals.contains(meal);
+  }
+
   void addFavoriteMeal(Meal meal) {
     _favoriteMeals.add(meal);
     update(["favs"]);
@@ -96,6 +100,30 @@ class Settings extends GetxController {
   void removeFavoriteMeal(Meal meal) {
     _favoriteMeals.remove(meal);
     update(["favs"]);
+  }
+
+  void toggleFav(Meal meal) {
+    if (_favoriteMeals.contains(meal)) {
+      removeFavoriteMeal(meal);
+      Get.closeCurrentSnackbar();
+      Get.showSnackbar(
+        GetSnackBar(
+          duration: const Duration(seconds: 3),
+          title: "Removed from favorites: ",
+          message: meal.title,
+        ),
+      );
+    } else {
+      addFavoriteMeal(meal);
+      Get.closeCurrentSnackbar();
+      Get.showSnackbar(
+        GetSnackBar(
+          duration: const Duration(seconds: 3),
+          title: "Added to favorites: ",
+          message: meal.title,
+        ),
+      );
+    }
   }
 
   //___________________________________________________

@@ -3,8 +3,6 @@ import 'package:food_app/Controller/settings.dart';
 import 'package:get/get.dart';
 
 class Filters extends StatelessWidget {
-  static const routeName = "/Filters";
-
   const Filters({Key? key}) : super(key: key);
 
   @override
@@ -12,17 +10,17 @@ class Filters extends StatelessWidget {
     Settings settting = Get.find<Settings>();
 
     //filters setted in setting
-    RxBool isGlutenFree = settting.filters['_isGlutenFree']!.obs;
-    RxBool isVegan = settting.filters['_isVegan']!.obs;
-    RxBool isVegetarian = settting.filters['_isVegetarian']!.obs;
-    RxBool isLactoseFree = settting.filters['_isLactoseFree']!.obs;
+    RxBool isGlutenFree = settting.filters['isGlutenFree']!.obs;
+    RxBool isVegan = settting.filters['isVegan']!.obs;
+    RxBool isVegetarian = settting.filters['isVegetarian']!.obs;
+    RxBool isLactoseFree = settting.filters['isLactoseFree']!.obs;
 
     void setFilters() {
       final Map<String, bool> newFilters = {
-        '_isGlutenFree': isGlutenFree.value,
-        '_isVegan': isVegan.value,
-        '_isVegetarian': isVegetarian.value,
-        '_isLactoseFree': isLactoseFree.value,
+        'isGlutenFree': isGlutenFree.value,
+        'isVegan': isVegan.value,
+        'isVegetarian': isVegetarian.value,
+        'isLactoseFree': isLactoseFree.value,
       };
       settting.setfilters(newFilters, context);
     }
@@ -55,7 +53,7 @@ class Filters extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'GlutenFree',
+                    'Gluten free',
                     style: TextStyle(
                       fontSize: screenSize.height * 0.3 / 4 * 0.4,
                     ),
@@ -145,7 +143,7 @@ class Filters extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Lactosfree',
+                    'Lactos free',
                     style: TextStyle(
                       fontSize: screenSize.height * 0.3 / 4 * 0.4,
                     ),

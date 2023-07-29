@@ -9,7 +9,7 @@ class CategoryItem extends StatelessWidget {
 //use routes
   void selectCategory(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
-      '/categoryMealsScreen',
+      '/categoryScreen',
       arguments: {
         'id': catData.id,
         'title': catData.title,
@@ -38,7 +38,7 @@ class CategoryItem extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(29),
           ),
-          elevation: 20,
+          elevation: 15,
           margin: const EdgeInsets.all(7),
           child: Center(
             child: Text(catData.title),

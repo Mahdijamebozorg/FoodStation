@@ -13,37 +13,52 @@ class FoodScreen extends StatelessWidget {
     final Size screenSize = MediaQuery.sizeOf(context);
     // final bool islandscape =
     //     MediaQuery.of(context).orientation == Orientation.landscape;
-    //routes
     final routeArgs = ModalRoute.of(context)!.settings.arguments as Map;
     final Meal meal = routeArgs["meal"];
 
     ///body
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            actions: [FavButton(meal: meal)],
-            flexibleSpace: FlexibleSpaceBar(
-              background: Hero(
-                tag: meal.id,
-                child: Image.asset(meal.imageUrl, fit: BoxFit.fill),
+    return SafeArea(
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              elevation: 20,
+              bottom: AppBar(
+                leading: const SizedBox(),
+                elevation: 0,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(30),
+                  ),
+                ),
+                centerTitle: true,
+                title: Text(meal.title,
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
+              actions: [LikeButton(meal: meal)],
+              backgroundColor: Colors.white,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Hero(
+                  tag: meal.id,
+                  child: Image.asset(meal.imageUrl, fit: BoxFit.fill),
+                ),
+              ),
+              expandedHeight: screenSize.height > screenSize.width
+                  ? screenSize.height * 0.5
+                  : screenSize.height,
+              centerTitle: true,
+              pinned: false,
             ),
-            expandedHeight: defaultTargetPlatform == TargetPlatform.android ||
-                    defaultTargetPlatform == TargetPlatform.iOS
-                ? screenSize.height * 0.5
-                : screenSize.height,
-            elevation: 20,
-            centerTitle: true,
-            pinned: true,
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate([
-              IngridientsView(meal: meal),
-              StepsView(meal: meal),
-            ]),
-          ),
-        ],
+            SliverList(
+              delegate: SliverChildListDelegate([
+                IngridientsView(meal: meal),
+                const SizedBox(height: 50.0),
+                StepsView(meal: meal),
+              ]),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -117,14 +132,15 @@ class IngridientsView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
-              'ingridients:',
+              'Ingridients:',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
         ),
+        const SizedBox(height: 8.0),
         SizedBox(
           width: double.infinity,
-          height: screenSize.height * 0.07,
+          height: screenSize.height * 0.06,
           child: ListView.builder(
             itemCount: meal.ingredients.length,
             scrollDirection: Axis.horizontal,
@@ -149,55 +165,56 @@ class IngridientsView extends StatelessWidget {
   }
 }
 
-class FavButton extends StatelessWidget {
-  const FavButton({
-    Key? key,
-    required this.meal,
-  }) : super(key: key);
-
+class LikeButton extends StatefulWidget {
   final Meal meal;
+  const LikeButton({required this.meal, Key? key}) : super(key: key);
+
+  @override
+  State<LikeButton> createState() => _LikeButtonState();
+}
+
+class _LikeButtonState extends State<LikeButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 200),
+    vsync: this,
+    value: 1.0,
+  );
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<Settings>(
       id: "favs",
-      builder: (Settings settings) => IconButton(
-          onPressed: () {
-            if (settings.favoriteMeals.contains(meal)) {
-              settings.removeFavoriteMeal(meal);
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 1),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  content: const Text(
-                    "Removed from favorites",
-                    textAlign: TextAlign.center,
+      builder: (Settings settings) => GestureDetector(
+        onTap: () {
+          settings.toggleFav(widget.meal);
+          _controller.reverse().then((value) => _controller.forward());
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: ScaleTransition(
+            scale: Tween(begin: 0.7, end: 1.0).animate(
+              CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+            ),
+            child: settings.isFavorite(widget.meal)
+                ? const Icon(
+                    Icons.favorite,
+                    size: 30,
+                    color: Colors.red,
+                  )
+                : const Icon(
+                    Icons.favorite_border,
+                    size: 30,
                   ),
-                ),
-              );
-            } else {
-              settings.addFavoriteMeal(meal);
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 1),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  content: const Text(
-                    "Added to favorites",
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }
-          },
-          icon: Icon(
-            Icons.star,
-            color: settings.favoriteMeals.contains(meal)
-                ? Colors.yellow
-                : Colors.grey,
-            size: 30,
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
