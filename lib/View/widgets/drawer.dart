@@ -31,7 +31,7 @@ class Drwer extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30)),
                     ),
                   ),
-                  //Meals
+                  //foods
                   ListTile(
                     title: const Row(children: [
                       Icon(
@@ -42,7 +42,7 @@ class Drwer extends StatelessWidget {
                       SizedBox(
                         width: 15,
                       ),
-                      Text('Meals'),
+                      Text('foods'),
                     ]),
                     onTap: () =>
                         Navigator.of(context).pushReplacementNamed('/home'),

@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:food_app/Controller/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/Model/meal.dart';
+import 'package:food_app/Model/food.dart';
 import 'package:get/get.dart';
 
 class FoodScreen extends StatelessWidget {
@@ -14,7 +13,7 @@ class FoodScreen extends StatelessWidget {
     // final bool islandscape =
     //     MediaQuery.of(context).orientation == Orientation.landscape;
     final routeArgs = ModalRoute.of(context)!.settings.arguments as Map;
-    final Meal meal = routeArgs["meal"];
+    final Food food = routeArgs["food"];
 
     ///body
     return SafeArea(
@@ -33,15 +32,15 @@ class FoodScreen extends StatelessWidget {
                   ),
                 ),
                 centerTitle: true,
-                title: Text(meal.title,
-                    style: Theme.of(context).textTheme.bodyLarge),
+                title: Text(food.title,
+                    style: Theme.of(context).textTheme.bodyMedium),
               ),
-              actions: [LikeButton(meal: meal)],
+              actions: [LikeButton(food: food)],
               backgroundColor: Colors.white,
               flexibleSpace: FlexibleSpaceBar(
                 background: Hero(
-                  tag: meal.id,
-                  child: Image.asset(meal.imageUrl, fit: BoxFit.fill),
+                  tag: food.id,
+                  child: Image.asset(food.imageUrl, fit: BoxFit.fill),
                 ),
               ),
               expandedHeight: screenSize.height > screenSize.width
@@ -52,9 +51,9 @@ class FoodScreen extends StatelessWidget {
             ),
             SliverList(
               delegate: SliverChildListDelegate([
-                IngridientsView(meal: meal),
+                IngridientsView(food: food),
                 const SizedBox(height: 50.0),
-                StepsView(meal: meal),
+                StepsView(food: food),
               ]),
             ),
           ],
@@ -67,10 +66,10 @@ class FoodScreen extends StatelessWidget {
 class StepsView extends StatelessWidget {
   const StepsView({
     Key? key,
-    required this.meal,
+    required this.food,
   }) : super(key: key);
 
-  final Meal meal;
+  final Food food;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +83,7 @@ class StepsView extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Text(
               'Steps:',
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ),
@@ -94,12 +93,12 @@ class StepsView extends StatelessWidget {
           child: ListWheelScrollView(
             itemExtent: 150,
             children: List.generate(
-              meal.steps.length,
+              food.steps.length,
               (index) => ListTile(
                 leading: CircleAvatar(
                   child: Text('# ${index + 1}'),
                 ),
-                title: Text(meal.steps[index]),
+                title: Text(food.steps[index]),
                 tileColor: Colors.purple[800],
                 contentPadding: const EdgeInsets.all(8),
               ),
@@ -115,10 +114,10 @@ class StepsView extends StatelessWidget {
 class IngridientsView extends StatelessWidget {
   const IngridientsView({
     Key? key,
-    required this.meal,
+    required this.food,
   }) : super(key: key);
 
-  final Meal meal;
+  final Food food;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +132,7 @@ class IngridientsView extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Text(
               'Ingridients:',
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ),
@@ -142,7 +141,7 @@ class IngridientsView extends StatelessWidget {
           width: double.infinity,
           height: screenSize.height * 0.06,
           child: ListView.builder(
-            itemCount: meal.ingredients.length,
+            itemCount: food.ingredients.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => Container(
               decoration: const BoxDecoration(
@@ -154,7 +153,7 @@ class IngridientsView extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.all(2.0),
               child: Text(
-                meal.ingredients[index],
+                food.ingredients[index],
                 style: const TextStyle(color: Colors.white),
               ),
             ),
@@ -166,8 +165,8 @@ class IngridientsView extends StatelessWidget {
 }
 
 class LikeButton extends StatefulWidget {
-  final Meal meal;
-  const LikeButton({required this.meal, Key? key}) : super(key: key);
+  final Food food;
+  const LikeButton({required this.food, Key? key}) : super(key: key);
 
   @override
   State<LikeButton> createState() => _LikeButtonState();
@@ -193,7 +192,7 @@ class _LikeButtonState extends State<LikeButton>
       id: "favs",
       builder: (Settings settings) => GestureDetector(
         onTap: () {
-          settings.toggleFav(widget.meal);
+          settings.toggleFav(widget.food);
           _controller.reverse().then((value) => _controller.forward());
         },
         child: Padding(
@@ -202,7 +201,7 @@ class _LikeButtonState extends State<LikeButton>
             scale: Tween(begin: 0.7, end: 1.0).animate(
               CurvedAnimation(parent: _controller, curve: Curves.easeOut),
             ),
-            child: settings.isFavorite(widget.meal)
+            child: settings.isFavorite(widget.food)
                 ? const Icon(
                     Icons.favorite,
                     size: 30,

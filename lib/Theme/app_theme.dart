@@ -8,19 +8,29 @@ ThemeData appTheme() {
       fontFamily: 'Raleway',
       highlightColor: Colors.pink[50],
       primaryColor: Colors.pink,
-      textTheme: ThemeData.light().textTheme.copyWith(
-            //drawer
-            bodyLarge: const TextStyle(fontSize: 23, color: Colors.black),
-            //body
-            bodyMedium: const TextStyle(
-                fontSize: 21, color: Colors.black, fontWeight: FontWeight.w600),
-            //titles
-            titleMedium: const TextStyle(
-              fontFamily: '(50)',
-              fontSize: 30,
-              color: Colors.white,
-            ),
-          ),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(
+          fontSize: 24,
+          color: Colors.black,
+          fontWeight: FontWeight.w700,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 20,
+          color: Colors.black,
+          fontWeight: FontWeight.w500,
+        ),
+        bodySmall: TextStyle(
+          fontSize: 16,
+          color: Colors.black,
+          fontWeight: FontWeight.w100,
+        ),
+        //titles
+        titleMedium: TextStyle(
+          fontFamily: '(50)',
+          fontSize: 30,
+          color: Colors.white,
+        ),
+      ),
       colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.pink)
           .copyWith(background: Colors.white, onBackground: Colors.black54));
 }

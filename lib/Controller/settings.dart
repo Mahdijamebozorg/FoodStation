@@ -1,28 +1,36 @@
-import 'package:food_app/Model/meal.dart';
+// ignore_for_file: prefer_final_fields
+
+import 'package:food_app/Model/food.dart';
 import 'package:flutter/material.dart';
 
 import 'package:food_app/Model/category.dart';
 import 'package:food_app/Helpers/dummy_data.dart';
+import 'package:food_app/Model/ingridient.dart';
 import 'package:get/get.dart';
 
 class Settings extends GetxController {
   RxMap<String, bool> _filters = RxMap();
-  final RxList<Category> _availableCategories = RxList();
-  final RxList<Meal> _availableMeals = RxList();
-  final RxList<Meal> _favoriteMeals = RxList();
+  RxList<Category> _availableCategories = RxList();
+  RxList<Food> _availablefoods = RxList();
+  RxList<Food> _favoritefoods = RxList();
+  RxList<Ingridient> _availableIngridient = RxList();
 
   Settings() {
-    _availableCategories.value = dummyData;
-    _availableMeals.value = dummyMeals;
+    _availableCategories.value = dummyCats;
+    _availablefoods.value = dummyfoods;
+    _availableIngridient.value = dummyIngs;
+
     _filters = {
       'isGlutenFree': false,
       'isVegan': false,
-      'isVegetarian': false,
       'isLactoseFree': false,
     }.obs;
   }
 
   //____________________________________________________________________________filters
+
+  // TODO filters should be a list of hashtags.
+
   RxMap<String, bool> get filters {
     var copy = _filters;
     return copy;
@@ -32,13 +40,11 @@ class Settings extends GetxController {
     //set filters from input
     _filters.value = filterdata;
 
-    //set available meals according to filters
-    var newAvailableMeals = dummyMeals.where((element) {
+    //set available foods according to filters
+    var newAvailablefoods = dummyfoods.where((element) {
       if (_filters['isGlutenFree']! && !element.isGlutenFree) {
         return false;
       } else if (_filters['isVegan']! && !element.isVegan) {
-        return false;
-      } else if (_filters['isVegetarian']! && !element.isVegetarian) {
         return false;
       } else if (_filters['isLactoseFree']! && !element.isLactoseFree) {
         return false;
@@ -47,28 +53,53 @@ class Settings extends GetxController {
       }
     }).toList();
 
-    setAvailableMeals(newAvailableMeals);
+    setAvailablefoods(newAvailablefoods);
     update(["filters"]);
   }
 
-  //_______________________________________________________________________________ available meals
-  RxList<Meal> get availableMeals {
-    var copy = _availableMeals;
+  //_______________________________________________________________________________ available foods
+  RxList<Food> get availablefoods {
+    var copy = _availablefoods;
     return copy;
   }
 
-  RxList<Meal> getCategorymeals(String catId) {
-    return _availableMeals
-        .where((meal) {
-          return meal.categories.contains(catId);
+  RxList<Food> getCategoryfoods(String catId) {
+    return _availablefoods
+        .where((food) {
+          return food.categories.contains(catId);
         })
         .toList()
         .obs;
   }
 
-  void setAvailableMeals(List<Meal> newList) {
-    _availableMeals.value = newList;
-    update(["meals"]);
+  void setAvailablefoods(List<Food> newList) {
+    _availablefoods.value = newList;
+    update(["foods"]);
+  }
+
+  void addFood(Food food) {
+    _availablefoods.add(food);
+    update(["foods"]);
+  }
+
+  void removeFood({required String id}) {
+    try {
+      _availablefoods.removeWhere((food) => food.id == id);
+      update(["foods"]);
+    } catch (excp) {
+      debugPrint("food $id not found");
+    }
+  }
+
+  void updateFood({required String id, required Food newfood}) {
+    final index = _availablefoods.indexWhere((food) => food.id == id);
+    // if not found
+    if (index == -1) {
+      debugPrint("food $id not found");
+      return;
+    }
+    _availablefoods[index] = newfood;
+    update(["foods"]);
   }
 
   //_______________________________________________________________________________ available categories
@@ -82,61 +113,77 @@ class Settings extends GetxController {
     update(["cats"]);
   }
 
-  //____________________________________________________ favorites
-  RxList<Meal> get favoriteMeals {
-    var copy = _favoriteMeals;
+  //_______________________________________________________________________________ available categories
+  RxList<Ingridient> get availableIngridient {
+    var copy = _availableIngridient;
     return copy;
   }
 
-  bool isFavorite(Meal meal) {
-    return _favoriteMeals.contains(meal);
+  void setAvailableIngridient(List<Ingridient> newList) {
+    _availableIngridient.value = newList;
+    update(["ings"]);
   }
 
-  void addFavoriteMeal(Meal meal) {
-    _favoriteMeals.add(meal);
+  //_______________________________________________________________________________ favorites
+  List<Food> get favoritefoods {
+    return _favoritefoods;
+  }
+
+  bool isFavorite(Food food) {
+    return _favoritefoods.contains(food);
+  }
+
+  void addFavoriteFood(Food food) {
+    _favoritefoods.add(food);
     update(["favs"]);
   }
 
-  void removeFavoriteMeal(Meal meal) {
-    _favoriteMeals.remove(meal);
+  void removeFavoriteFood(Food food) {
+    _favoritefoods.remove(food);
     update(["favs"]);
   }
 
-  void toggleFav(Meal meal) {
-    if (_favoriteMeals.contains(meal)) {
-      removeFavoriteMeal(meal);
+  void toggleFav(Food food) {
+    if (_favoritefoods.contains(food)) {
+      removeFavoriteFood(food);
       Get.closeCurrentSnackbar();
       Get.showSnackbar(
         GetSnackBar(
           duration: const Duration(seconds: 3),
           title: "Removed from favorites: ",
-          message: meal.title,
+          message: food.title,
         ),
       );
     } else {
-      addFavoriteMeal(meal);
+      addFavoriteFood(food);
       Get.closeCurrentSnackbar();
       Get.showSnackbar(
         GetSnackBar(
           duration: const Duration(seconds: 3),
           title: "Added to favorites: ",
-          message: meal.title,
+          message: food.title,
         ),
       );
     }
   }
 
-  //___________________________________________________
+  //_______________________________________________________________________________
 
-  List<Meal> simpleMealSearch({required String text, bool inFavs = false}) {
+  List<Food> simplefoodSearch({required String text, bool inFavs = false}) {
     return inFavs
-        ? _favoriteMeals
+        ? _favoritefoods
             .where(
-                (meal) => meal.title.toLowerCase().contains(text.toLowerCase()))
+                (food) => food.title.toLowerCase().contains(text.toLowerCase()))
             .toList()
-        : _availableMeals
+        : _availablefoods
             .where(
-                (meal) => meal.title.toLowerCase().contains(text.toLowerCase()))
+                (food) => food.title.toLowerCase().contains(text.toLowerCase()))
             .toList();
+  }
+
+  List<Ingridient> ingridientSearch({required String text}) {
+    return availableIngridient
+        .where((ing) => ing.name.toLowerCase().contains(text.toLowerCase()))
+        .toList();
   }
 }

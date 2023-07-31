@@ -1,7 +1,7 @@
 import 'package:food_app/Controller/settings.dart';
 import 'package:food_app/View/widgets/food_item.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/Model/meal.dart';
+import 'package:food_app/Model/food.dart';
 import 'package:get/get.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -9,7 +9,7 @@ class CategoryScreen extends StatelessWidget {
   const CategoryScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    debugPrint("Meals updated");
+    debugPrint("foods updated");
     //routes
     final routeArgs =
         ModalRoute.of(context)!.settings.arguments as Map<String, String>;
@@ -20,7 +20,7 @@ class CategoryScreen extends StatelessWidget {
     var islandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    RxList<Meal> categoryMeals = settings.getCategorymeals(categoryId!);
+    RxList<Food> categoryfoods = settings.getCategoryfoods(categoryId!);
 
     final screenSize = MediaQuery.sizeOf(context);
 
@@ -39,10 +39,10 @@ class CategoryScreen extends StatelessWidget {
             ),
             itemBuilder: (ctx, index) {
               return FoodItem(
-                meal: categoryMeals[index],
+                food: categoryfoods[index],
               );
             },
-            itemCount: categoryMeals.length,
+            itemCount: categoryfoods.length,
           )),
     );
   }

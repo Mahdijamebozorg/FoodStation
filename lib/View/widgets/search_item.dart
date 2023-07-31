@@ -1,14 +1,14 @@
-import 'package:food_app/Model/meal.dart';
+import 'package:food_app/Model/food.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SearchItem extends StatelessWidget {
-  final Meal meal;
+  final Food food;
   final Function remove;
-  const SearchItem({Key? key, required this.meal, required this.remove}) : super(key: key);
+  const SearchItem({Key? key, required this.food, required this.remove}) : super(key: key);
 
-  void selectmeal(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed('/foodScreen', arguments: {"meal": meal});
+  void selectFood(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed('/foodScreen', arguments: {"food": food});
   }
 
   @override
@@ -16,15 +16,15 @@ class SearchItem extends StatelessWidget {
     var screenheigh = MediaQuery.of(context).size.height;
     var screenwidth = MediaQuery.of(context).size.width;
     return InkWell(
-      onTap: () => selectmeal(context),
+      onTap: () => selectFood(context),
       borderRadius: BorderRadius.circular(30),
-      //for removing unwanted meals from search and comparing others
+      //for removing unwanted foods from search and comparing others
       child: Dismissible(
         key: UniqueKey(),
         direction: DismissDirection.endToStart,
         dragStartBehavior: DragStartBehavior.start,
         onDismissed: (DismissDirection dir) {
-          remove(meal);
+          remove(food);
         },
         background: Container(
           color: Theme.of(context).primaryColor,
@@ -59,7 +59,7 @@ class SearchItem extends StatelessWidget {
                     bottomLeft: Radius.circular(30),
                   ),
                   child: Image.asset(
-                    meal.imageUrl,
+                    food.imageUrl,
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -70,7 +70,7 @@ class SearchItem extends StatelessWidget {
               //text
               Expanded(
                 child: Text(
-                  meal.title,
+                  food.title,
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.height * 0.04),
                 ),

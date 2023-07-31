@@ -4,8 +4,6 @@ import 'package:food_app/View/screens/food_screen.dart';
 import 'package:food_app/View/screens/setting_screen.dart';
 import 'package:food_app/View/screens/home_screen.dart';
 import 'package:food_app/View/screens/category_screen.dart';
-import 'package:food_app/View/widgets/Favorite_meal.dart';
-import 'package:food_app/View/widgets/filters.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,7 +28,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (_) => const HomeScreen(),
         CategoryScreen.routeName: (_) => const CategoryScreen(),
-        Favoritemeal.routeName: (_) => const Favoritemeal(),
         FoodScreen.routeName: (_) => const FoodScreen(),
         SettingScreeen.routeName: (_) => const SettingScreeen()
       },

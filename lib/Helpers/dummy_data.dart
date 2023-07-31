@@ -1,10 +1,9 @@
 import 'package:food_app/Model/category.dart';
-import 'package:food_app/Model/meal.dart';
+import 'package:food_app/Model/food.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/Model/ingridient.dart';
 
-
-
-const dummyData = [
+const dummyCats = [
   Category(
     id: 'c1',
     title: 'Italian',
@@ -57,16 +56,16 @@ const dummyData = [
   ),
 ];
 
-const List<Meal> dummyMeals = [
-  Meal(
+List<Food> dummyfoods = [
+  Food(
     id: 'm1',
     categories: [
       'c1',
       'c2',
     ],
     title: 'spaghetti with tomato sauce',
-    affordability: Affordability.Affordable,
-    complexity: Complexity.Simple,
+    affordability: Affordability.affordable,
+    complexity: Complexity.simple,
     imageUrl: 'assets/images/Spaghetti.jpg',
     duration: 20,
     ingredients: [
@@ -88,17 +87,16 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: false,
     isVegan: true,
-    isVegetarian: true,
     isLactoseFree: true,
   ),
-  Meal(
+  Food(
     id: 'm2',
     categories: [
       'c2',
     ],
     title: 'toast hawaii',
-    affordability: Affordability.Affordable,
-    complexity: Complexity.Simple,
+    affordability: Affordability.affordable,
+    complexity: Complexity.simple,
     imageUrl: 'assets/images/Toast_Hawaii.jpg',
     duration: 10,
     ingredients: [
@@ -115,18 +113,17 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: false,
     isVegan: false,
-    isVegetarian: false,
     isLactoseFree: false,
   ),
-  Meal(
+  Food(
     id: 'm3',
     categories: [
       'c2',
       'c3',
     ],
     title: 'classic hamburger',
-    affordability: Affordability.Pricey,
-    complexity: Complexity.Simple,
+    affordability: Affordability.pricey,
+    complexity: Complexity.simple,
     imageUrl: 'assets/images/Classic_Hamburger.jpg',
     duration: 45,
     ingredients: [
@@ -146,17 +143,16 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: false,
     isVegan: false,
-    isVegetarian: false,
     isLactoseFree: true,
   ),
-  Meal(
+  Food(
     id: 'm4',
     categories: [
       'c4',
     ],
     title: 'wiener schnitzel',
-    affordability: Affordability.Luxurious,
-    complexity: Complexity.Challenging,
+    affordability: Affordability.luxurious,
+    complexity: Complexity.challenging,
     imageUrl: 'assets/images/Wiener_Schnitzel.jpg',
     duration: 60,
     ingredients: [
@@ -180,10 +176,9 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: false,
     isVegan: false,
-    isVegetarian: false,
     isLactoseFree: false,
   ),
-  Meal(
+  Food(
     id: 'm5',
     categories: [
       'c2'
@@ -191,8 +186,8 @@ const List<Meal> dummyMeals = [
       'c10',
     ],
     title: 'salad with smoked salmon',
-    affordability: Affordability.Luxurious,
-    complexity: Complexity.Simple,
+    affordability: Affordability.luxurious,
+    complexity: Complexity.simple,
     imageUrl: 'assets/images/salmon.jpg',
     duration: 15,
     ingredients: [
@@ -215,18 +210,17 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: true,
     isVegan: false,
-    isVegetarian: true,
     isLactoseFree: true,
   ),
-  Meal(
+  Food(
     id: 'm6',
     categories: [
       'c6',
       'c10',
     ],
     title: 'delicious orange mousse',
-    affordability: Affordability.Affordable,
-    complexity: Complexity.Hard,
+    affordability: Affordability.affordable,
+    complexity: Complexity.hard,
     imageUrl: 'assets/images/Delicious_Orange_Mousse.jpg',
     duration: 240,
     ingredients: [
@@ -250,17 +244,16 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: true,
     isVegan: false,
-    isVegetarian: true,
     isLactoseFree: false,
   ),
-  Meal(
+  Food(
     id: 'm7',
     categories: [
       'c7',
     ],
     title: 'pancakes',
-    affordability: Affordability.Affordable,
-    complexity: Complexity.Simple,
+    affordability: Affordability.affordable,
+    complexity: Complexity.simple,
     imageUrl: 'assets/images/Pancakes.jpg',
     duration: 20,
     ingredients: [
@@ -280,17 +273,16 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: true,
     isVegan: false,
-    isVegetarian: true,
     isLactoseFree: false,
   ),
-  Meal(
+  Food(
     id: 'm8',
     categories: [
       'c8',
     ],
     title: 'creamy indian chicken curry',
-    affordability: Affordability.Pricey,
-    complexity: Complexity.Challenging,
+    affordability: Affordability.pricey,
+    complexity: Complexity.challenging,
     imageUrl: 'assets/images/Creamy_Indian_Chicken_Curry.jpg',
     duration: 35,
     ingredients: [
@@ -312,17 +304,16 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: true,
     isVegan: false,
-    isVegetarian: false,
     isLactoseFree: true,
   ),
-  Meal(
+  Food(
     id: 'm9',
     categories: [
       'c9',
     ],
     title: 'chocolate souffle',
-    affordability: Affordability.Affordable,
-    complexity: Complexity.Hard,
+    affordability: Affordability.affordable,
+    complexity: Complexity.hard,
     imageUrl: 'assets/images/Chocolate_Souffle.jpg',
     duration: 45,
     ingredients: [
@@ -360,10 +351,9 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: true,
     isVegan: false,
-    isVegetarian: true,
     isLactoseFree: false,
   ),
-  Meal(
+  Food(
     id: 'm10',
     categories: [
       'c2',
@@ -371,8 +361,8 @@ const List<Meal> dummyMeals = [
       'c10',
     ],
     title: 'asparagus salad with cherry tomatoes',
-    affordability: Affordability.Luxurious,
-    complexity: Complexity.Simple,
+    affordability: Affordability.luxurious,
+    complexity: Complexity.simple,
     imageUrl: 'assets/images/Asparagus_Salad.jpg',
     duration: 30,
     ingredients: [
@@ -393,7 +383,39 @@ const List<Meal> dummyMeals = [
     ],
     isGlutenFree: true,
     isVegan: true,
-    isVegetarian: true,
     isLactoseFree: true,
+  ),
+];
+
+const List<Ingridient> dummyIngs = [
+  Ingridient(
+    id: "i1",
+    name: "Spaghetti",
+    type: IngridientType.crafted,
+    calories: 100,
+  ),
+  Ingridient(
+    id: "i2",
+    name: "Tomato",
+    type: IngridientType.vegetable,
+    calories: 10,
+  ),
+  Ingridient(
+    id: "i3",
+    name: "Pepper",
+    type: IngridientType.fruit,
+    calories: 0,
+  ),
+  Ingridient(
+    id: "i4",
+    name: "Salt",
+    type: IngridientType.spices,
+    calories: 0,
+  ),
+  Ingridient(
+    id: "i5",
+    name: "Rice",
+    type: IngridientType.grain,
+    calories: 50,
   ),
 ];

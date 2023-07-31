@@ -1,16 +1,16 @@
-import 'package:food_app/Model/meal.dart';
+import 'package:food_app/Model/food.dart';
 import 'package:flutter/material.dart';
 
 class FoodItem extends StatelessWidget {
-  final Meal meal;
+  final Food food;
 
-  const FoodItem({Key? key, required this.meal}) : super(key: key);
+  const FoodItem({Key? key, required this.food}) : super(key: key);
 
-//move inf to FoodScreen
-  void selectmeal(BuildContext ctx) {
+//move inf to foodScreen
+  void selectFood(BuildContext ctx) {
     Navigator.of(ctx).pushNamed(
       '/foodScreen',
-      arguments: {"meal": meal},
+      arguments: {"food": food},
     );
   }
 
@@ -18,7 +18,7 @@ class FoodItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (ctx, boxConstraints) => InkWell(
-        onTap: () => selectmeal(context),
+        onTap: () => selectFood(context),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -27,9 +27,9 @@ class FoodItem extends StatelessWidget {
           child: Column(
             children: [
               // image
-              Avatar(meal: meal, boxConstraints: boxConstraints),
+              Avatar(food: food, boxConstraints: boxConstraints),
               // under Image
-              Footage(meal: meal, boxConstraints: boxConstraints),
+              Footage(food: food, boxConstraints: boxConstraints),
             ],
           ),
         ),
@@ -39,10 +39,10 @@ class FoodItem extends StatelessWidget {
 }
 
 class Avatar extends StatelessWidget {
-  const Avatar({Key? key, required this.meal, required this.boxConstraints})
+  const Avatar({Key? key, required this.food, required this.boxConstraints})
       : super(key: key);
 
-  final Meal meal;
+  final Food food;
   final BoxConstraints boxConstraints;
 
   @override
@@ -51,7 +51,7 @@ class Avatar extends StatelessWidget {
       children: [
         //Image shape
         Hero(
-          tag: meal.id,
+          tag: food.id,
           child: SizedBox(
             width: boxConstraints.maxWidth * 1,
             height: boxConstraints.maxHeight * 0.88,
@@ -62,7 +62,7 @@ class Avatar extends StatelessWidget {
               ),
               //Image
               child: Image.asset(
-                meal.imageUrl,
+                food.imageUrl,
                 height: boxConstraints.maxHeight * 1,
                 width: double.infinity,
                 fit: BoxFit.fill,
@@ -82,7 +82,7 @@ class Avatar extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             width: boxConstraints.maxWidth * 0.6,
             child: Text(
-              meal.title,
+              food.title,
               style: TextStyle(
                 fontSize: boxConstraints.maxHeight * 0.08,
                 color: Colors.white70,
@@ -98,11 +98,11 @@ class Avatar extends StatelessWidget {
 }
 
 class Footage extends StatelessWidget {
-  const Footage({Key? key, required this.meal, required this.boxConstraints})
+  const Footage({Key? key, required this.food, required this.boxConstraints})
       : super(key: key);
 
   final BoxConstraints boxConstraints;
-  final Meal meal;
+  final Food food;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +123,7 @@ class Footage extends StatelessWidget {
                   const SizedBox(
                     width: 6,
                   ),
-                  Text('${meal.duration} min'),
+                  Text('${food.duration} min'),
                 ],
               ),
             ),
@@ -136,7 +136,7 @@ class Footage extends StatelessWidget {
                   const Icon(
                     Icons.square_foot_outlined,
                   ),
-                  Text(meal.complexityText),
+                  Text(food.complexityText),
                 ],
               ),
             ),
@@ -149,7 +149,7 @@ class Footage extends StatelessWidget {
                   const Icon(
                     Icons.monetization_on_outlined,
                   ),
-                  Text(meal.affordabilityText),
+                  Text(food.affordabilityText),
                 ],
               ),
             ),
