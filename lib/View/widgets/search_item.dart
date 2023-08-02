@@ -1,14 +1,16 @@
 import 'package:food_app/Model/food.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SearchItem extends StatelessWidget {
   final Food food;
   final Function remove;
-  const SearchItem({Key? key, required this.food, required this.remove}) : super(key: key);
+  const SearchItem({Key? key, required this.food, required this.remove})
+      : super(key: key);
 
   void selectFood(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed('/foodScreen', arguments: {"food": food});
+    Get.toNamed('/foodScreen', arguments: {"foodId": food.id});
   }
 
   @override
@@ -58,9 +60,12 @@ class SearchItem extends StatelessWidget {
                     topLeft: Radius.circular(30),
                     bottomLeft: Radius.circular(30),
                   ),
-                  child: Image.asset(
-                    food.imageUrl,
-                    fit: BoxFit.fill,
+                  child: Hero(
+                    tag: food.id,
+                    child: Image.asset(
+                      food.imageUrl,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ),

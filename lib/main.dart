@@ -1,9 +1,7 @@
 import 'package:food_app/Controller/settings.dart';
+import 'package:food_app/Routs/pages.dart';
 import 'package:food_app/Theme/app_theme.dart';
-import 'package:food_app/View/screens/food_screen.dart';
-import 'package:food_app/View/screens/setting_screen.dart';
 import 'package:food_app/View/screens/home_screen.dart';
-import 'package:food_app/View/screens/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,15 +20,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Food App',
       theme: appTheme(),
-      // getPages: AppPages.pages,
+      getPages: AppPages.pages,
       // initialBinding: MainBinding(),
       initialRoute: '/home',
-      routes: {
-        '/home': (_) => const HomeScreen(),
-        CategoryScreen.routeName: (_) => const CategoryScreen(),
-        FoodScreen.routeName: (_) => const FoodScreen(),
-        SettingScreeen.routeName: (_) => const SettingScreeen()
-      },
+      // routes: {
+      //   '/home': (_) => const HomeScreen(),
+      //   CategoryScreen.routeName: (_) => const CategoryScreen(),
+      //   FoodScreen.routeName: (_) => const FoodScreen(),
+      //   SettingScreeen.routeName: (_) => const SettingScreeen(),
+      //   EditScreen.routeName: (_) => EditScreen(),
+      //   CrashScreen.routeName: (_) => const CrashScreen(),
+      // },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(
             builder: (ctx) => const HomeScreen(), settings: settings);

@@ -1,24 +1,26 @@
 import 'dart:math';
 
+import 'package:food_app/Model/ingridient.dart';
+
 enum Complexity { simple, challenging, hard }
 
 enum Affordability { affordable, pricey, luxurious }
 
 class Food {
-  final String id;
-  final String title;
-  final int duration;
-  final String imageUrl;
-  final Complexity complexity;
-  final Affordability affordability;
-  final List<String> steps;
-  final List<String> ingredients;
-  final List<String> categories;
-  final bool isGlutenFree;
-  final bool isLactoseFree;
-  final bool isVegan;
+  String id;
+  String title;
+  int duration;
+  String imageUrl;
+  Complexity complexity;
+  Affordability affordability;
+  List<String> steps;
+  List<Map<String, Quantity?>> ingredients;
+  List<String> categories;
+  bool isGlutenFree;
+  bool isLactoseFree;
+  bool isVegan;
 
-  const Food({
+  Food({
     required this.id,
     required this.categories,
     required this.title,
@@ -59,6 +61,22 @@ class Food {
     }
   }
 
+  List<String> get getIngridientsNames {
+    List<String> ings = [];
+    for (var ing in ingredients) {
+      ings.add(ing.keys.first);
+    }
+    return ings;
+  }
+
+  List<String> get getAllIngridientsNames {
+    List<String> ings = [];
+    for (var ing in ingredients) {
+      ings.add(ing.keys.first);
+    }
+    return ings;
+  }
+
   static Food get dummy {
     return Food(
       // TODO id generation must be from api
@@ -77,7 +95,7 @@ class Food {
     );
   }
 
-  static Food updateFood({
+  static Food editFood({
     required Food food,
     String? id,
     String? title,
@@ -86,7 +104,8 @@ class Food {
     Affordability? affordability,
     Complexity? complexity,
     List<String>? categories,
-    List<String>? ingredients,
+    List<Map<String, Quantity?>>? ingredients,
+    List<Map<String, Quantity?>>? optionalIngredients,
     List<String>? steps,
     bool? isGlutenFree,
     bool? isLactoseFree,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Drwer extends StatelessWidget {
   const Drwer({Key? key}) : super(key: key);
@@ -44,8 +45,7 @@ class Drwer extends StatelessWidget {
                       ),
                       Text('foods'),
                     ]),
-                    onTap: () =>
-                        Navigator.of(context).pushReplacementNamed('/home'),
+                    onTap: () => Get.offNamed('/home'),
                   ),
                   SizedBox(
                     height: screenSize.height * 0.03,
@@ -84,8 +84,7 @@ class Drwer extends StatelessWidget {
                   ),
                   Text('Settings'),
                 ]),
-                onTap: () =>
-                    Navigator.of(context).pushReplacementNamed('/setting'),
+                onTap: () => Get.toNamed('/setting'),
               ),
             ),
           ],

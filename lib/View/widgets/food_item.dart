@@ -1,21 +1,24 @@
+import 'package:food_app/Controller/settings.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class FoodItem extends StatelessWidget {
-  final Food food;
+  final String foodId;
 
-  const FoodItem({Key? key, required this.food}) : super(key: key);
+  const FoodItem({Key? key, required this.foodId}) : super(key: key);
 
 //move inf to foodScreen
   void selectFood(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(
+    Get.toNamed(
       '/foodScreen',
-      arguments: {"food": food},
+      arguments: {"foodId": foodId},
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final Food food = Get.find<Settings>().getFood(foodId)!;
     return LayoutBuilder(
       builder: (ctx, boxConstraints) => InkWell(
         onTap: () => selectFood(context),
@@ -76,9 +79,8 @@ class Avatar extends StatelessWidget {
           right: 10,
           child: Container(
             decoration: const BoxDecoration(
-              color: Colors.black45,
-              borderRadius: BorderRadius.all(Radius.circular(20))
-            ),
+                color: Colors.black45,
+                borderRadius: BorderRadius.all(Radius.circular(20))),
             padding: const EdgeInsets.all(8.0),
             width: boxConstraints.maxWidth * 0.6,
             child: Text(

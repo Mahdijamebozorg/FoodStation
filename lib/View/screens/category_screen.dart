@@ -9,41 +9,44 @@ class CategoryScreen extends StatelessWidget {
   const CategoryScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    debugPrint("foods updated");
-    //routes
-    final routeArgs =
-        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
-    final categoryTitle = routeArgs['title'];
-    final categoryId = routeArgs['id'];
+    //
+    final args = Get.arguments as Map?;
+    final String? category = args == null ? null : args["category"];
 
-    Settings settings = Get.find<Settings>();
+    if (category == null) Get.offNamed("/crash");
+
     var islandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-
-    RxList<Food> categoryfoods = settings.getCategoryfoods(categoryId!);
 
     final screenSize = MediaQuery.sizeOf(context);
 
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            title: Text(categoryTitle!),
-          ),
-          body: GridView.builder(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent:
-                  islandscape ? screenSize.width / 2 : screenSize.height / 1,
-              childAspectRatio: islandscape ? 7 / 5 : 1,
-              mainAxisSpacing: screenSize.height * 0.03,
-              crossAxisSpacing: screenSize.width * 0.01,
-            ),
-            itemBuilder: (ctx, index) {
-              return FoodItem(
-                food: categoryfoods[index],
+        appBar: AppBar(
+          title: Text(category!),
+        ),
+        body: GetBuilder<Settings>(
+            id: "foods",
+            builder: (settings) {
+              List<Food> categoryfoods = settings.getCategoryfoods(category);
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: islandscape
+                      ? screenSize.width / 2
+                      : screenSize.height / 1,
+                  childAspectRatio: islandscape ? 7 / 5 : 1,
+                  mainAxisSpacing: screenSize.height * 0.03,
+                  crossAxisSpacing: screenSize.width * 0.01,
+                ),
+                itemCount: categoryfoods.length,
+                itemBuilder: (ctx, index) {
+                  return FoodItem(
+                    foodId: categoryfoods[index].id,
+                  );
+                },
               );
-            },
-            itemCount: categoryfoods.length,
-          )),
+            }),
+      ),
     );
   }
 }

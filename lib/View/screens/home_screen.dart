@@ -1,8 +1,8 @@
 import 'package:food_app/Controller/settings.dart';
-import 'package:food_app/Model/category.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:food_app/View/widgets/Drawer.dart';
-import 'package:food_app/View/widgets/edit_food.dart';
+import 'package:food_app/View/screens/edit_screen.dart';
+import 'package:food_app/View/widgets/advanced_search.dart';
 import 'package:food_app/View/widgets/food_item.dart';
 import 'package:food_app/View/widgets/search_item.dart';
 import 'package:anim_search_bar/anim_search_bar.dart';
@@ -31,10 +31,14 @@ class HomeScreen extends StatelessWidget {
 
   // simple search
   void _searchdFood(String text) {
-    _foodsFound.value = Get.find<Settings>().simplefoodSearch(
-      text: text,
-      inFavs: _currentPage.value == 1,
-    );
+    if (text.isEmpty) {
+      _foodsFound.value = Get.find<Settings>().availablefoods;
+    } else {
+      _foodsFound.value = Get.find<Settings>().simplefoodSearch(
+        text: text,
+        inFavs: _currentPage.value == 1,
+      );
+    }
   }
 
   void _temporaryRemoveFood(Food food) {
@@ -98,18 +102,18 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       // apply gradient
       flexibleSpace: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: <Color>[Colors.black, Colors.blue]),
+              colors: <Color>[Colors.pink[400]!, Colors.pink[900]!]),
         ),
       ),
       title: Text(_pages[_currentPage.value]['title'] as String),
       centerTitle: true,
       actions: [
         AnimSearchBar(
-          color: Theme.of(context).primaryColor,
+          color: Colors.transparent,
           searchIconColor: Theme.of(context).colorScheme.onPrimary,
           helpText: "Enter food name",
           width: 400,
@@ -125,11 +129,20 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton(
           itemBuilder: (context) => [
             PopupMenuItem(
+              child: const Text("Adcanced Search"),
+              onTap: () => showBottomSheet(
+                context: context,
+                builder: (context) => AdvancedSearch(),
+              ),
+              // // Navigator.of(context).pushNamed("/editScreen"),
+            ),
+            PopupMenuItem(
               child: const Text("Add food"),
               onTap: () => showBottomSheet(
                 context: context,
-                builder: (context) => const EditFood(),
+                builder: (context) => EditScreen(),
               ),
+              // // Navigator.of(context).pushNamed("/editScreen"),
             ),
           ],
         )
@@ -187,23 +200,27 @@ class FavoriteFood extends StatelessWidget {
     final screenheigh = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     return GetBuilder<Settings>(
-        id: "favs",
-        builder: (settings) {
-          return GridView.builder(
-            //gridview options
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent:
-                  islandscape ? screenwidth / 2 : screenheigh / 1,
-              childAspectRatio: islandscape ? 7 / 5 : 1,
-              mainAxisSpacing: screenheigh * 0.03,
-              crossAxisSpacing: screenwidth * 0.01,
-            ),
-            //items
-            itemBuilder: (ctx, index) =>
-                FoodItem(food: settings.favoritefoods[index]),
-            itemCount: settings.favoritefoods.length,
-          );
-        });
+      id: "foods",
+      builder: (_) {
+      return GetBuilder<Settings>(
+          id: "favs",
+          builder: (settings) {
+            return GridView.builder(
+              //gridview options
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent:
+                    islandscape ? screenwidth / 2 : screenheigh / 1,
+                childAspectRatio: islandscape ? 7 / 5 : 1,
+                mainAxisSpacing: screenheigh * 0.03,
+                crossAxisSpacing: screenwidth * 0.01,
+              ),
+              //items
+              itemCount: settings.favoritefoods.length,
+              itemBuilder: (ctx, index) =>
+                  FoodItem(foodId: settings.favoritefoods[index]),
+            );
+          });
+    });
   }
 }
 
@@ -242,19 +259,13 @@ class Categories extends StatelessWidget {
 }
 
 class CategoryItem extends StatelessWidget {
-  final Category catData;
+  final String catData;
 
   const CategoryItem(this.catData, {Key? key}) : super(key: key);
 
 //use routes
   void selectCategory(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(
-      '/categoryScreen',
-      arguments: {
-        'id': catData.id,
-        'title': catData.title,
-      },
-    );
+    Get.toNamed('/categoryScreen', arguments: {'category': catData});
   }
 
   @override
@@ -267,11 +278,11 @@ class CategoryItem extends StatelessWidget {
         decoration: BoxDecoration(
           //////gradient color
           gradient: LinearGradient(
-            colors: [catData.color.withOpacity(0.3), catData.color],
+            colors: [Colors.purple.withOpacity(0.3), Colors.purple],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          color: catData.color,
+          color: Colors.purple,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Card(
@@ -281,7 +292,7 @@ class CategoryItem extends StatelessWidget {
           elevation: 15,
           margin: const EdgeInsets.all(7),
           child: Center(
-            child: Text(catData.title),
+            child: Text(catData),
           ),
         ),
       ),

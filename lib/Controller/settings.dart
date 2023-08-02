@@ -3,16 +3,15 @@
 import 'package:food_app/Model/food.dart';
 import 'package:flutter/material.dart';
 
-import 'package:food_app/Model/category.dart';
 import 'package:food_app/Helpers/dummy_data.dart';
 import 'package:food_app/Model/ingridient.dart';
 import 'package:get/get.dart';
 
 class Settings extends GetxController {
   RxMap<String, bool> _filters = RxMap();
-  RxList<Category> _availableCategories = RxList();
+  RxList<String> _availableCategories = RxList();
   RxList<Food> _availablefoods = RxList();
-  RxList<Food> _favoritefoods = RxList();
+  RxList<String> _favoritefoods = RxList();
   RxList<Ingridient> _availableIngridient = RxList();
 
   Settings() {
@@ -31,9 +30,8 @@ class Settings extends GetxController {
 
   // TODO filters should be a list of hashtags.
 
-  RxMap<String, bool> get filters {
-    var copy = _filters;
-    return copy;
+  Map<String, bool> get filters {
+    return {..._filters};
   }
 
   void setfilters(Map<String, bool> filterdata, BuildContext context) {
@@ -54,37 +52,46 @@ class Settings extends GetxController {
     }).toList();
 
     setAvailablefoods(newAvailablefoods);
+    debugPrint("filters updated");
     update(["filters"]);
   }
 
   //_______________________________________________________________________________ available foods
-  RxList<Food> get availablefoods {
-    var copy = _availablefoods;
-    return copy;
+  Food? getFood(String id) {
+    try {
+      return _availablefoods.firstWhere((food) => food.id == id);
+    } catch (excp) {
+      debugPrint("food $id not found");
+      return null;
+    }
   }
 
-  RxList<Food> getCategoryfoods(String catId) {
-    return _availablefoods
-        .where((food) {
-          return food.categories.contains(catId);
-        })
-        .toList()
-        .obs;
+  List<Food> get availablefoods {
+    return [..._availablefoods];
+  }
+
+  List<Food> getCategoryfoods(String catId) {
+    return _availablefoods.where((food) {
+      return food.categories.contains(catId);
+    }).toList();
   }
 
   void setAvailablefoods(List<Food> newList) {
     _availablefoods.value = newList;
+    debugPrint("foods setted");
     update(["foods"]);
   }
 
   void addFood(Food food) {
     _availablefoods.add(food);
+    debugPrint("food added");
     update(["foods"]);
   }
 
   void removeFood({required String id}) {
     try {
       _availablefoods.removeWhere((food) => food.id == id);
+      debugPrint("food removed");
       update(["foods"]);
     } catch (excp) {
       debugPrint("food $id not found");
@@ -99,69 +106,82 @@ class Settings extends GetxController {
       return;
     }
     _availablefoods[index] = newfood;
+    debugPrint("food updated");
     update(["foods"]);
   }
 
+  updateFoodAttribures() {}
+
   //_______________________________________________________________________________ available categories
-  RxList<Category> get availableCategories {
-    var copy = _availableCategories;
-    return copy;
+  List<String> get availableCategories {
+    return [..._availableCategories];
   }
 
-  void setAvailableCategories(List<Category> newList) {
+  void setAvailableCategories(List<String> newList) {
     _availableCategories.value = newList;
+    debugPrint("cats updated");
     update(["cats"]);
   }
 
   //_______________________________________________________________________________ available categories
-  RxList<Ingridient> get availableIngridient {
-    var copy = _availableIngridient;
-    return copy;
+  List<Ingridient> get availableIngridient {
+    return [..._availableIngridient];
+  }
+
+  List<String> get availableIngridientNames {
+    List<String> names = [];
+    for (var ing in _availableIngridient) {
+      names.add(ing.name);
+    }
+    return names;
   }
 
   void setAvailableIngridient(List<Ingridient> newList) {
     _availableIngridient.value = newList;
+    debugPrint("ings updated");
     update(["ings"]);
   }
 
   //_______________________________________________________________________________ favorites
-  List<Food> get favoritefoods {
+  List<String> get favoritefoods {
     return _favoritefoods;
   }
 
   bool isFavorite(Food food) {
-    return _favoritefoods.contains(food);
+    return _favoritefoods.contains(food.id);
   }
 
-  void addFavoriteFood(Food food) {
-    _favoritefoods.add(food);
+  void addFavoriteFood(String id) {
+    _favoritefoods.add(id);
+    debugPrint("favs updated");
     update(["favs"]);
   }
 
-  void removeFavoriteFood(Food food) {
-    _favoritefoods.remove(food);
+  void removeFavoriteFood(String id) {
+    _favoritefoods.remove(id);
+    debugPrint("favs updated");
     update(["favs"]);
   }
 
-  void toggleFav(Food food) {
-    if (_favoritefoods.contains(food)) {
-      removeFavoriteFood(food);
+  void toggleFav(String id) {
+    if (_favoritefoods.contains(id)) {
+      removeFavoriteFood(id);
       Get.closeCurrentSnackbar();
       Get.showSnackbar(
         GetSnackBar(
           duration: const Duration(seconds: 3),
           title: "Removed from favorites: ",
-          message: food.title,
+          message: getFood(id)!.title,
         ),
       );
     } else {
-      addFavoriteFood(food);
+      addFavoriteFood(id);
       Get.closeCurrentSnackbar();
       Get.showSnackbar(
         GetSnackBar(
           duration: const Duration(seconds: 3),
           title: "Added to favorites: ",
-          message: food.title,
+          message: getFood(id)!.title,
         ),
       );
     }
@@ -171,9 +191,10 @@ class Settings extends GetxController {
 
   List<Food> simplefoodSearch({required String text, bool inFavs = false}) {
     return inFavs
-        ? _favoritefoods
-            .where(
-                (food) => food.title.toLowerCase().contains(text.toLowerCase()))
+        ? _availablefoods
+            .where((food) =>
+                isFavorite(food) &&
+                food.title.toLowerCase().contains(text.toLowerCase()))
             .toList()
         : _availablefoods
             .where(
@@ -181,9 +202,9 @@ class Settings extends GetxController {
             .toList();
   }
 
-  List<Ingridient> ingridientSearch({required String text}) {
-    return availableIngridient
-        .where((ing) => ing.name.toLowerCase().contains(text.toLowerCase()))
+  List<String> ingridientSearch({required String text}) {
+    return availableIngridientNames
+        .where((ing) => ing.toLowerCase().contains(text.toLowerCase()))
         .toList();
   }
 }

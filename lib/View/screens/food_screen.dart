@@ -1,6 +1,7 @@
 import 'package:food_app/Controller/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/Model/food.dart';
+import 'package:food_app/View/screens/edit_screen.dart';
 import 'package:get/get.dart';
 
 class FoodScreen extends StatelessWidget {
@@ -9,57 +10,73 @@ class FoodScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffoldKey = GlobalKey<ScaffoldState>();
     final Size screenSize = MediaQuery.sizeOf(context);
     // final bool islandscape =
     //     MediaQuery.of(context).orientation == Orientation.landscape;
-    final routeArgs = ModalRoute.of(context)!.settings.arguments as Map;
-    final Food food = routeArgs["food"];
+    final routeArgs = Get.arguments as Map?;
+    final String? foodId = routeArgs == null ? null : routeArgs["foodId"];
+    if (foodId == null) Get.offNamed("/crash");
 
     ///body
-    return SafeArea(
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              elevation: 20,
-              bottom: AppBar(
-                leading: const SizedBox(),
-                elevation: 0,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(30),
+    return GetBuilder<Settings>(
+        id: "foods",
+        builder: (settings) {
+          final food = settings.getFood(foodId!);
+          return SafeArea(
+            child: Scaffold(
+              key: scaffoldKey,
+              body: CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    elevation: 20,
+                    bottom: AppBar(
+                      leading: const SizedBox(),
+                      elevation: 0,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(30),
+                        ),
+                      ),
+                      centerTitle: true,
+                      title: Text(food!.title,
+                          style: Theme.of(context).textTheme.bodyMedium),
+                    ),
+                    actions: [
+                      LikeButton(food: food),
+                      IconButton(
+                          onPressed: () => scaffoldKey.currentState!
+                              .showBottomSheet(
+                                  (context) => EditScreen(food: food)),
+                          icon: const Icon(Icons.edit))
+                    ],
+                    backgroundColor: Colors.white,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Hero(
+                        tag: food.id,
+                        child: Image.asset(food.imageUrl, fit: BoxFit.fill),
+                      ),
+                    ),
+                    expandedHeight: screenSize.height > screenSize.width
+                        ? screenSize.height * 0.5
+                        : screenSize.height,
+                    centerTitle: true,
+                    pinned: false,
                   ),
-                ),
-                centerTitle: true,
-                title: Text(food.title,
-                    style: Theme.of(context).textTheme.bodyMedium),
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      IngridientsView(food: food),
+                      const SizedBox(height: 50.0),
+                      StepsView(food: food),
+                    ]),
+                  ),
+                ],
               ),
-              actions: [LikeButton(food: food)],
-              backgroundColor: Colors.white,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Hero(
-                  tag: food.id,
-                  child: Image.asset(food.imageUrl, fit: BoxFit.fill),
-                ),
-              ),
-              expandedHeight: screenSize.height > screenSize.width
-                  ? screenSize.height * 0.5
-                  : screenSize.height,
-              centerTitle: true,
-              pinned: false,
             ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                IngridientsView(food: food),
-                const SizedBox(height: 50.0),
-                StepsView(food: food),
-              ]),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 }
 
@@ -153,7 +170,7 @@ class IngridientsView extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.all(2.0),
               child: Text(
-                food.ingredients[index],
+                food.getIngridientsNames[index],
                 style: const TextStyle(color: Colors.white),
               ),
             ),
@@ -192,7 +209,7 @@ class _LikeButtonState extends State<LikeButton>
       id: "favs",
       builder: (Settings settings) => GestureDetector(
         onTap: () {
-          settings.toggleFav(widget.food);
+          settings.toggleFav(widget.food.id);
           _controller.reverse().then((value) => _controller.forward());
         },
         child: Padding(
