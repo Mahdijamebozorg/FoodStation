@@ -1,11 +1,11 @@
-import 'package:food_app/Controller/settings.dart';
+import 'package:food_app/Controller/user_controller.dart';
 import 'package:food_app/View/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SettingScreeen extends StatelessWidget {
+class SettingScreen extends StatelessWidget {
   static const routeName = '/setting';
-  const SettingScreeen({Key? key}) : super(key: key);
+  const SettingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class Filters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Settings settting = Get.find<Settings>();
+    UserController settting = Get.find<UserController>();
 
     //filters setted in setting
     RxBool isGlutenFree = settting.filters['isGlutenFree']!.obs;
@@ -89,7 +89,7 @@ class Filters extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.3 * 0.2,
                     width: MediaQuery.of(context).size.width * 0.9 * 0.05,
                     child: FittedBox(
-                      child: GetBuilder<Settings>(
+                      child: GetBuilder<UserController>(
                         id: "filters",
                         builder: (setting) => Switch.adaptive(
                           activeColor:
@@ -119,7 +119,7 @@ class Filters extends StatelessWidget {
                     height: screenSize.height * 0.3 * 0.2,
                     width: screenSize.width * 0.9 * 0.05,
                     child: FittedBox(
-                      child: GetBuilder<Settings>(
+                      child: GetBuilder<UserController>(
                         id: "filters",
                         builder: (setting) => Switch.adaptive(
                           activeColor:
@@ -149,7 +149,7 @@ class Filters extends StatelessWidget {
                     height: screenSize.height * 0.3 * 0.2,
                     width: screenSize.width * 0.9 * 0.05,
                     child: FittedBox(
-                      child: GetBuilder<Settings>(
+                      child: GetBuilder<UserController>(
                         id: "filters",
                         builder: (setting) => Switch.adaptive(
                           activeColor:

@@ -1,24 +1,42 @@
 import 'dart:math';
 
-import 'package:food_app/Model/ingridient.dart';
-
 enum Complexity { simple, challenging, hard }
 
 enum Affordability { affordable, pricey, luxurious }
 
+enum Unit {
+  // solids
+  tableSpoon,
+  teaSpoon,
+  sheets,
+  piece,
+  grams,
+  // liquids
+  bottle,
+  litre,
+  miliLitre,
+}
+
+class Quantity {
+  Unit unit;
+  double count;
+  Quantity(this.unit, this.count);
+}
+
 class Food {
-  String id;
+  final String id;
   String title;
   int duration;
   String imageUrl;
   Complexity complexity;
-  Affordability affordability;
+  Affordability affordability; // cost
   List<String> steps;
   List<Map<String, Quantity?>> ingredients;
   List<String> categories;
   bool isGlutenFree;
   bool isLactoseFree;
   bool isVegan;
+  String userId;
 
   Food({
     required this.id,
@@ -33,6 +51,7 @@ class Food {
     required this.isGlutenFree,
     required this.isLactoseFree,
     required this.isVegan,
+    required this.userId,
   });
 
   String get complexityText {
@@ -61,7 +80,7 @@ class Food {
     }
   }
 
-  List<String> get getIngridientsNames {
+  List<String> get getIngredientsNames {
     List<String> ings = [];
     for (var ing in ingredients) {
       ings.add(ing.keys.first);
@@ -69,7 +88,7 @@ class Food {
     return ings;
   }
 
-  List<String> get getAllIngridientsNames {
+  List<String> get getAllIngredientsNames {
     List<String> ings = [];
     for (var ing in ingredients) {
       ings.add(ing.keys.first);
@@ -79,25 +98,24 @@ class Food {
 
   static Food get dummy {
     return Food(
-      // TODO id generation must be from api
-      id: Random().nextInt(1000).toString(),
-      categories: [],
-      title: "",
-      affordability: Affordability.affordable,
-      complexity: Complexity.simple,
-      imageUrl: "",
-      duration: 0,
-      ingredients: [],
-      steps: [],
-      isGlutenFree: false,
-      isVegan: false,
-      isLactoseFree: false,
-    );
+        // TODO id generation must be from api
+        id: Random().nextInt(1000).toString(),
+        categories: [],
+        title: "",
+        affordability: Affordability.affordable,
+        complexity: Complexity.simple,
+        imageUrl: "",
+        duration: 0,
+        ingredients: [],
+        steps: [],
+        isGlutenFree: false,
+        isVegan: false,
+        isLactoseFree: false,
+        userId: "");
   }
 
   static Food editFood({
     required Food food,
-    String? id,
     String? title,
     String? imageUrl,
     int? duration,
@@ -111,7 +129,6 @@ class Food {
     bool? isLactoseFree,
     bool? isVegan,
   }) {
-    id = id ?? food.id;
     title = title ?? food.title;
     imageUrl = imageUrl ?? food.imageUrl;
     duration = duration ?? food.duration;
@@ -125,7 +142,7 @@ class Food {
     isVegan = isVegan ?? food.isVegan;
 
     return Food(
-      id: id,
+      id: food.id,
       categories: categories,
       title: title,
       imageUrl: imageUrl,
@@ -137,6 +154,7 @@ class Food {
       isGlutenFree: isGlutenFree,
       isLactoseFree: isLactoseFree,
       isVegan: isVegan,
+      userId: food.userId,
     );
   }
 }

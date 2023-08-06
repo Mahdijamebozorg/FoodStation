@@ -1,4 +1,5 @@
-import 'package:food_app/Controller/settings.dart';
+import 'package:food_app/Controller/food_controller.dart';
+import 'package:food_app/Controller/user_controller.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:food_app/View/widgets/Drawer.dart';
 import 'package:food_app/View/screens/edit_screen.dart';
@@ -26,15 +27,15 @@ class HomeScreen extends StatelessWidget {
   // pages
   static const List<Map<String, Object>> _pages = [
     {'page': Categories(), 'title': 'Categories'},
-    {'page': FavoriteFood(), 'title': "Your Favorite foods"}
+    {'page': FavoriteFood(), 'title': "Your FavoritefoodCtrl"}
   ];
 
   // simple search
   void _searchdFood(String text) {
     if (text.isEmpty) {
-      _foodsFound.value = Get.find<Settings>().availablefoods;
+      _foodsFound.value = Get.find<FoodController>().availableFoods;
     } else {
-      _foodsFound.value = Get.find<Settings>().simplefoodSearch(
+      _foodsFound.value = Get.find<FoodController>().simplefoodSearch(
         text: text,
         inFavs: _currentPage.value == 1,
       );
@@ -199,12 +200,12 @@ class FavoriteFood extends StatelessWidget {
     final islandscape = mediaQuery.orientation == Orientation.landscape;
     final screenheigh = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
-    return GetBuilder<Settings>(
+    return GetBuilder<FoodController>(
       id: "foods",
       builder: (_) {
-      return GetBuilder<Settings>(
+      return GetBuilder<UserController>(
           id: "favs",
-          builder: (settings) {
+          builder: (userCtrl) {
             return GridView.builder(
               //gridview options
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -215,9 +216,9 @@ class FavoriteFood extends StatelessWidget {
                 crossAxisSpacing: screenwidth * 0.01,
               ),
               //items
-              itemCount: settings.favoritefoods.length,
+              itemCount: userCtrl.favoritefoods.length,
               itemBuilder: (ctx, index) =>
-                  FoodItem(foodId: settings.favoritefoods[index]),
+                  FoodItem(foodId: userCtrl.favoritefoods[index]),
             );
           });
     });
@@ -229,9 +230,9 @@ class Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<Settings>(
+    return GetBuilder<FoodController>(
       id: "cats",
-      builder: (settings) {
+      builder: (foodCtrl) {
         final screenwidth = MediaQuery.sizeOf(context).width;
         final islandscape =
             MediaQuery.of(context).orientation == Orientation.landscape;
@@ -239,8 +240,8 @@ class Categories extends StatelessWidget {
         return GridView.builder(
           padding: const EdgeInsets.all(12),
           itemBuilder: (context, index) =>
-              CategoryItem(settings.availableCategories[index]),
-          itemCount: settings.availableCategories.length,
+              CategoryItem(foodCtrl.availableCategories[index]),
+          itemCount:foodCtrl.availableCategories.length,
           //Gridview options
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             //Width

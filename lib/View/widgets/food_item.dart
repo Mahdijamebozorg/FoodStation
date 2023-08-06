@@ -1,4 +1,4 @@
-import 'package:food_app/Controller/settings.dart';
+import 'package:food_app/Controller/food_controller.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +18,7 @@ class FoodItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Food food = Get.find<Settings>().getFood(foodId)!;
+    final Food food = Get.find<FoodController>().getFood(foodId)!;
     return LayoutBuilder(
       builder: (ctx, boxConstraints) => InkWell(
         onTap: () => selectFood(context),

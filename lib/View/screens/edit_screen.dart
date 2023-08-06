@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:food_app/Controller/settings.dart';
-import 'package:food_app/Model/food.dart';
-import 'package:food_app/Model/ingridient.dart';
+import 'package:food_app/Controller/food_controller.dart';
 import 'package:get/get.dart';
+import 'package:flutter/services.dart';
+import 'package:food_app/Model/food.dart';
+import 'package:food_app/Model/ingredient.dart';
 
 Rx<Food> _food = Food.dummy.obs;
 
@@ -41,13 +41,13 @@ class EditScreen extends StatelessWidget {
       // apply text changes
       _form.currentState!.save();
 
-      final settings = Get.find<Settings>();
+      final foodCtrl = Get.find<FoodController>();
 
       // if new food
       if (isEditing) {
-        settings.updateFood(id: _food.value.id, newfood: _food.value);
+        foodCtrl.updateFood(id: _food.value.id, newfood: _food.value);
       } else {
-        settings.addFood(_food.value);
+        foodCtrl.addFood(_food.value);
       }
 
       // reset data
@@ -109,7 +109,7 @@ class EditScreen extends StatelessWidget {
                                 child: const Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    // Categories, Ingridients
+                                    // Categories, Ingredients
                                     Expanded(
                                       child: Row(
                                         mainAxisAlignment:
@@ -118,7 +118,7 @@ class EditScreen extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          Expanded(child: IngridientsChoice()),
+                                          Expanded(child: IngredientsChoice()),
                                           SizedBox(width: 20.0),
                                           Expanded(child: CategoriesChoice()),
                                         ],
@@ -510,16 +510,16 @@ class AffordablilityView extends StatelessWidget {
 }
 
 //_____________________
-class IngridientsChoice extends StatefulWidget {
-  const IngridientsChoice({Key? key}) : super(key: key);
+class IngredientsChoice extends StatefulWidget {
+  const IngredientsChoice({Key? key}) : super(key: key);
 
   @override
-  State<IngridientsChoice> createState() => _IngridientsChoiceState();
+  State<IngredientsChoice> createState() => _IngredientsChoiceState();
 }
 
-class _IngridientsChoiceState extends State<IngridientsChoice> {
-  final settings = Get.find<Settings>();
-  List<String> _foundIngs = Get.find<Settings>().availableIngridientNames;
+class _IngredientsChoiceState extends State<IngredientsChoice> {
+  final foodCtrl = Get.find<FoodController>();
+  List<String> _foundIngs = Get.find<FoodController>().availableIngredientNames;
 
   // textField
   final _searchtext = TextEditingController();
@@ -533,9 +533,9 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
     _searchtext.addListener(() {
       setState(() {
         if (_searchtext.text.isEmpty) {
-          _foundIngs = settings.availableIngridientNames;
+          _foundIngs = foodCtrl.availableIngredientNames;
         } else {
-          _foundIngs = settings.ingridientSearch(text: _searchtext.text);
+          _foundIngs = foodCtrl.ingredientSearch(text: _searchtext.text);
         }
       });
     });
@@ -554,7 +554,7 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
       children: [
         // label
         Text(
-          "Ingridients",
+          "Ingredients",
           style: Theme.of(context).textTheme.bodySmall,
         ),
         // search
@@ -590,7 +590,7 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
                                   // put if absent
                                   setState(() {
                                     _food.value.ingredients.addIf(
-                                        !_food.value.getIngridientsNames
+                                        !_food.value.getIngredientsNames
                                             .contains(_foundIngs[index]),
                                         {_foundIngs[index]: null});
                                   });
@@ -615,14 +615,14 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
                           (index) {
                         // is quantity null
                         _hasNotQuentity = (_food.value.ingredients[index]
-                                [_food.value.getIngridientsNames[index]] ==
+                                [_food.value.getIngredientsNames[index]] ==
                             null);
 
                         // a new obj for null handeling
                         Quantity quantity = _hasNotQuentity
                             ? Quantity(Unit.bottle, 1)
                             : _food.value.ingredients[index]
-                                [_food.value.getIngridientsNames[index]]!;
+                                [_food.value.getIngredientsNames[index]]!;
 
                         return Padding(
                           padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
@@ -647,7 +647,7 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
                                 ),
                                 // name
                                 Text(
-                                  _food.value.getIngridientsNames[index],
+                                  _food.value.getIngredientsNames[index],
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 const SizedBox(width: 8.0),
@@ -662,14 +662,14 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
                                         if (unit == null) {
                                           _food.value.ingredients[index][_food
                                                   .value
-                                                  .getIngridientsNames[index]] =
+                                                  .getIngredientsNames[index]] =
                                               null;
                                           _hasNotQuentity = true;
                                         } else {
                                           quantity.unit = unit;
                                           _food.value.ingredients[index][_food
                                                   .value
-                                                  .getIngridientsNames[index]] =
+                                                  .getIngredientsNames[index]] =
                                               quantity;
                                           _hasNotQuentity = false;
                                         }
@@ -750,7 +750,7 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
                                           _food
                                               .value
                                               .ingredients[index][_food.value
-                                                  .getIngridientsNames[index]]!
+                                                  .getIngredientsNames[index]]!
                                               .count = double.parse(value);
                                         }
                                       },
@@ -792,7 +792,7 @@ class CategoriesChoice extends StatefulWidget {
 }
 
 class _CategoriesChoiceState extends State<CategoriesChoice> {
-  final settings = Get.find<Settings>();
+  final foodCtrl = Get.find<FoodController>();
 
   @override
   Widget build(BuildContext context) {
@@ -818,15 +818,15 @@ class _CategoriesChoiceState extends State<CategoriesChoice> {
                     diameterRatio: 0.6,
                     itemExtent: 30,
                     children: List.generate(
-                      settings.availableCategories.length,
+                      foodCtrl.availableCategories.length,
                       (index) => InkWell(
                         // add category
                         onTap: () {
                           setState(() {
                             _food.value.categories.addIf(
                                 !_food.value.categories.contains(
-                                    settings.availableCategories[index]),
-                                settings.availableCategories[index]);
+                                    foodCtrl.availableCategories[index]),
+                                foodCtrl.availableCategories[index]);
                           });
                         },
                         child: Container(
@@ -844,7 +844,7 @@ class _CategoriesChoiceState extends State<CategoriesChoice> {
                             border: Border.all(),
                           ),
                           child: Text(
-                            settings.availableCategories[index],
+                            foodCtrl.availableCategories[index],
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_app/Controller/settings.dart';
+import 'package:food_app/Controller/food_controller.dart';
 import 'package:food_app/Model/food.dart';
-import 'package:food_app/Model/ingridient.dart';
 import 'package:food_app/View/widgets/food_item.dart';
 import 'package:get/get.dart';
 
@@ -24,9 +23,9 @@ class AdvancedSearch extends StatelessWidget {
 
       _form.currentState!.save();
 
-      final settings = Get.find<Settings>();
+      final foodCtrl = Get.find<FoodController>();
 
-      _foundFoods.value = settings.availablefoods.where((food) {
+      _foundFoods.value = foodCtrl.availableFoods.where((food) {
         bool hasCats = true;
         if (_food.value.categories.isNotEmpty) {
           hasCats = false;
@@ -100,109 +99,118 @@ class AdvancedSearch extends StatelessWidget {
       }).toList();
     }
 
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          // background
-          return Container(
-            height: constraints.maxHeight,
-            width: constraints.maxWidth,
-            padding: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 500,
-                    width: constraints.maxWidth,
+    return GetBuilder<FoodController>(
+        id: "foods",
+        builder: (foodCtrl) {
+          return Scaffold(
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                // background
+                return Container(
+                  height: constraints.maxHeight,
+                  width: constraints.maxWidth,
+                  padding: const EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  child: SingleChildScrollView(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        // input data
-                        Expanded(
-                          child: Form(
-                            key: _form,
-                            child: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // title, duration, imageUrl
-                                TextInputs(),
-
-                                Divider(height: 20),
-
-                                // filters: isGlutenFree, isLactoseFree, isVegan
-                                Switches(),
-
-                                Divider(height: 20),
-
-                                // last row
-                                Expanded(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                        SizedBox(
+                          height: 500,
+                          width: constraints.maxWidth,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // input data
+                              Expanded(
+                                child: Form(
+                                  key: _form,
+                                  child: const Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Flexible(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
+                                      // title, duration, imageUrl
+                                      TextInputs(),
+
+                                      Divider(height: 20),
+
+                                      // filters: isGlutenFree, isLactoseFree, isVegan
+                                      Switches(),
+
+                                      Divider(height: 20),
+
+                                      // last row
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
                                           children: [
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Expanded(
+                                                      child:
+                                                          AffordablilityView()),
+                                                  Expanded(
+                                                      child: ComplexityView()),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 20.0),
                                             Expanded(
-                                                child: AffordablilityView()),
-                                            Expanded(child: ComplexityView()),
+                                                child: IngredientsChoice()),
+                                            SizedBox(width: 20.0),
+                                            Expanded(child: CategoriesChoice())
                                           ],
                                         ),
                                       ),
-                                      SizedBox(width: 20.0),
-                                      Expanded(child: IngridientsChoice()),
-                                      SizedBox(width: 20.0),
-                                      Expanded(child: CategoriesChoice())
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 30.0),
+                              // save button
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: saveData,
+                                    child: const Text("Search"),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      _food.value = Food.dummy;
+                                      _foundFoods.clear();
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Exit"),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 30.0),
-                        // save button
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(
-                              onPressed: saveData,
-                              child: const Text("Search"),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                _food.value = Food.dummy;
-                                _foundFoods.clear();
-                                Navigator.pop(context);
-                              },
-                              child: const Text("Exit"),
-                            ),
-                          ],
-                        )
+                        const SizedBox(height: 12.0),
+                        SizedBox(
+                          height: constraints.maxHeight * 0.5,
+                          child: const FoodsGrid(),
+                        ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12.0),
-                  SizedBox(
-                    height: constraints.maxHeight * 0.5,
-                    child: const FoodsGrid(),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           );
-        },
-      ),
-    );
+        });
   }
 }
 
@@ -454,32 +462,30 @@ class AffordablilityView extends StatelessWidget {
 }
 
 //_____________________
-class IngridientsChoice extends StatefulWidget {
-  const IngridientsChoice({Key? key}) : super(key: key);
+class IngredientsChoice extends StatefulWidget {
+  const IngredientsChoice({Key? key}) : super(key: key);
 
   @override
-  State<IngridientsChoice> createState() => _IngridientsChoiceState();
+  State<IngredientsChoice> createState() => _IngredientsChoiceState();
 }
 
-class _IngridientsChoiceState extends State<IngridientsChoice> {
-  final settings = Get.find<Settings>();
-  List<String> _foundIngs = Get.find<Settings>().availableIngridientNames;
+class _IngredientsChoiceState extends State<IngredientsChoice> {
+  List<String> _foundIngs = Get.find<FoodController>().availableIngredientNames;
 
   // textField
   final _searchtext = TextEditingController();
   final _focus = FocusNode();
   bool _hasFocus = false;
 
-  bool _hasNotQuentity = true;
-
   @override
   Widget build(BuildContext context) {
+    final foodCtrl = Get.find<FoodController>();
     _searchtext.addListener(() {
       setState(() {
         if (_searchtext.text.isEmpty) {
-          _foundIngs = settings.availableIngridientNames;
+          _foundIngs = foodCtrl.availableIngredientNames;
         } else {
-          _foundIngs = settings.ingridientSearch(text: _searchtext.text);
+          _foundIngs = foodCtrl.ingredientSearch(text: _searchtext.text);
         }
       });
     });
@@ -498,7 +504,7 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
       children: [
         // label
         Text(
-          "Ingridients",
+          "Ingredients",
           style: Theme.of(context).textTheme.bodySmall,
         ),
         // search
@@ -534,7 +540,7 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
                                   // put if absent
                                   setState(() {
                                     _food.value.ingredients.addIf(
-                                        !_food.value.getIngridientsNames
+                                        !_food.value.getIngredientsNames
                                             .contains(_foundIngs[index]),
                                         {_foundIngs[index]: null});
                                   });
@@ -557,17 +563,6 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
                       scrollDirection: Axis.vertical,
                       children: List.generate(_food.value.ingredients.length,
                           (index) {
-                        // is quantity null
-                        _hasNotQuentity = (_food.value.ingredients[index]
-                                [_food.value.getIngridientsNames[index]] ==
-                            null);
-
-                        // a new obj for null handeling
-                        Quantity quantity = _hasNotQuentity
-                            ? Quantity(Unit.bottle, 1)
-                            : _food.value.ingredients[index]
-                                [_food.value.getIngridientsNames[index]]!;
-
                         return Padding(
                           padding: EdgeInsets.only(top: index == 0 ? 0 : 8.0),
                           child: SingleChildScrollView(
@@ -591,7 +586,7 @@ class _IngridientsChoiceState extends State<IngridientsChoice> {
                                 ),
                                 // name
                                 Text(
-                                  _food.value.getIngridientsNames[index],
+                                  _food.value.getIngredientsNames[index],
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -617,96 +612,100 @@ class CategoriesChoice extends StatefulWidget {
 }
 
 class _CategoriesChoiceState extends State<CategoriesChoice> {
-  final settings = Get.find<Settings>();
 
   @override
   Widget build(BuildContext context) {
     //
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        // label
-        Text(
-          "Categories",
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        // list
-        Expanded(
-          child: Obx(
-            () => Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 150,
-                  child: ListWheelScrollView(
-                    onSelectedItemChanged: (value) {},
-                    diameterRatio: 0.6,
-                    itemExtent: 30,
-                    children: List.generate(
-                      settings.availableCategories.length,
-                      (index) => InkWell(
-                        // add category
-                        onTap: () {
-                          setState(() {
-                            _food.value.categories.addIf(
-                                !_food.value.categories.contains(
-                                    settings.availableCategories[index]),
-                                settings.availableCategories[index]);
-                          });
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [
-                                  Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.2),
-                                  Theme.of(context).primaryColor
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight),
-                            border: Border.all(),
-                          ),
-                          child: Text(
-                            settings.availableCategories[index],
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ListView(
-                    children: List.generate(
-                      _food.value.categories.length,
-                      (index) => ListTile(
-                        key: UniqueKey(),
-                        tileColor: Theme.of(context).primaryColor,
-                        title: Text(
-                          _food.value.categories[index],
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        // remove category
-                        leading: IconButton(
-                          icon: const Icon(Icons.clear, color: Colors.black),
-                          onPressed: () {
-                            setState(() {
-                              _food.value.categories
-                                  .remove(_food.value.categories[index]);
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
+    return GetBuilder<FoodController>(
+      id: "foods",
+      builder: (foodCtrl) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // label
+            Text(
+              "Categories",
+              style: Theme.of(context).textTheme.bodySmall,
             ),
-          ),
-        )
-      ],
+            // list
+            Expanded(
+              child: Obx(
+                () => Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 150,
+                      child: ListWheelScrollView(
+                        onSelectedItemChanged: (value) {},
+                        diameterRatio: 0.6,
+                        itemExtent: 30,
+                        children: List.generate(
+                          foodCtrl.availableCategories.length,
+                          (index) => InkWell(
+                            // add category
+                            onTap: () {
+                              setState(() {
+                                _food.value.categories.addIf(
+                                    !_food.value.categories.contains(
+                                        foodCtrl.availableCategories[index]),
+                                    foodCtrl.availableCategories[index]);
+                              });
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [
+                                      Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.2),
+                                      Theme.of(context).primaryColor
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight),
+                                border: Border.all(),
+                              ),
+                              child: Text(
+                                foodCtrl.availableCategories[index],
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView(
+                        children: List.generate(
+                          _food.value.categories.length,
+                          (index) => ListTile(
+                            key: UniqueKey(),
+                            tileColor: Theme.of(context).primaryColor,
+                            title: Text(
+                              _food.value.categories[index],
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            // remove category
+                            leading: IconButton(
+                              icon: const Icon(Icons.clear, color: Colors.black),
+                              onPressed: () {
+                                setState(() {
+                                  _food.value.categories
+                                      .remove(_food.value.categories[index]);
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+      }
     );
   }
 }

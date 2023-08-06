@@ -11,7 +11,7 @@ class AppPages {
     GetPage(name: '/home', page: () => const HomeScreen()),
     GetPage(name: FoodScreen.routeName, page: () => const FoodScreen()),
     GetPage(name: CategoryScreen.routeName, page: () => const CategoryScreen()),
-    GetPage(name: SettingScreeen.routeName, page: () => const SettingScreeen()),
+    GetPage(name: SettingScreen.routeName, page: () => const SettingScreen()),
     GetPage(name: EditScreen.routeName, page: () =>  EditScreen()),
     GetPage(name: CrashScreen.routeName, page: () => const CrashScreen())
   ];

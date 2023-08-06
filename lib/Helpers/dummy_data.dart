@@ -1,5 +1,6 @@
+import 'package:food_app/Model/comment.dart';
 import 'package:food_app/Model/food.dart';
-import 'package:food_app/Model/ingridient.dart';
+import 'package:food_app/Model/ingredient.dart';
 
 const dummyCats = [
   'Italian',
@@ -14,322 +15,394 @@ const dummyCats = [
   'Summer',
 ];
 
-List<Ingridient> dummyIngs = const [
-  Ingridient(
+List<Ingredient> dummyIngs = const [
+  Ingredient(
     id: "i1",
     name: "Spaghetti",
-    type: IngridientType.product,
+    type: IngredientType.product,
   ),
-  Ingridient(
+  Ingredient(
     id: "i2",
     name: "Tomato",
-    type: IngridientType.vegetable,
+    type: IngredientType.vegetable,
   ),
-  Ingridient(
+  Ingredient(
     id: "i3",
     name: "Pepper",
-    type: IngridientType.fruit,
+    type: IngredientType.fruit,
   ),
-  Ingridient(
+  Ingredient(
     id: "i4",
     name: "Salt",
-    type: IngridientType.spices,
+    type: IngredientType.spices,
   ),
-  Ingridient(
+  Ingredient(
     id: "i5",
     name: "Rice",
-    type: IngridientType.grain,
+    type: IngredientType.grain,
   ),
-  Ingridient(
+  Ingredient(
     id: "i6",
     name: "Olive Oil",
-    type: IngridientType.oil,
+    type: IngredientType.oil,
   ),
-  Ingridient(
+  Ingredient(
     id: "i7",
     name: "Onion",
-    type: IngridientType.vegetable,
+    type: IngredientType.vegetable,
   ),
-  Ingridient(
+  Ingredient(
     id: "i8",
     name: "Spices",
-    type: IngridientType.spices,
+    type: IngredientType.spices,
   ),
-  Ingridient(
+  Ingredient(
     id: "i9",
     name: "Cheese",
-    type: IngridientType.diary,
+    type: IngredientType.diary,
   ),
-  Ingridient(
+  Ingredient(
     id: "i10",
     name: "White Bread",
-    type: IngridientType.product,
+    type: IngredientType.product,
   ),
-  Ingridient(
+  Ingredient(
     id: "i11",
     name: "Ham",
-    type: IngridientType.meat,
+    type: IngredientType.meat,
   ),
-  Ingridient(
+  Ingredient(
     id: "i12",
     name: "Pineapple",
-    type: IngridientType.fruit,
+    type: IngredientType.fruit,
   ),
-  Ingridient(
+  Ingredient(
     id: "i13",
     name: "Butter",
-    type: IngridientType.diary,
+    type: IngredientType.diary,
   ),
-  Ingridient(
+  Ingredient(
     id: "i14",
     name: "Cattle Hack",
-    type: IngridientType.meat,
+    type: IngredientType.meat,
   ),
-  Ingridient(
+  Ingredient(
     id: "i15",
     name: "Cucumber",
-    type: IngridientType.vegetable,
+    type: IngredientType.vegetable,
   ),
-  Ingridient(
+  Ingredient(
     id: "i16",
     name: "Ketchup",
-    type: IngridientType.sauce,
+    type: IngredientType.sauce,
   ),
-  Ingridient(
+  Ingredient(
     id: "i17",
     name: "Burger",
-    type: IngridientType.meat,
+    type: IngredientType.meat,
   ),
-  Ingridient(
+  Ingredient(
     id: "i18",
     name: "Veal Cutlets",
-    type: IngridientType.meat,
+    type: IngredientType.meat,
   ),
-  Ingridient(
+  Ingredient(
     id: "i19",
     name: "Egg",
-    type: IngridientType.product,
+    type: IngredientType.product,
   ),
-  Ingridient(
+  Ingredient(
     id: "i20",
     name: "Bread Crumbs",
-    type: IngridientType.product,
+    type: IngredientType.product,
   ),
-  Ingridient(
+  Ingredient(
     id: "i21",
     name: "Flour",
-    type: IngridientType.product,
+    type: IngredientType.product,
   ),
-  Ingridient(
+  Ingredient(
     id: "i22",
     name: "Butter",
-    type: IngridientType.diary,
+    type: IngredientType.diary,
   ),
-  Ingridient(
+  Ingredient(
     id: "i23",
     name: "Vegetable Oil",
-    type: IngridientType.oil,
+    type: IngredientType.oil,
   ),
-  Ingridient(
+  Ingredient(
     id: "i24",
     name: "Lemon slice",
-    type: IngridientType.fruit,
+    type: IngredientType.fruit,
+  ),
+  Ingredient(
+    id: "i25",
+    name: "Arugula",
+    type: IngredientType.vegetable,
+  ),
+  Ingredient(
+    id: "i26",
+    name: "Lamb's Lettuce",
+    type: IngredientType.vegetable,
+  ),
+  Ingredient(
+    id: "i28",
+    name: "Parsley",
+    type: IngredientType.vegetable,
+  ),
+  Ingredient(
+    id: "i29",
+    name: "Fennel",
+    type: IngredientType.vegetable,
+  ),
+  Ingredient(
+    id: "i30",
+    name: "Smoked Salmon",
+    type: IngredientType.meat,
+  ),
+  Ingredient(
+    id: "i31",
+    name: "Mustard",
+    type: IngredientType.spices,
+  ),
+  Ingredient(
+    id: "i32",
+    name: "Balsamic Vinegar",
+    type: IngredientType.product,
+  ),
+  Ingredient(
+    id: "i32",
+    name: "Gelatine",
+    type: IngredientType.product,
+  ),
+  Ingredient(
+    id: "i32",
+    name: "Orange Juice",
+    type: IngredientType.fruit,
+  ),
+  Ingredient(
+    id: "i32",
+    name: "Sugar",
+    type: IngredientType.spices,
+  ),
+  Ingredient(
+    id: "i32",
+    name: "Yoghurt",
+    type: IngredientType.diary,
+  ),
+  Ingredient(
+    id: "i32",
+    name: "Creaml",
+    type: IngredientType.diary,
+  ),
+  Ingredient(
+    id: "i32",
+    name: "Orange Peel",
+    type: IngredientType.fruit,
   ),
 ];
 
-Ingridient ing(String name) {
+Ingredient ing(String name) {
   return dummyIngs.firstWhere((ing) => ing.name == name);
 }
 
+List<Comment> dummyComments = [
+  Comment(id: "c1", message: "tastes good", userId: "uid123", foodId: "m1"),
+  Comment(id: "c1", message: "healthy and tasty", userId: "uid2315", foodId: "m1"),
+];
+
 List<Food> dummyfoods = [
   Food(
-    id: 'm1',
-    categories: [
-      'Italian',
-      'Quick',
-    ],
-    title: 'spaghetti with tomato sauce',
-    affordability: Affordability.affordable,
-    complexity: Complexity.simple,
-    imageUrl: 'assets/images/Spaghetti.jpg',
-    duration: 20,
-    ingredients: [
-      {"Tomato": Quantity(Unit.piece, 4)} ,
-      {"Olive Oil": Quantity(Unit.tableSpoon, 4)} ,
-      {"Onion": Quantity(Unit.piece, 1)} ,
-      {"Spaghetti": Quantity(Unit.grams, 250)} ,
-      {"Spices": null} ,
-    ],
-    steps: [
-      'Cut the tomatoes and the onion into small pieces.',
-      'Boil some water - add salt to it once it boils.',
-      'Put the spaghetti into the boiling water - they should be done in about 10 to 12 minutes.',
-      'In the meantime, heaten up some olive oil and add the cut onion.',
-      'After 2 minutes, add the tomato pieces, salt, pepper and your other spices.',
-      'The sauce will be done once the spaghetti are.',
-      'Feel free to add some cheese on top of the finished dish.'
-    ],
-    isGlutenFree: false,
-    isVegan: true,
-    isLactoseFree: true,
-  ),
+      id: 'm1',
+      categories: [
+        'Italian',
+        'Quick',
+      ],
+      title: 'spaghetti with tomato sauce',
+      affordability: Affordability.affordable,
+      complexity: Complexity.simple,
+      imageUrl: 'assets/images/Spaghetti.jpg',
+      duration: 20,
+      ingredients: [
+        {"Tomato": Quantity(Unit.piece, 4)},
+        {"Olive Oil": Quantity(Unit.tableSpoon, 4)},
+        {"Onion": Quantity(Unit.piece, 1)},
+        {"Spaghetti": Quantity(Unit.grams, 250)},
+        {"Spices": null},
+      ],
+      steps: [
+        'Cut the tomatoes and the onion into small pieces.',
+        'Boil some water - add salt to it once it boils.',
+        'Put the spaghetti into the boiling water - they should be done in about 10 to 12 minutes.',
+        'In the meantime, heaten up some olive oil and add the cut onion.',
+        'After 2 minutes, add the tomato pieces, salt, pepper and your other spices.',
+        'The sauce will be done once the spaghetti are.',
+        'Feel free to add some cheese on top of the finished dish.'
+      ],
+      isGlutenFree: false,
+      isVegan: true,
+      isLactoseFree: true,
+      userId: "uid123"),
   Food(
-    id: 'm2',
-    categories: [
-      'Quick',
-    ],
-    title: 'toast hawaii',
-    affordability: Affordability.affordable,
-    complexity: Complexity.simple,
-    imageUrl: 'assets/images/Toast_Hawaii.jpg',
-    duration: 10,
-    ingredients: [
-      {"Tomato": Quantity(Unit.piece, 4)},
-      {"Ham": Quantity(Unit.piece, 1)} ,
-      {"Pineapple": Quantity(Unit.piece, 1)} ,
-      {"Cheese": Quantity(Unit.piece, 1)} ,
-      {"Butter": Quantity(Unit.piece, 1)} ,
-    ],
-    steps: [
-      'Butter one side of the white bread',
-      'Layer ham, the pineapple and cheese on the white bread',
-      'Bake the toast for round about 10 minutes in the oven at 200°C'
-    ],
-    isGlutenFree: false,
-    isVegan: false,
-    isLactoseFree: false,
-  ),
+      id: 'm2',
+      categories: [
+        'Quick',
+      ],
+      title: 'toast hawaii',
+      affordability: Affordability.affordable,
+      complexity: Complexity.simple,
+      imageUrl: 'assets/images/Toast_Hawaii.jpg',
+      duration: 10,
+      ingredients: [
+        {"Tomato": Quantity(Unit.piece, 4)},
+        {"Ham": Quantity(Unit.piece, 1)},
+        {"Pineapple": Quantity(Unit.piece, 1)},
+        {"Cheese": Quantity(Unit.piece, 1)},
+        {"Butter": Quantity(Unit.piece, 1)},
+      ],
+      steps: [
+        'Butter one side of the white bread',
+        'Layer ham, the pineapple and cheese on the white bread',
+        'Bake the toast for round about 10 minutes in the oven at 200°C'
+      ],
+      isGlutenFree: false,
+      isVegan: false,
+      isLactoseFree: false,
+      userId: "uid123"),
   Food(
-    id: 'm3',
-    categories: [
-      'Quick',
-      'Hamburgers',
-    ],
-    title: 'classic hamburger',
-    affordability: Affordability.pricey,
-    complexity: Complexity.simple,
-    imageUrl: 'assets/images/Classic_Hamburger.jpg',
-    duration: 45,
-    ingredients: [
-      {"Cattle Hack": Quantity(Unit.grams, 300)} ,
-      {"Tomato": Quantity(Unit.piece, 1)} ,
-      {"Cucumber": Quantity(Unit.piece, 1)} ,
-      {"Onion": Quantity(Unit.piece, 1)} ,
-      {"Ketchup": null} ,
-      {"Burger": Quantity(Unit.piece, 2)} ,
-    ],
-    steps: [
-      'Form 2 patties',
-      'Fry the patties for c. 4 minutes on each side',
-      'Quickly fry the buns for c. 1 minute on each side',
-      'Bruch buns with ketchup',
-      'Serve burger with tomato, cucumber and onion'
-    ],
-    isGlutenFree: false,
-    isVegan: false,
-    isLactoseFree: true,
-  ),
+      id: 'm3',
+      categories: [
+        'Quick',
+        'Hamburgers',
+      ],
+      title: 'classic hamburger',
+      affordability: Affordability.pricey,
+      complexity: Complexity.simple,
+      imageUrl: 'assets/images/Classic_Hamburger.jpg',
+      duration: 45,
+      ingredients: [
+        {"Cattle Hack": Quantity(Unit.grams, 300)},
+        {"Tomato": Quantity(Unit.piece, 1)},
+        {"Cucumber": Quantity(Unit.piece, 1)},
+        {"Onion": Quantity(Unit.piece, 1)},
+        {"Ketchup": null},
+        {"Burger": Quantity(Unit.piece, 2)},
+      ],
+      steps: [
+        'Form 2 patties',
+        'Fry the patties for c. 4 minutes on each side',
+        'Quickly fry the buns for c. 1 minute on each side',
+        'Bruch buns with ketchup',
+        'Serve burger with tomato, cucumber and onion'
+      ],
+      isGlutenFree: false,
+      isVegan: false,
+      isLactoseFree: true,
+      userId: "uid123"),
   Food(
-    id: 'm4',
+      id: 'm4',
+      categories: [
+        'German',
+      ],
+      title: 'wiener schnitzel',
+      affordability: Affordability.luxurious,
+      complexity: Complexity.challenging,
+      imageUrl: 'assets/images/Wiener_Schnitzel.jpg',
+      duration: 60,
+      ingredients: [
+        {"Veal Cutlets": Quantity(Unit.piece, 8)},
+        {"Egg": Quantity(Unit.piece, 4)},
+        {"Bread Crumbs": Quantity(Unit.grams, 200)},
+        {"Flour": Quantity(Unit.grams, 100)},
+        {"Butter": Quantity(Unit.miliLitre, 300)},
+        {"Vegetable Oil": Quantity(Unit.grams, 100)},
+        {"Lemon slice": null},
+        {"Salt": null},
+      ],
+      steps: [
+        'Tenderize the veal to about 2–4mm, and salt on both sides.',
+        'On a flat plate, stir the eggs briefly with a fork.',
+        'Lightly coat the cutlets in flour then dip into the egg, and finally, coat in breadcrumbs.',
+        'Heat the butter and oil in a large pan (allow the fat to get very hot) and fry the schnitzels until golden brown on both sides.',
+        'Make sure to toss the pan regularly so that the schnitzels are surrounded by oil and the crumbing becomes ‘fluffy’.',
+        'Remove, and drain on kitchen paper. Fry the parsley in the remaining oil and drain.',
+        'Place the schnitzels on awarmed plate and serve garnishedwith parsley and slices of lemon.'
+      ],
+      isGlutenFree: false,
+      isVegan: false,
+      isLactoseFree: false,
+      userId: "uid123"),
+  Food(
+    id: 'm5',
     categories: [
-      'German',
+      'Quick'
+          'Light',
+      'Summer',
     ],
-    title: 'wiener schnitzel',
+    title: 'salad with smoked salmon',
     affordability: Affordability.luxurious,
-    complexity: Complexity.challenging,
-    imageUrl: 'assets/images/Wiener_Schnitzel.jpg',
-    duration: 60,
+    complexity: Complexity.simple,
+    imageUrl: 'assets/images/salmon.jpg',
+    duration: 15,
     ingredients: [
-      {"Veal Cutlets": Quantity(Unit.piece, 8)} ,
-      {"Egg": Quantity(Unit.piece, 4)} ,
-      {"Bread Crumbs": Quantity(Unit.grams, 200)} ,
-      {"Flour": Quantity(Unit.grams, 100)} ,
-      {"Butter": Quantity(Unit.miliLitre, 300)} ,
-      {"Vegetable Oil": Quantity(Unit.grams, 100)} ,
-      {"Lemon slice": null} ,
-      {"Salt": null} ,
+      {"Arugula": null},
+      {"Lamb's Lettuce": null},
+      {"Parsley": null},
+      {"Fennel": null},
+      {"Smoked Salmon": Quantity(Unit.grams, 200)},
+      {"Mustard": null},
+      {"Balsamic Vinegar": null},
+      {"Olive Oil": null},
+      {"Salt": null},
+      {"Pepper": null},
     ],
     steps: [
-      'Tenderize the veal to about 2–4mm, and salt on both sides.',
-      'On a flat plate, stir the eggs briefly with a fork.',
-      'Lightly coat the cutlets in flour then dip into the egg, and finally, coat in breadcrumbs.',
-      'Heat the butter and oil in a large pan (allow the fat to get very hot) and fry the schnitzels until golden brown on both sides.',
-      'Make sure to toss the pan regularly so that the schnitzels are surrounded by oil and the crumbing becomes ‘fluffy’.',
-      'Remove, and drain on kitchen paper. Fry the parsley in the remaining oil and drain.',
-      'Place the schnitzels on awarmed plate and serve garnishedwith parsley and slices of lemon.'
+      'Wash and cut salad and herbs',
+      'Dice the salmon',
+      'Process mustard, vinegar and olive oil into a dessing',
+      'Prepare the salad',
+      'Add salmon cubes and dressing'
     ],
-    isGlutenFree: false,
+    isGlutenFree: true,
     isVegan: false,
-    isLactoseFree: false,
+    isLactoseFree: true,
+    userId: "uid123",
   ),
-  // Food(
-  //   id: 'm5',
-  //   categories: [
-  //     'Quick'
-  //         'Light',
-  //     'Summer',
-  //   ],
-  //   title: 'salad with smoked salmon',
-  //   affordability: Affordability.luxurious,
-  //   complexity: Complexity.simple,
-  //   imageUrl: 'assets/images/salmon.jpg',
-  //   duration: 15,
-  //   ingredients: [
-  //     'Arugula',
-  //     'Lamb\'s Lettuce',
-  //     'Parsley',
-  //     'Fennel',
-  //     '200g Smoked Salmon',
-  //     'Mustard',
-  //     'Balsamic Vinegar',
-  //     'Olive Oil',
-  //     'Salt and Pepper'
-  //   ],
-  //   steps: [
-  //     'Wash and cut salad and herbs',
-  //     'Dice the salmon',
-  //     'Process mustard, vinegar and olive oil into a dessing',
-  //     'Prepare the salad',
-  //     'Add salmon cubes and dressing'
-  //   ],
-  //   isGlutenFree: true,
-  //   isVegan: false,
-  //   isLactoseFree: true,
-  // ),
-  // Food(
-  //   id: 'm6',
-  //   categories: [
-  //     'Exotic',
-  //     'Summer',
-  //   ],
-  //   title: 'delicious orange mousse',
-  //   affordability: Affordability.affordable,
-  //   complexity: Complexity.hard,
-  //   imageUrl: 'assets/images/Delicious_Orange_Mousse.jpg',
-  //   duration: 240,
-  //   ingredients: [
-  //     '4 Sheets of Gelatine',
-  //     '150ml Orange Juice',
-  //     '80g Sugar',
-  //     '300g Yoghurt',
-  //     '200g Cream',
-  //     'Orange Peel',
-  //   ],
-  //   steps: [
-  //     'Dissolve gelatine in pot',
-  //     'Add orange juice and sugar',
-  //     'Take pot off the stove',
-  //     'Add 2 tablespoons of yoghurt',
-  //     'Stir gelatin under remaining yoghurt',
-  //     'Cool everything down in the refrigerator',
-  //     'Whip the cream and lift it under die orange mass',
-  //     'Cool down again for at least 4 hours',
-  //     'Serve with orange peel',
-  //   ],
-  //   isGlutenFree: true,
-  //   isVegan: false,
-  //   isLactoseFree: false,
-  // ),
+  Food(
+      id: 'm6',
+      categories: [
+        'Exotic',
+        'Summer',
+      ],
+      title: 'delicious orange mousse',
+      affordability: Affordability.affordable,
+      complexity: Complexity.hard,
+      imageUrl: 'assets/images/Delicious_Orange_Mousse.jpg',
+      duration: 240,
+      ingredients: [
+        {"Gelatine": Quantity(Unit.sheets, 4)},
+        {"Orange Juice": Quantity(Unit.miliLitre, 150)},
+        {"Sugar": Quantity(Unit.grams, 80)},
+        {"Yoghurt": Quantity(Unit.grams, 300)},
+        {"Cream": Quantity(Unit.grams, 200)},
+        {"Orange Peel": null},
+      ],
+      steps: [
+        'Dissolve gelatine in pot',
+        'Add orange juice and sugar',
+        'Take pot off the stove',
+        'Add 2 tablespoons of yoghurt',
+        'Stir gelatin under remaining yoghurt',
+        'Cool everything down in the refrigerator',
+        'Whip the cream and lift it under die orange mass',
+        'Cool down again for at least 4 hours',
+        'Serve with orange peel',
+      ],
+      isGlutenFree: true,
+      isVegan: false,
+      isLactoseFree: false,
+      userId: "uid123"),
   // Food(
   //   id: 'm7',
   //   categories: [
@@ -358,6 +431,7 @@ List<Food> dummyfoods = [
   //   isGlutenFree: true,
   //   isVegan: false,
   //   isLactoseFree: false,
+  //   userId: "uid123"
   // ),
   // Food(
   //   id: 'm8',
@@ -389,6 +463,7 @@ List<Food> dummyfoods = [
   //   isGlutenFree: true,
   //   isVegan: false,
   //   isLactoseFree: true,
+  //   userId: "uid123"
   // ),
   // Food(
   //   id: 'm9',
@@ -436,6 +511,7 @@ List<Food> dummyfoods = [
   //   isGlutenFree: true,
   //   isVegan: false,
   //   isLactoseFree: false,
+  //   userId: "uid123"
   // ),
   // Food(
   //   id: 'm10',
@@ -468,5 +544,6 @@ List<Food> dummyfoods = [
   //   isGlutenFree: true,
   //   isVegan: true,
   //   isLactoseFree: true,
+  //   userId: "uid123"
   // ),
 ];

@@ -1,4 +1,4 @@
-import 'package:food_app/Controller/settings.dart';
+import 'package:food_app/Controller/food_controller.dart';
 import 'package:food_app/View/widgets/food_item.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/Model/food.dart';
@@ -25,10 +25,10 @@ class CategoryScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(category!),
         ),
-        body: GetBuilder<Settings>(
+        body: GetBuilder<FoodController>(
             id: "foods",
-            builder: (settings) {
-              List<Food> categoryfoods = settings.getCategoryfoods(category);
+            builder: (foodCtrl) {
+              List<Food> categoryfoods =foodCtrl.getCategoryfoods(category);
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: islandscape

@@ -1,5 +1,8 @@
-import 'package:food_app/Controller/settings.dart';
+import 'package:food_app/Controller/comment_controller.dart';
+import 'package:food_app/Controller/food_controller.dart';
+import 'package:food_app/Controller/user_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/Model/comment.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:food_app/View/screens/edit_screen.dart';
 import 'package:get/get.dart';
@@ -19,10 +22,10 @@ class FoodScreen extends StatelessWidget {
     if (foodId == null) Get.offNamed("/crash");
 
     ///body
-    return GetBuilder<Settings>(
+    return GetBuilder<FoodController>(
         id: "foods",
-        builder: (settings) {
-          final food = settings.getFood(foodId!);
+        builder: (foodCtrl) {
+          final food = foodCtrl.getFood(foodId!);
           return SafeArea(
             child: Scaffold(
               key: scaffoldKey,
@@ -67,9 +70,11 @@ class FoodScreen extends StatelessWidget {
                   ),
                   SliverList(
                     delegate: SliverChildListDelegate([
-                      IngridientsView(food: food),
+                      IngredientsView(food: food),
                       const SizedBox(height: 50.0),
                       StepsView(food: food),
+                      const SizedBox(height: 20.0),
+                      CommentsList(food: food),
                     ]),
                   ),
                 ],
@@ -128,8 +133,8 @@ class StepsView extends StatelessWidget {
   }
 }
 
-class IngridientsView extends StatelessWidget {
-  const IngridientsView({
+class IngredientsView extends StatelessWidget {
+  const IngredientsView({
     Key? key,
     required this.food,
   }) : super(key: key);
@@ -142,13 +147,13 @@ class IngridientsView extends StatelessWidget {
 
     return Column(
       children: [
-        //ingridients
+        //Ingredients
         Align(
           alignment: Alignment.topLeft,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
-              'Ingridients:',
+              'Ingredients:',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
@@ -170,7 +175,7 @@ class IngridientsView extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               margin: const EdgeInsets.all(2.0),
               child: Text(
-                food.getIngridientsNames[index],
+                food.getIngredientsNames[index],
                 style: const TextStyle(color: Colors.white),
               ),
             ),
@@ -205,11 +210,11 @@ class _LikeButtonState extends State<LikeButton>
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<Settings>(
+    return GetBuilder<UserController>(
       id: "favs",
-      builder: (Settings settings) => GestureDetector(
+      builder: (UserController userCtrl) => GestureDetector(
         onTap: () {
-          settings.toggleFav(widget.food.id);
+          userCtrl.toggleFav(widget.food.id);
           _controller.reverse().then((value) => _controller.forward());
         },
         child: Padding(
@@ -218,7 +223,7 @@ class _LikeButtonState extends State<LikeButton>
             scale: Tween(begin: 0.7, end: 1.0).animate(
               CurvedAnimation(parent: _controller, curve: Curves.easeOut),
             ),
-            child: settings.isFavorite(widget.food)
+            child: userCtrl.isFavorite(widget.food)
                 ? const Icon(
                     Icons.favorite,
                     size: 30,
@@ -232,5 +237,71 @@ class _LikeButtonState extends State<LikeButton>
         ),
       ),
     );
+  }
+}
+
+class CommentsList extends StatelessWidget {
+  final Food food;
+  const CommentsList({required this.food, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textCtrl = TextEditingController();
+    final Size screenSize = MediaQuery.sizeOf(context);
+    final Comment cm = Comment.dummy();
+    return GetBuilder<UserController>(
+        id: "user",
+        builder: (user) {
+          return GetBuilder<CommentController>(
+            id: "comments",
+            builder: (comments) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                height: screenSize.height * 0.4,
+                child: Column(
+                  children: [
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Comments"),
+                    ),
+                    TextField(
+                      controller: textCtrl,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    TextButton.icon(
+                        onPressed: () {
+                          if (textCtrl.text.isNotEmpty) {
+                            cm.foodId = food.id;
+                            cm.userId =
+                                Get.find<UserController>().user.value.id;
+                            cm.message = textCtrl.text;
+                            comments.addComment(cm);
+                            textCtrl.clear();
+                          }
+                        },
+                        icon: const Icon(Icons.add, color: Colors.black),
+                        label: const Text("Add comment")),
+                    Expanded(
+                        child: ListView.builder(
+                      itemCount: comments.getFoodComments(food.id).length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          subtitle: Text(
+                            comments.getFoodComments(food.id)[index].message,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          title: Text(
+                            user.user.value.name,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        );
+                      },
+                    )),
+                  ],
+                ),
+              );
+            },
+          );
+        });
   }
 }
