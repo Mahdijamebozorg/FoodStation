@@ -1,25 +1,17 @@
 # Advanced Chess
-Graphical 2P chess built with Qt Quick QML and C++
+A food and health application
 
 <div align="center">
   <a>
-    <img src="Images/ScreenShots/icon.png" alt="Icon" width="80" height="80">
+    <img src="screenShots/icon.png" alt="Icon" width="80" height="80">
   </a>
 </div>
 
-## Game features:
-- Save game
-- View, load and delete saved games
-- Auto save the game on crash or unprincipled closing
-- Highlight cells the piece can go or hit
-- Undo
-- Positive and negative scores
-- Random moves
-- Extra moves
-- Background music
-- Full screen mode
-- Bilingual (English and Persian)
-- Animations
+## Features:
+- Catergories
+- Simple food search
+- Search foods by categories
+- Search fooods by ingredients
 - ...
 
 <p>&nbsp;</p>
@@ -92,9 +84,9 @@ Some works increases your negative score , if your negative score reachs 15 , yo
 ## Promotion Dialog
 [![Promotion Screen Shot][Promotion]][Promotion]
 
-[Home]: Images/ScreenShots/home.PNG
-[Login]: Images/ScreenShots/login.PNG
-[Load]: Images/ScreenShots/load.PNG
+[Home]: screenShots/catScreen.png
+[Login]: screenShots/foodScreen.png
+[Load]: screenShots/edit.png
 [Game]: Images/ScreenShots/game.PNG
 [Promotion]: Images/ScreenShots/promotion.PNG
 
