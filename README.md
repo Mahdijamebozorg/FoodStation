@@ -13,7 +13,7 @@ A food and health application
 - Search foods by categories
 - Search fooods by ingredients
 - ...
-
+<!---
 <p>&nbsp;</p>
 
 ## Built With
@@ -22,22 +22,24 @@ A food and health application
 
 <p>&nbsp;</p>
 
-## Home Page
+--->
+
+## Category Page
 [![Home Screen Shot][Home]][Home]
 
 <p>&nbsp;</p>
 
-## Login Page
+## Food Page
 [![Login Screen Shot][Login]][Login]
 
 <p>&nbsp;</p>
   
-## Game Page
+## Edit Page
 [![Game Screen Shot][Game]][Game]
 
 
 
-
+<!---
 ## Game rules:
 This game is a modified 2P chess with all chess rules plus some features:
 
@@ -75,6 +77,7 @@ Some works increases your negative score , if your negative score reachs 15 , yo
 - Saved Files with free spaces or unreadable moves, won't be opened
  
 <p>&nbsp;</p>
+
  
 ## Load Game
 [![Load Screen Shot][Load]][Load]
@@ -84,10 +87,12 @@ Some works increases your negative score , if your negative score reachs 15 , yo
 ## Promotion Dialog
 [![Promotion Screen Shot][Promotion]][Promotion]
 
+--->
+
 [Home]: screenShots/catScreen.png
 [Login]: screenShots/foodScreen.png
 [Load]: screenShots/edit.png
-[Game]: Images/ScreenShots/game.PNG
+[Game]: screenShots/edit.png
 [Promotion]: Images/ScreenShots/promotion.PNG
 
 [Qt-url]: https://www.qt.io/
