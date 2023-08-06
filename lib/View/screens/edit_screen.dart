@@ -3,7 +3,6 @@ import 'package:food_app/Controller/food_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:food_app/Model/food.dart';
-import 'package:food_app/Model/ingredient.dart';
 
 Rx<Food> _food = Food.dummy.obs;
 
@@ -118,7 +117,7 @@ class EditScreen extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          Expanded(child: IngredientsChoice()),
+                                          Expanded(child: CategoryChoice()),
                                           SizedBox(width: 20.0),
                                           Expanded(child: CategoriesChoice()),
                                         ],
@@ -510,14 +509,14 @@ class AffordablilityView extends StatelessWidget {
 }
 
 //_____________________
-class IngredientsChoice extends StatefulWidget {
-  const IngredientsChoice({Key? key}) : super(key: key);
+class CategoryChoice extends StatefulWidget {
+  const CategoryChoice({Key? key}) : super(key: key);
 
   @override
-  State<IngredientsChoice> createState() => _IngredientsChoiceState();
+  State<CategoryChoice> createState() => _CategoryChoiceState();
 }
 
-class _IngredientsChoiceState extends State<IngredientsChoice> {
+class _CategoryChoiceState extends State<CategoryChoice> {
   final foodCtrl = Get.find<FoodController>();
   List<String> _foundIngs = Get.find<FoodController>().availableIngredientNames;
 

@@ -37,9 +37,19 @@ class FoodController extends GetxController {
           return true;
         }
       }).toList();
-
       setAvailablefoods(newAvailablefoods);
       debugPrint("filters changed to: $filters");
+    });
+
+    ever(Get.find<UserController>().selectedCategories, (List<String> cats) {
+      var newAvailablefoods = dummyfoods.where((food) {
+        for (var cat in food.categories) {
+          if (cats.contains(cat)) return true;
+        }
+        return false;
+      }).toList();
+      setAvailablefoods(newAvailablefoods);
+      debugPrint("user cats changed to: $cats");
     });
 
     super.onInit();
@@ -135,6 +145,12 @@ class FoodController extends GetxController {
   List<String> ingredientSearch({required String text}) {
     return availableIngredientNames
         .where((ing) => ing.toLowerCase().contains(text.toLowerCase()))
+        .toList();
+  }
+
+  List<String> catrgorySearch({required String text}) {
+    return availableCategories
+        .where((cat) => cat.toLowerCase().contains(text.toLowerCase()))
         .toList();
   }
 }

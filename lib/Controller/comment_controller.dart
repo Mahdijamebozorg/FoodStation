@@ -10,13 +10,16 @@ class CommentController extends GetxController {
   void onInit() {
     //   ever(Get.find<UserController>().currentUser, (callback) => null);
     ever(Get.find<FoodController>().availableFoods, (List<Food> foods) {
+      List<Comment> toRemove = [];
       for (Comment comment in comments) {
         // if food removed
         if (!foods
-            .contains(Get.find<FoodController>().getFood(comment.userId))) {
-          comments.remove(comment);
+            .contains(Get.find<FoodController>().getFood(comment.foodId))) {
+          // remove later because of collision
+          toRemove.add(comment);
         }
       }
+      comments.removeWhere((comment) => toRemove.contains(comment));
     });
     super.onInit();
   }

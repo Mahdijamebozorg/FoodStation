@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 class UserController extends GetxController {
   final RxMap<String, bool> filters = RxMap();
   final RxList<String> _favoritefoods = RxList();
+  final RxList<String> selectedCategories = RxList();
   final Rx<User> user = User.dummy().obs;
 
   UserController() {
@@ -23,6 +24,16 @@ class UserController extends GetxController {
     filters.value = filterdata;
     debugPrint("filters updated");
     update(["filters"]);
+  }
+
+  void addCatergory(String cat) {
+    selectedCategories.add(cat);
+    update(["userCats"]);
+  }
+
+  void removeCatergory(String cat) {
+    selectedCategories.remove(cat);
+    update(["userCats"]);
   }
 
   //_______________________________________________________________________________ favorites
