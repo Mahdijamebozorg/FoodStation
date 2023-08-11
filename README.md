@@ -1,4 +1,4 @@
-# Advanced Chess
+# Food Station
 A food and health application
 
 <div align="center">
