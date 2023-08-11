@@ -7,12 +7,48 @@ A food and health application
   </a>
 </div>
 
-## Features:
-- Catergories
-- Simple food search
-- Search foods by categories
-- Search fooods by ingredients
-- ...
+## Catergories & Tags
+
+  Every food has a list of categories,
+  you can change your favorite categories in setting,
+  so only foods having at least one of those categories will be shown in all App parts.
+
+
+  
+## Simple food search
+
+  in home page, tap on serach button and enter the food name.
+
+
+  
+## Advanced search
+
+  User can search foods by their categories, ingredients, duration ...
+
+
+  
+## Add your own food!
+
+  Every user can add, edit or remove his/her own food and recipes,
+  the food can be private and only visible to that user,
+  or public and so all users can see it and add comment bellow it.
+
+
+## Add your customization
+  Also you can customize a food by editing other's foods.
+  all food's customizations are shown in its screen.
+
+
+## Favorites
+
+  If you like any food, you can push the like button in food screen,
+  and the food will be added to your favorite foods screen
+
+
+## Comment
+  Users can add comment under foods,
+  and other users can reply, like or dislike it.
+  
 <!---
 <p>&nbsp;</p>
 
@@ -24,17 +60,17 @@ A food and health application
 
 --->
 
-## Category Page
+## Category Screen
 [![Home Screen Shot][Home]][Home]
 
 <p>&nbsp;</p>
 
-## Food Page
+## Food Screen
 [![Login Screen Shot][Login]][Login]
 
 <p>&nbsp;</p>
   
-## Edit Page
+## Add / Edit Screen
 [![Game Screen Shot][Game]][Game]
 
 
