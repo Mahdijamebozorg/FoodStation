@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -29,19 +31,19 @@ class SearchItem extends StatelessWidget {
           remove(food);
         },
         background: Container(
-          color: Theme.of(context).primaryColor,
+          color: Get.theme.primaryColor,
           alignment: Alignment.centerRight,
           child: Container(
             margin: const EdgeInsets.all(8),
             child: Icon(
               Icons.delete,
-              color: Theme.of(context).colorScheme.background,
+              color: Get.theme.colorScheme.background,
               size: MediaQuery.of(context).size.height * 0.075,
             ),
           ),
         ),
         child: Card(
-          color: Theme.of(context).highlightColor,
+          color: Get.theme.highlightColor,
           elevation: 7,
           margin: const EdgeInsets.all(10),
           shape: const RoundedRectangleBorder(
@@ -62,9 +64,18 @@ class SearchItem extends StatelessWidget {
                   ),
                   child: Hero(
                     tag: food.id,
-                    child: Image.asset(
-                      food.imageUrl,
-                      fit: BoxFit.fill,
+                    child: CachedNetworkImage(
+                      imageUrl: food.imageUrl,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(image: imageProvider),
+                        ),
+                      ),
+                      placeholder: (context, url) => SpinKitFoldingCube(),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.image_not_supported_outlined,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),

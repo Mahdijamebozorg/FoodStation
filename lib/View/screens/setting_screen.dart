@@ -68,7 +68,7 @@ class Filters extends StatelessWidget {
           margin: const EdgeInsets.all(0.75),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Theme.of(context).colorScheme.background),
+              color: Get.theme.colorScheme.background),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -91,7 +91,7 @@ class Filters extends StatelessWidget {
                         id: "filters",
                         builder: (setting) => Switch.adaptive(
                           activeColor:
-                              Theme.of(context).primaryColor.withOpacity(0.8),
+                              Get.theme.primaryColor.withOpacity(0.8),
                           value: isGlutenFree.value,
                           onChanged: (val) {
                             isGlutenFree.value = val;
@@ -121,7 +121,7 @@ class Filters extends StatelessWidget {
                         id: "filters",
                         builder: (setting) => Switch.adaptive(
                           activeColor:
-                              Theme.of(context).primaryColor.withOpacity(0.8),
+                              Get.theme.primaryColor.withOpacity(0.8),
                           value: isVegan.value,
                           onChanged: (val) {
                             isVegan.value = val;
@@ -151,7 +151,7 @@ class Filters extends StatelessWidget {
                         id: "filters",
                         builder: (setting) => Switch.adaptive(
                           activeColor:
-                              Theme.of(context).primaryColor.withOpacity(0.8),
+                              Get.theme.primaryColor.withOpacity(0.8),
                           value: isLactoseFree.value,
                           onChanged: (val) {
                             isLactoseFree.value = val;
@@ -217,7 +217,7 @@ class _IngredientsChoiceState extends State<IngredientsChoice> {
               // label
               Text(
                 "Categories",
-                style: Theme.of(context).textTheme.bodySmall,
+                style: Get.theme.textTheme.bodySmall,
               ),
               // search
               Padding(
@@ -228,7 +228,7 @@ class _IngredientsChoiceState extends State<IngredientsChoice> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20)),
                   ),
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Get.theme.textTheme.bodySmall,
                   controller: _searchtext,
                 ),
               ),
@@ -239,7 +239,7 @@ class _IngredientsChoiceState extends State<IngredientsChoice> {
                     _hasFocus
                         ? _foundCats.isEmpty
                             ? Text("No item Found",
-                                style: Theme.of(context).textTheme.bodySmall)
+                                style: Get.theme.textTheme.bodySmall)
 
                             // found cats list
                             : Expanded(
@@ -254,10 +254,10 @@ class _IngredientsChoiceState extends State<IngredientsChoice> {
                                       },
                                       leading: CircleAvatar(
                                           backgroundColor:
-                                              Theme.of(context).primaryColor),
+                                              Get.theme.primaryColor),
                                       title: Text(
                                         _foundCats[index],
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .textTheme
                                             .bodySmall,
                                       ),
@@ -296,7 +296,7 @@ class _IngredientsChoiceState extends State<IngredientsChoice> {
                                       // name
                                       Text(
                                         user.selectedCategories[index],
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .textTheme
                                             .bodySmall,
                                       ),

@@ -64,7 +64,7 @@ class EditScreen extends StatelessWidget {
             width: constraints.maxWidth,
             padding: const EdgeInsets.all(12.0),
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
+              color: Get.theme.scaffoldBackgroundColor,
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(20)),
             ),
@@ -183,17 +183,17 @@ class TextInputs extends StatelessWidget {
             child: TextFormField(
               cursorHeight: 24,
               maxLength: 50,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Get.theme.textTheme.bodySmall,
               initialValue: _food.value.title,
               decoration: InputDecoration(
                 labelText: 'Title',
                 errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
                 floatingLabelStyle: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 14),
-                hintStyle: Theme.of(context).textTheme.bodySmall,
-                labelStyle: Theme.of(context).textTheme.bodySmall,
+                    color: Get.theme.primaryColor, fontSize: 14),
+                hintStyle: Get.theme.textTheme.bodySmall,
+                labelStyle: Get.theme.textTheme.bodySmall,
                 counterStyle: TextStyle(
-                    fontSize: 8, color: Theme.of(context).primaryColor),
+                    fontSize: 8, color: Get.theme.primaryColor),
               ),
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) =>
@@ -223,7 +223,7 @@ class TextInputs extends StatelessWidget {
             child: TextFormField(
               cursorHeight: 24,
               maxLength: 3,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Get.theme.textTheme.bodySmall,
               focusNode: duration,
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -234,11 +234,11 @@ class TextInputs extends StatelessWidget {
                 labelText: 'Duration',
                 errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
                 floatingLabelStyle: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 14),
-                hintStyle: Theme.of(context).textTheme.bodySmall,
-                labelStyle: Theme.of(context).textTheme.bodySmall,
+                    color: Get.theme.primaryColor, fontSize: 14),
+                hintStyle: Get.theme.textTheme.bodySmall,
+                labelStyle: Get.theme.textTheme.bodySmall,
                 counterStyle: TextStyle(
-                    fontSize: 8, color: Theme.of(context).primaryColor),
+                    fontSize: 8, color: Get.theme.primaryColor),
               ),
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) =>
@@ -268,7 +268,7 @@ class TextInputs extends StatelessWidget {
             child: TextFormField(
               cursorHeight: 24,
               maxLength: 200,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Get.theme.textTheme.bodySmall,
               keyboardType: TextInputType.url,
               focusNode: imageUrl,
               initialValue: _food.value.imageUrl,
@@ -276,11 +276,11 @@ class TextInputs extends StatelessWidget {
                 labelText: 'image URL',
                 errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
                 floatingLabelStyle: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 14),
-                hintStyle: Theme.of(context).textTheme.bodySmall,
-                labelStyle: Theme.of(context).textTheme.bodySmall,
+                    color: Get.theme.primaryColor, fontSize: 14),
+                hintStyle: Get.theme.textTheme.bodySmall,
+                labelStyle: Get.theme.textTheme.bodySmall,
                 counterStyle: TextStyle(
-                    fontSize: 8, color: Theme.of(context).primaryColor),
+                    fontSize: 8, color: Get.theme.primaryColor),
               ),
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (value) => imageUrl.unfocus(),
@@ -317,7 +317,7 @@ class _SwitchesState extends State<Switches> {
       children: [
         Row(
           children: [
-            Text("Gluten free", style: Theme.of(context).textTheme.bodySmall),
+            Text("Gluten free", style: Get.theme.textTheme.bodySmall),
             Switch.adaptive(
               value: _food.value.isGlutenFree,
               onChanged: (value) {
@@ -330,7 +330,7 @@ class _SwitchesState extends State<Switches> {
         ),
         Row(
           children: [
-            Text("Lactose free", style: Theme.of(context).textTheme.bodySmall),
+            Text("Lactose free", style: Get.theme.textTheme.bodySmall),
             Switch.adaptive(
               value: _food.value.isLactoseFree,
               onChanged: (value) {
@@ -343,7 +343,7 @@ class _SwitchesState extends State<Switches> {
         ),
         Row(
           children: [
-            Text("Vegan", style: Theme.of(context).textTheme.bodySmall),
+            Text("Vegan", style: Get.theme.textTheme.bodySmall),
             Switch.adaptive(
               value: _food.value.isVegan,
               onChanged: (value) {
@@ -404,7 +404,7 @@ class _StepsViewState extends State<StepsView> {
                   child: TextFormField(
                     maxLength: 200,
                     maxLines: 3,
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: Get.theme.textTheme.bodySmall,
                     initialValue: _steps[index],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -449,8 +449,8 @@ class ComplexityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<Complexity>(
-      dropdownColor: Theme.of(context).primaryColor,
-      style: Theme.of(context).textTheme.bodySmall,
+      dropdownColor: Get.theme.primaryColor,
+      style: Get.theme.textTheme.bodySmall,
       value: _food.value.complexity,
       items: const [
         DropdownMenuItem(
@@ -483,8 +483,8 @@ class AffordablilityView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<Affordability>(
-      dropdownColor: Theme.of(context).primaryColor,
-      style: Theme.of(context).textTheme.bodySmall,
+      dropdownColor: Get.theme.primaryColor,
+      style: Get.theme.textTheme.bodySmall,
       value: _food.value.affordability,
       items: const [
         DropdownMenuItem(
@@ -554,7 +554,7 @@ class _CategoryChoiceState extends State<CategoryChoice> {
         // label
         Text(
           "Ingredients",
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Get.theme.textTheme.bodySmall,
         ),
         // search
         Padding(
@@ -565,7 +565,7 @@ class _CategoryChoiceState extends State<CategoryChoice> {
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
             ),
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Get.theme.textTheme.bodySmall,
             controller: _searchtext,
           ),
         ),
@@ -576,7 +576,7 @@ class _CategoryChoiceState extends State<CategoryChoice> {
               _hasFocus
                   ? _foundIngs.isEmpty
                       ? Text("No item Found",
-                          style: Theme.of(context).textTheme.bodySmall)
+                          style: Get.theme.textTheme.bodySmall)
 
                       // found ings list
                       : Expanded(
@@ -596,10 +596,10 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                                 },
                                 leading: CircleAvatar(
                                     backgroundColor:
-                                        Theme.of(context).primaryColor),
+                                        Get.theme.primaryColor),
                                 title: Text(
                                   _foundIngs[index],
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: Get.theme.textTheme.bodySmall,
                                 ),
                               );
                             },
@@ -647,7 +647,7 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                                 // name
                                 Text(
                                   _food.value.getIngredientsNames[index],
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: Get.theme.textTheme.bodySmall,
                                 ),
                                 const SizedBox(width: 8.0),
                                 // set Unit
@@ -678,56 +678,56 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                                       DropdownMenuEntry(
                                         value: null,
                                         label: "Custom",
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .menuButtonTheme
                                             .style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.bottle,
                                         label: "Bottle",
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .menuButtonTheme
                                             .style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.grams,
                                         label: "g",
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .menuButtonTheme
                                             .style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.miliLitre,
                                         label: "mL",
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .menuButtonTheme
                                             .style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.litre,
                                         label: "L",
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .menuButtonTheme
                                             .style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.piece,
                                         label: "Piece",
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .menuButtonTheme
                                             .style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.tableSpoon,
                                         label: "Table Spoon",
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .menuButtonTheme
                                             .style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.teaSpoon,
                                         label: "Tea Spoon",
-                                        style: Theme.of(context)
+                                        style: Get.theme
                                             .menuButtonTheme
                                             .style,
                                       ),
@@ -757,14 +757,14 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                                         FilteringTextInputFormatter.digitsOnly,
                                       ],
                                       style:
-                                          Theme.of(context).textTheme.bodySmall,
+                                          Get.theme.textTheme.bodySmall,
                                       maxLength: 4,
                                       decoration: InputDecoration(
                                         hintText: "count",
                                         counterStyle: TextStyle(
                                             fontSize: 8,
                                             color:
-                                                Theme.of(context).primaryColor),
+                                                Get.theme.primaryColor),
                                       ),
                                     ),
                                   ),
@@ -802,7 +802,7 @@ class _CategoriesChoiceState extends State<CategoriesChoice> {
         // label
         Text(
           "Categories",
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Get.theme.textTheme.bodySmall,
         ),
         // list
         Expanded(
@@ -833,10 +833,10 @@ class _CategoriesChoiceState extends State<CategoriesChoice> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                                 colors: [
-                                  Theme.of(context)
+                                  Get.theme
                                       .primaryColor
                                       .withOpacity(0.2),
-                                  Theme.of(context).primaryColor
+                                  Get.theme.primaryColor
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight),
@@ -844,7 +844,7 @@ class _CategoriesChoiceState extends State<CategoriesChoice> {
                           ),
                           child: Text(
                             foodCtrl.availableCategories[index],
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: Get.theme.textTheme.bodySmall,
                           ),
                         ),
                       ),
@@ -857,10 +857,10 @@ class _CategoriesChoiceState extends State<CategoriesChoice> {
                     itemCount: _food.value.categories.length,
                     itemBuilder: (context, index) => ListTile(
                       key: UniqueKey(),
-                      tileColor: Theme.of(context).primaryColor,
+                      tileColor: Get.theme.primaryColor,
                       title: Text(
                         _food.value.categories[index],
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Get.theme.textTheme.bodySmall,
                       ),
                       // remove category
                       leading: IconButton(

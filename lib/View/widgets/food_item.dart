@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_app/Controller/food_controller.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:flutter/material.dart';
@@ -64,11 +66,20 @@ class Avatar extends StatelessWidget {
                 topRight: Radius.circular(15),
               ),
               //Image
-              child: Image.asset(
-                food.imageUrl,
+              child: CachedNetworkImage(
                 height: boxConstraints.maxHeight * 1,
                 width: double.infinity,
-                fit: BoxFit.fill,
+                imageUrl: food.imageUrl,
+                imageBuilder: (context, imageProvider) => Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(image: imageProvider),
+                  ),
+                ),
+                placeholder: (context, url) => SpinKitFoldingCube(),
+                errorWidget: (context, url, error) => const Icon(
+                  Icons.image_not_supported_outlined,
+                  color: Colors.grey,
+                ),
               ),
             ),
           ),

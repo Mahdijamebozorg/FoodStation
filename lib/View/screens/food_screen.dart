@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_app/Controller/comment_controller.dart';
 import 'package:food_app/Controller/food_controller.dart';
 import 'package:food_app/Controller/user_controller.dart';
@@ -37,7 +39,7 @@ class FoodScreen extends StatelessWidget {
                       leading: const SizedBox(),
                       elevation: 0,
                       backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
+                          Get.theme.scaffoldBackgroundColor,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(30),
@@ -45,7 +47,7 @@ class FoodScreen extends StatelessWidget {
                       ),
                       centerTitle: true,
                       title: Text(food!.title,
-                          style: Theme.of(context).textTheme.bodyMedium),
+                          style: Get.theme.textTheme.bodyMedium),
                     ),
                     actions: [
                       LikeButton(food: food),
@@ -59,7 +61,19 @@ class FoodScreen extends StatelessWidget {
                     flexibleSpace: FlexibleSpaceBar(
                       background: Hero(
                         tag: food.id,
-                        child: Image.asset(food.imageUrl, fit: BoxFit.fill),
+                        child: CachedNetworkImage(
+                          imageUrl: food.imageUrl,
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(image: imageProvider),
+                            ),
+                          ),
+                          placeholder: (context, url) => SpinKitFoldingCube(),
+                          errorWidget: (context, url, error) => const Icon(
+                            Icons.image_not_supported_outlined,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                     ),
                     expandedHeight: screenSize.height > screenSize.width
@@ -105,7 +119,7 @@ class StepsView extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Text(
               'Steps:',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Get.theme.textTheme.bodyMedium,
             ),
           ),
         ),
@@ -154,7 +168,7 @@ class IngredientsView extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Text(
               'Ingredients:',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Get.theme.textTheme.bodyMedium,
             ),
           ),
         ),
@@ -266,7 +280,7 @@ class CommentsList extends StatelessWidget {
                     ),
                     TextField(
                       controller: textCtrl,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Get.theme.textTheme.bodySmall,
                     ),
                     TextButton.icon(
                         onPressed: () {
@@ -288,11 +302,11 @@ class CommentsList extends StatelessWidget {
                         return ListTile(
                           subtitle: Text(
                             comments.getFoodComments(food.id)[index].message,
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: Get.theme.textTheme.bodySmall,
                           ),
                           title: Text(
                             user.user.value.name,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Get.theme.textTheme.bodyMedium,
                           ),
                         );
                       },

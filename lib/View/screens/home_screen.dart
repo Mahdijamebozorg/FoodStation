@@ -115,7 +115,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         AnimSearchBar(
           color: Colors.transparent,
-          searchIconColor: Theme.of(context).colorScheme.onPrimary,
+          searchIconColor: Get.theme.colorScheme.onPrimary,
           helpText: "Enter food name",
           width: 400,
           textController: _searchtext,
@@ -163,7 +163,7 @@ class BottomNav extends StatelessWidget {
       () => SizedBox(
         height: screenSize.height * 0.07,
         child: BottomNavigationBar(
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Get.theme.primaryColor,
           onTap: _selectPage,
           //chane selected item style
           selectedItemColor: Colors.yellow[400],
@@ -177,11 +177,11 @@ class BottomNav extends StatelessWidget {
           //bottombar items
           items: [
             BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Get.theme.primaryColor,
                 icon: const Icon(Icons.category),
                 label: 'Categories'),
             BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Get.theme.primaryColor,
                 icon: const Icon(Icons.star),
                 label: 'Favorites'),
           ],

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/Constants/app_colors.dart';
+import 'package:food_app/gen/fonts.gen.dart';
 
 ThemeData appTheme() {
   return ThemeData(
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: SolidColors.bg,
     // accentColor: Colors.amber,
-    canvasColor: const Color.fromRGBO(255, 254, 229, 1),
-    fontFamily: 'Raleway',
+    canvasColor: SolidColors.bg,
+    fontFamily: 'Vazirmatn',
     highlightColor: Colors.pink[50],
-    primaryColor: Colors.pink,
+    primaryColor: SolidColors.primary,
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
         fontSize: 24,
@@ -26,8 +28,25 @@ ThemeData appTheme() {
       ),
       //titles
       titleMedium: TextStyle(
-        fontFamily: '(50)',
         fontSize: 30,
+        color: Colors.white,
+      ),
+      // lable
+      displayLarge: TextStyle(
+        fontFamily: FontFamily.sGKara,
+        fontSize: 64,
+        color: Colors.white,
+      ),
+      displayMedium: TextStyle(
+        fontFamily: FontFamily.vazirmatn,
+        fontWeight: FontWeight.w700,
+        fontSize: 24,
+        color: Colors.white,
+      ),
+      displaySmall: TextStyle(
+        fontFamily: FontFamily.vazirmatn,
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
         color: Colors.white,
       ),
     ),
@@ -38,9 +57,12 @@ ThemeData appTheme() {
         fontWeight: FontWeight.w100,
       ),
     ),
-    snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.pink),
-    colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.pink)
-        .copyWith(background: Colors.white, onBackground: Colors.black54),
+    snackBarTheme:
+        const SnackBarThemeData(backgroundColor: SolidColors.primary),
+    colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.pink).copyWith(
+        background: Colors.white,
+        onBackground: Colors.black54,
+        primary: SolidColors.primary),
 
     menuButtonTheme: MenuButtonThemeData(style:
         ButtonStyle(textStyle: MaterialStateProperty.resolveWith((states) {

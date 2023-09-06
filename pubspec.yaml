@@ -23,9 +23,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.18.1
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.18.0
   anim_search_bar: ^2.0.3
   get: ^4.6.5
+  dio: ^5.3.2
+  cached_network_image: ^3.2.3
+  flutter_spinkit: ^5.2.0
+  flutter_svg: ^2.0.7
   # parse_server_sdk_flutter: any
   # connectivity_plus: ^2.0.2
 
@@ -40,18 +46,28 @@ dev_dependencies:
   flutter_gen: ^5.3.1
   flutter_lints: ^2.0.2
 
+flutter_gen:
+  integration:
+    flutter_svg: true
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
   fonts:
-    - family: (50)
+    - family: SGKara
       fonts:
-        - asset: assets/fonts/(50).ttf
-    - family: (49)
+        - asset: assets/fonts/SGKara-SemiBold.ttf
+          weight: 700
+    - family: Vazirmatn
       fonts:
-        - asset: assets/fonts/(49).ttf
+        - asset: assets/fonts/Vazirmatn-Black.ttf
+          weight: 700
+        - asset: assets/fonts/Vazirmatn-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Vazirmatn-Regular.ttf
+          weight: 300
 
   assets:
     - assets/images/

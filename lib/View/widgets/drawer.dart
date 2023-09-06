@@ -87,6 +87,7 @@ class Drwer extends StatelessWidget {
                 onTap: () => Get.toNamed('/setting'),
               ),
             ),
+            // TODO : share button with share plus
           ],
         ),
       ),
