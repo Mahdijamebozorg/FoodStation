@@ -222,7 +222,7 @@ List<Food> dummyfoods = [
       title: 'spaghetti with tomato sauce',
       affordability: Affordability.affordable,
       complexity: Complexity.simple,
-      imageUrl: 'assets/images/Spaghetti.jpg',
+      imageUrl: 'assets/images/dummy_foods/Spaghetti.jpg',
       duration: 20,
       ingredients: [
         {"Tomato": Quantity(Unit.piece, 4)},
@@ -252,7 +252,7 @@ List<Food> dummyfoods = [
       title: 'toast hawaii',
       affordability: Affordability.affordable,
       complexity: Complexity.simple,
-      imageUrl: 'assets/images/Toast_Hawaii.jpg',
+      imageUrl: 'assets/images/dummy_foods/Toast_Hawaii.jpg',
       duration: 10,
       ingredients: [
         {"Tomato": Quantity(Unit.piece, 4)},
@@ -279,7 +279,7 @@ List<Food> dummyfoods = [
       title: 'classic hamburger',
       affordability: Affordability.pricey,
       complexity: Complexity.simple,
-      imageUrl: 'assets/images/Classic_Hamburger.jpg',
+      imageUrl: 'assets/images/dummy_foods/Classic_Hamburger.jpg',
       duration: 45,
       ingredients: [
         {"Cattle Hack": Quantity(Unit.grams, 300)},
@@ -308,7 +308,7 @@ List<Food> dummyfoods = [
       title: 'wiener schnitzel',
       affordability: Affordability.luxurious,
       complexity: Complexity.challenging,
-      imageUrl: 'assets/images/Wiener_Schnitzel.jpg',
+      imageUrl: 'assets/images/dummy_foods/Wiener_Schnitzel.jpg',
       duration: 60,
       ingredients: [
         {"Veal Cutlets": Quantity(Unit.piece, 8)},
@@ -343,7 +343,7 @@ List<Food> dummyfoods = [
     title: 'salad with smoked salmon',
     affordability: Affordability.luxurious,
     complexity: Complexity.simple,
-    imageUrl: 'assets/images/salmon.jpg',
+    imageUrl: 'assets/images/dummy_foods/salmon.jpg',
     duration: 15,
     ingredients: [
       {"Arugula": null},
@@ -378,7 +378,7 @@ List<Food> dummyfoods = [
       title: 'delicious orange mousse',
       affordability: Affordability.affordable,
       complexity: Complexity.hard,
-      imageUrl: 'assets/images/Delicious_Orange_Mousse.jpg',
+      imageUrl: 'assets/images/dummy_foods/Delicious_Orange_Mousse.jpg',
       duration: 240,
       ingredients: [
         {"Gelatine": Quantity(Unit.sheets, 4)},
@@ -411,7 +411,7 @@ List<Food> dummyfoods = [
   //   title: 'pancakes',
   //   affordability: Affordability.affordable,
   //   complexity: Complexity.simple,
-  //   imageUrl: 'assets/images/Pancakes.jpg',
+  //   imageUrl: 'assets/images/dummy_foods/Pancakes.jpg',
   //   duration: 20,
   //   ingredients: [
   //     '1 1/2 Cups all-purpose Flour',
@@ -441,7 +441,7 @@ List<Food> dummyfoods = [
   //   title: 'creamy indian chicken curry',
   //   affordability: Affordability.pricey,
   //   complexity: Complexity.challenging,
-  //   imageUrl: 'assets/images/Creamy_Indian_Chicken_Curry.jpg',
+  //   imageUrl: 'assets/images/dummy_foods/Creamy_Indian_Chicken_Curry.jpg',
   //   duration: 35,
   //   ingredients: [
   //     '4 Chicken Breasts',
@@ -473,7 +473,7 @@ List<Food> dummyfoods = [
   //   title: 'chocolate souffle',
   //   affordability: Affordability.affordable,
   //   complexity: Complexity.hard,
-  //   imageUrl: 'assets/images/Chocolate_Souffle.jpg',
+  //   imageUrl: 'assets/images/dummy_foods/Chocolate_Souffle.jpg',
   //   duration: 45,
   //   ingredients: [
   //     '1 Teaspoon melted Butter',
@@ -523,7 +523,7 @@ List<Food> dummyfoods = [
   //   title: 'asparagus salad with cherry tomatoes',
   //   affordability: Affordability.luxurious,
   //   complexity: Complexity.simple,
-  //   imageUrl: 'assets/images/Asparagus_Salad.jpg',
+  //   imageUrl: 'assets/images/dummy_foods/Asparagus_Salad.jpg',
   //   duration: 30,
   //   ingredients: [
   //     'White and Green Asparagus',

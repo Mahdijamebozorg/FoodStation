@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:math';
+
+import 'package:food_app/Constants/app_colors.dart';
 import 'package:food_app/Controller/food_controller.dart';
 import 'package:food_app/Controller/user_controller.dart';
 import 'package:food_app/Model/food.dart';
@@ -23,19 +27,21 @@ void _selectPage(int index) {
 
 class HomeScreen extends StatelessWidget {
   static const routeName = "/home";
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
   // pages
   static const List<Map<String, Object>> _pages = [
     {'page': Categories(), 'title': 'Categories'},
     {'page': FavoriteFood(), 'title': "Your FavoritefoodCtrl"}
   ];
 
+  final foodCtrl = Get.put(FoodController());
+
   // simple search
   void _searchdFood(String text) {
     if (text.isEmpty) {
-      _foodsFound.value = Get.find<FoodController>().availableFoods;
+      _foodsFound.value = foodCtrl.availableFoods;
     } else {
-      _foodsFound.value = Get.find<FoodController>().simplefoodSearch(
+      _foodsFound.value = foodCtrl.simplefoodSearch(
         text: text,
         inFavs: _currentPage.value == 1,
       );
@@ -52,7 +58,6 @@ class HomeScreen extends StatelessWidget {
     _searchtext.addListener(() {
       _text.value = _searchtext.text;
       _searchdFood(_text.value);
-      debugPrint("listen");
     });
 
     return SafeArea(
@@ -100,26 +105,20 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.sizeOf(context);
     return AppBar(
       // apply gradient
-      flexibleSpace: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: <Color>[Colors.pink[400]!, Colors.pink[900]!]),
-        ),
-      ),
       title: Text(_pages[_currentPage.value]['title'] as String),
       centerTitle: true,
       actions: [
         AnimSearchBar(
+          // textFieldColor: Get.theme.primaryColor,
           color: Colors.transparent,
           searchIconColor: Get.theme.colorScheme.onPrimary,
           helpText: "Enter food name",
           width: 400,
           textController: _searchtext,
-          autoFocus: true,
+          autoFocus: false,
           boxShadow: false,
           suffixIcon: const Icon(Icons.clear),
           onSuffixTap: () {
@@ -131,7 +130,14 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           itemBuilder: (context) => [
             PopupMenuItem(
               child: const Text("Adcanced Search"),
-              onTap: () => showBottomSheet(
+              onTap: () => showModalBottomSheet(
+                constraints: BoxConstraints(
+                  maxHeight: screenSize.height,
+                  maxWidth: screenSize.width > 600
+                      ? screenSize.width * 0.8
+                      : screenSize.width,
+                ),
+                isScrollControlled: true,
                 context: context,
                 builder: (context) => AdvancedSearch(),
               ),
@@ -139,7 +145,17 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             PopupMenuItem(
               child: const Text("Add food"),
-              onTap: () => showBottomSheet(
+              onTap: () => showModalBottomSheet(
+                backgroundColor: SolidColors.bg,
+                constraints: BoxConstraints(
+                  maxHeight: screenSize.height,
+                  maxWidth: screenSize.width > 600
+                      ? screenSize.width * 0.8
+                      : screenSize.width,
+                ),
+                isScrollControlled: true,
+                elevation: 15,
+                useSafeArea: true,
                 context: context,
                 builder: (context) => EditScreen(),
               ),
@@ -201,27 +217,27 @@ class FavoriteFood extends StatelessWidget {
     final screenheigh = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     return GetBuilder<FoodController>(
-      id: "foods",
-      builder: (_) {
-      return GetBuilder<UserController>(
-          id: "favs",
-          builder: (userCtrl) {
-            return GridView.builder(
-              //gridview options
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent:
-                    islandscape ? screenwidth / 2 : screenheigh / 1,
-                childAspectRatio: islandscape ? 7 / 5 : 1,
-                mainAxisSpacing: screenheigh * 0.03,
-                crossAxisSpacing: screenwidth * 0.01,
-              ),
-              //items
-              itemCount: userCtrl.favoritefoods.length,
-              itemBuilder: (ctx, index) =>
-                  FoodItem(foodId: userCtrl.favoritefoods[index]),
-            );
-          });
-    });
+        id: "foods",
+        builder: (_) {
+          return GetBuilder<UserController>(
+              id: "favs",
+              builder: (userCtrl) {
+                return GridView.builder(
+                  //gridview options
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent:
+                        islandscape ? screenwidth / 2 : screenheigh / 1,
+                    childAspectRatio: islandscape ? 7 / 5 : 1,
+                    mainAxisSpacing: screenheigh * 0.03,
+                    crossAxisSpacing: screenwidth * 0.01,
+                  ),
+                  //items
+                  itemCount: userCtrl.favoritefoods.length,
+                  itemBuilder: (ctx, index) =>
+                      FoodItem(foodId: userCtrl.favoritefoods[index]),
+                );
+              });
+        });
   }
 }
 
@@ -241,7 +257,7 @@ class Categories extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           itemBuilder: (context, index) =>
               CategoryItem(foodCtrl.availableCategories[index]),
-          itemCount:foodCtrl.availableCategories.length,
+          itemCount: foodCtrl.availableCategories.length,
           //Gridview options
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             //Width

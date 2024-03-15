@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-
+import 'dart:developer';
 import 'package:get/get.dart';
-
 import 'package:food_app/Controller/user_controller.dart';
 import 'package:food_app/Helpers/dummy_data.dart';
 import 'package:food_app/Model/food.dart';
@@ -26,19 +24,19 @@ class FoodController extends GetxController {
         throw ("No user controller set!");
       }
       //set available foods according to filters
-      var newAvailablefoods = dummyfoods.where((element) {
-        if (filters['isGlutenFree']! && !element.isGlutenFree) {
+      var newAvailablefoods = dummyfoods.where((food) {
+        if (filters['isGlutenFree']! && !food.isGlutenFree) {
           return false;
-        } else if (filters['isVegan']! && !element.isVegan) {
+        } else if (filters['isVegan']! && !food.isVegan) {
           return false;
-        } else if (filters['isLactoseFree']! && !element.isLactoseFree) {
+        } else if (filters['isLactoseFree']! && !food.isLactoseFree) {
           return false;
         } else {
           return true;
         }
       }).toList();
       setAvailablefoods(newAvailablefoods);
-      debugPrint("filters changed to: $filters");
+      log("filters changed to: $filters");
     });
 
     ever(Get.find<UserController>().selectedCategories, (List<String> cats) {
@@ -49,7 +47,13 @@ class FoodController extends GetxController {
         return false;
       }).toList();
       setAvailablefoods(newAvailablefoods);
-      debugPrint("user cats changed to: $cats");
+
+      var newAvailableCategories = dummyCats.where((cat) {
+        return cats.contains(cat);
+      }).toList();
+      setAvailableCategories(newAvailableCategories);
+
+      log("user cats changed to: $cats");
     });
 
     super.onInit();
@@ -60,12 +64,13 @@ class FoodController extends GetxController {
     try {
       return availableFoods.firstWhere((food) => food.id == id);
     } catch (excp) {
-      debugPrint("food $id not found");
+      log("food $id not found");
       return null;
     }
   }
 
   List<Food> getCategoryfoods(String catId) {
+    final cats = Get.find<UserController>().selectedCategories.value;
     return availableFoods.where((food) {
       return food.categories.contains(catId);
     }).toList();
@@ -73,23 +78,23 @@ class FoodController extends GetxController {
 
   void setAvailablefoods(List<Food> newList) {
     availableFoods.value = newList;
-    debugPrint("foods setted");
+    log("foods setted");
     update(["foods"]);
   }
 
   void addFood(Food food) {
     availableFoods.add(food);
-    debugPrint("food added");
+    log("food added");
     update(["foods"]);
   }
 
   void removeFood({required String id}) {
     try {
       availableFoods.removeWhere((food) => food.id == id);
-      debugPrint("food removed");
+      log("food removed");
       update(["foods"]);
     } catch (excp) {
-      debugPrint("food $id not found");
+      log("food $id not found");
     }
   }
 
@@ -97,11 +102,11 @@ class FoodController extends GetxController {
     final index = availableFoods.indexWhere((food) => food.id == id);
     // if not found
     if (index == -1) {
-      debugPrint("food $id not found");
+      log("food $id not found");
       return;
     }
     availableFoods[index] = newfood;
-    debugPrint("food updated");
+    log("food updated");
     update(["foods"]);
   }
 
@@ -110,7 +115,7 @@ class FoodController extends GetxController {
   //_______________________________________________________________________________ available categories
   void setAvailableCategories(List<String> newList) {
     availableCategories.value = newList;
-    debugPrint("cats updated");
+    log("cats updated");
     update(["cats"]);
   }
 
@@ -125,7 +130,7 @@ class FoodController extends GetxController {
 
   void setAvailableIngredient(List<Ingredient> newList) {
     availableIngredient.value = newList;
-    debugPrint("ings updated");
+    log("ings updated");
     update(["ings"]);
   }
 

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:food_app/Controller/auth_controller.dart';
 import 'package:food_app/Controller/food_controller.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +12,10 @@ class UserController extends GetxController {
   final RxMap<String, bool> filters = RxMap();
   final RxList<String> _favoritefoods = RxList();
   final RxList<String> selectedCategories = RxList();
-  final Rx<User> user = User.dummy().obs;
 
-  UserController() {
+  final Rx<User> user;
+
+  UserController(this.user) {
     filters.value = {
       'isGlutenFree': false,
       'isVegan': false,
@@ -19,10 +23,17 @@ class UserController extends GetxController {
     };
   }
 
+  // logout on delete
+  @override
+  InternalFinalCallback<void> get onDelete {
+    Get.find<AuthController>().isAuth.value = false;
+    return super.onDelete;
+  }
+
   //___________________________________________________________________________filters
   void setfilters(Map<String, bool> filterdata, BuildContext context) {
     filters.value = filterdata;
-    debugPrint("filters updated");
+    log("filters updated");
     update(["filters"]);
   }
 
@@ -47,13 +58,13 @@ class UserController extends GetxController {
 
   void addFavoriteFood(String id) {
     _favoritefoods.add(id);
-    debugPrint("favs updated");
+    log("favs updated");
     update(["favs"]);
   }
 
   void removeFavoriteFood(String id) {
     _favoritefoods.remove(id);
-    debugPrint("favs updated");
+    log("favs updated");
     update(["favs"]);
   }
 

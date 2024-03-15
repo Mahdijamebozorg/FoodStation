@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:food_app/Constants/app_colors.dart';
 import 'package:food_app/Controller/comment_controller.dart';
 import 'package:food_app/Controller/food_controller.dart';
 import 'package:food_app/Controller/user_controller.dart';
@@ -38,8 +39,7 @@ class FoodScreen extends StatelessWidget {
                     bottom: AppBar(
                       leading: const SizedBox(),
                       elevation: 0,
-                      backgroundColor:
-                          Get.theme.scaffoldBackgroundColor,
+                      backgroundColor: Get.theme.scaffoldBackgroundColor,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
                           top: Radius.circular(30),
@@ -52,27 +52,43 @@ class FoodScreen extends StatelessWidget {
                     actions: [
                       LikeButton(food: food),
                       IconButton(
-                          onPressed: () => scaffoldKey.currentState!
-                              .showBottomSheet(
-                                  (context) => EditScreen(food: food)),
+                          onPressed: () => showModalBottomSheet(
+                                backgroundColor: SolidColors.bg,
+                                constraints: BoxConstraints(
+                                  maxHeight: screenSize.height,
+                                  maxWidth: screenSize.width > 600
+                                      ? screenSize.width * 0.9
+                                      : screenSize.width,
+                                ),
+                                isScrollControlled: true,
+                                elevation: 15,
+                                useSafeArea: true,
+                                context: context,
+                                builder: (context) => EditScreen(food: food),
+                              ),
                           icon: const Icon(Icons.edit))
                     ],
                     backgroundColor: Colors.white,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Hero(
                         tag: food.id,
-                        child: CachedNetworkImage(
-                          imageUrl: food.imageUrl,
-                          imageBuilder: (context, imageProvider) => Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: imageProvider),
-                            ),
-                          ),
-                          placeholder: (context, url) => SpinKitFoldingCube(),
-                          errorWidget: (context, url, error) => const Icon(
-                            Icons.image_not_supported_outlined,
-                            color: Colors.grey,
-                          ),
+                        // TODO: replace with these when data server is ready
+                        // child: CachedNetworkImage(
+                        //   imageUrl: food.imageUrl,
+                        //   imageBuilder: (context, imageProvider) => Container(
+                        //     decoration: BoxDecoration(
+                        //       image: DecorationImage(image: imageProvider),
+                        //     ),
+                        //   ),
+                        //   placeholder: (context, url) => SpinKitFoldingCube(),
+                        //   errorWidget: (context, url, error) => const Icon(
+                        //     Icons.image_not_supported_outlined,
+                        //     color: Colors.grey,
+                        //   ),
+                        // ),
+                        child: Image.asset(
+                          food.imageUrl,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
@@ -256,66 +272,63 @@ class _LikeButtonState extends State<LikeButton>
 
 class CommentsList extends StatelessWidget {
   final Food food;
-  const CommentsList({required this.food, Key? key}) : super(key: key);
+  CommentsList({required this.food, Key? key}) : super(key: key);
+  final commentCtrl = Get.put(CommentController());
+  final userCtrl = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
     final textCtrl = TextEditingController();
     final Size screenSize = MediaQuery.sizeOf(context);
     final Comment cm = Comment.dummy();
-    return GetBuilder<UserController>(
-        id: "user",
-        builder: (user) {
-          return GetBuilder<CommentController>(
-            id: "comments",
-            builder: (comments) {
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                height: screenSize.height * 0.4,
-                child: Column(
-                  children: [
-                    const Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Comments"),
-                    ),
-                    TextField(
-                      controller: textCtrl,
+    return GetBuilder<CommentController>(
+      id: "comments",
+      builder: (comments) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          height: screenSize.height * 0.4,
+          child: Column(
+            children: [
+              const Align(
+                alignment: Alignment.topLeft,
+                child: Text("Comments"),
+              ),
+              TextField(
+                controller: textCtrl,
+                style: Get.theme.textTheme.bodySmall,
+              ),
+              TextButton.icon(
+                  onPressed: () {
+                    if (textCtrl.text.isNotEmpty) {
+                      cm.foodId = food.id;
+                      cm.userId = userCtrl.user.value.id;
+                      cm.message = textCtrl.text;
+                      comments.addComment(cm);
+                      textCtrl.clear();
+                    }
+                  },
+                  icon: const Icon(Icons.add, color: Colors.black),
+                  label: const Text("Add comment")),
+              Expanded(
+                  child: ListView.builder(
+                itemCount: comments.getFoodComments(food.id).length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    subtitle: Text(
+                      comments.getFoodComments(food.id)[index].message,
                       style: Get.theme.textTheme.bodySmall,
                     ),
-                    TextButton.icon(
-                        onPressed: () {
-                          if (textCtrl.text.isNotEmpty) {
-                            cm.foodId = food.id;
-                            cm.userId =
-                                Get.find<UserController>().user.value.id;
-                            cm.message = textCtrl.text;
-                            comments.addComment(cm);
-                            textCtrl.clear();
-                          }
-                        },
-                        icon: const Icon(Icons.add, color: Colors.black),
-                        label: const Text("Add comment")),
-                    Expanded(
-                        child: ListView.builder(
-                      itemCount: comments.getFoodComments(food.id).length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          subtitle: Text(
-                            comments.getFoodComments(food.id)[index].message,
-                            style: Get.theme.textTheme.bodySmall,
-                          ),
-                          title: Text(
-                            user.user.value.name,
-                            style: Get.theme.textTheme.bodyMedium,
-                          ),
-                        );
-                      },
-                    )),
-                  ],
-                ),
-              );
-            },
-          );
-        });
+                    title: Text(
+                      userCtrl.user.value.name,
+                      style: Get.theme.textTheme.bodyMedium,
+                    ),
+                  );
+                },
+              )),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

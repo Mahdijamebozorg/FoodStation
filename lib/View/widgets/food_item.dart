@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:food_app/Constants/app_colors.dart';
 import 'package:food_app/Controller/food_controller.dart';
+import 'package:food_app/Helpers/dummy_data.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/gen/assets.gen.dart';
 import 'package:get/get.dart';
 
 class FoodItem extends StatelessWidget {
@@ -65,21 +68,29 @@ class Avatar extends StatelessWidget {
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),
               ),
+              // TODO: replace with these when data server is ready
               //Image
-              child: CachedNetworkImage(
-                height: boxConstraints.maxHeight * 1,
-                width: double.infinity,
-                imageUrl: food.imageUrl,
-                imageBuilder: (context, imageProvider) => Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(image: imageProvider),
-                  ),
-                ),
-                placeholder: (context, url) => SpinKitFoldingCube(),
-                errorWidget: (context, url, error) => const Icon(
-                  Icons.image_not_supported_outlined,
-                  color: Colors.grey,
-                ),
+              // child: CachedNetworkImage(
+              //   height: boxConstraints.maxHeight * 1,
+              //   width: double.infinity,
+              //   imageUrl: food.imageUrl,
+              //   imageBuilder: (context, imageProvider) => Container(
+              //     decoration: BoxDecoration(
+              //       image: DecorationImage(image: imageProvider),
+              //     ),
+              //   ),
+              //   placeholder: (context, url) =>
+              //       const SpinKitFoldingCube(color: SolidColors.primary),
+              //   errorWidget: (context, url, error) => const Icon(
+              //     Icons.image_not_supported_outlined,
+              //     color: Colors.grey,
+              //   ),
+              // ),
+              child: Image.asset(
+                food.imageUrl,
+                fit: BoxFit.fill,
+                height: boxConstraints.maxHeight,
+                width: boxConstraints.maxWidth,
               ),
             ),
           ),

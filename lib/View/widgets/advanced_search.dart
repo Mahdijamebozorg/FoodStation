@@ -117,14 +117,18 @@ class AdvancedSearch extends StatelessWidget {
                   ),
                   child: SingleChildScrollView(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        SizedBox(
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
                           height: 500,
                           width: constraints.maxWidth,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
+                            mainAxisSize: MainAxisSize.max,
                             children: [
                               // input data
                               Expanded(
@@ -133,7 +137,7 @@ class AdvancedSearch extends StatelessWidget {
                                   child: const Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisSize: MainAxisSize.max,
                                     children: [
                                       // title, duration, imageUrl
                                       TextInputs(),
@@ -225,91 +229,76 @@ class TextInputs extends StatelessWidget {
     final FocusNode duration = FocusNode();
     final FocusNode imageUrl = FocusNode();
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // title
         Flexible(
-          child: Container(
-            padding:
-                const EdgeInsets.only(bottom: 8.0, right: 12.0, left: 12.0),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              border: Border.all(color: Colors.black54),
+          child: TextFormField(
+            cursorHeight: 24,
+            maxLength: 50,
+            style: Get.theme.textTheme.bodySmall,
+            initialValue: _food.value.title,
+            decoration: InputDecoration(
+              labelText: 'Title',
+              errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
+              floatingLabelStyle:
+                  TextStyle(color: Get.theme.primaryColor, fontSize: 14),
+              hintStyle: Get.theme.textTheme.bodySmall,
+              labelStyle: Get.theme.textTheme.bodySmall,
+              counterStyle:
+                  TextStyle(fontSize: 8, color: Get.theme.primaryColor),
             ),
-            child: TextFormField(
-              cursorHeight: 24,
-              maxLength: 50,
-              style: Get.theme.textTheme.bodySmall,
-              initialValue: _food.value.title,
-              decoration: InputDecoration(
-                labelText: 'Title',
-                errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
-                floatingLabelStyle: TextStyle(
-                    color: Get.theme.primaryColor, fontSize: 14),
-                hintStyle: Get.theme.textTheme.bodySmall,
-                labelStyle: Get.theme.textTheme.bodySmall,
-                counterStyle: TextStyle(
-                    fontSize: 8, color: Get.theme.primaryColor),
-              ),
-              textInputAction: TextInputAction.next,
-              onFieldSubmitted: (value) =>
-                  FocusScope.of(context).requestFocus(duration),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please provide a value.';
-                }
-                return null;
-              },
-              onSaved: (newValue) {
-                _food.value.title = newValue ?? "";
-              },
-            ),
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (value) =>
+                FocusScope.of(context).requestFocus(duration),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please provide a value.';
+              }
+              return null;
+            },
+            onSaved: (newValue) {
+              _food.value.title = newValue ?? "";
+            },
           ),
         ),
         const SizedBox(width: 8.0),
         // duration
         Flexible(
-          child: Container(
-            padding:
-                const EdgeInsets.only(bottom: 8.0, right: 12.0, left: 12.0),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              border: Border.all(color: Colors.black54),
+          child: TextFormField(
+            cursorHeight: 24,
+            maxLength: 3,
+            style: Get.theme.textTheme.bodySmall,
+            focusNode: duration,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            initialValue: _food.value.duration == 0
+                ? null
+                : _food.value.duration.toString(),
+            decoration: InputDecoration(
+              labelText: 'Duration',
+              errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
+              floatingLabelStyle:
+                  TextStyle(color: Get.theme.primaryColor, fontSize: 14),
+              hintStyle: Get.theme.textTheme.bodySmall,
+              labelStyle: Get.theme.textTheme.bodySmall,
+              counterStyle:
+                  TextStyle(fontSize: 8, color: Get.theme.primaryColor),
             ),
-            child: TextFormField(
-              cursorHeight: 24,
-              maxLength: 3,
-              style: Get.theme.textTheme.bodySmall,
-              focusNode: duration,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              initialValue: _food.value.duration == 0
-                  ? null
-                  : _food.value.duration.toString(),
-              decoration: InputDecoration(
-                labelText: 'Duration',
-                errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
-                floatingLabelStyle: TextStyle(
-                    color: Get.theme.primaryColor, fontSize: 14),
-                hintStyle: Get.theme.textTheme.bodySmall,
-                labelStyle: Get.theme.textTheme.bodySmall,
-                counterStyle: TextStyle(
-                    fontSize: 8, color: Get.theme.primaryColor),
-              ),
-              textInputAction: TextInputAction.next,
-              onFieldSubmitted: (value) =>
-                  FocusScope.of(context).requestFocus(imageUrl),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please provide a value.';
-                }
-                return null;
-              },
-              onSaved: (newValue) {
-                _food.value.duration = newValue == null || newValue.isEmpty
-                    ? 0
-                    : int.parse(newValue);
-              },
-            ),
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (value) =>
+                FocusScope.of(context).requestFocus(imageUrl),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please provide a value.';
+              }
+              return null;
+            },
+            onSaved: (newValue) {
+              _food.value.duration = newValue == null || newValue.isEmpty
+                  ? 0
+                  : int.parse(newValue);
+            },
           ),
         ),
       ],
@@ -546,8 +535,7 @@ class _IngredientsChoiceState extends State<IngredientsChoice> {
                                   });
                                 },
                                 leading: CircleAvatar(
-                                    backgroundColor:
-                                        Get.theme.primaryColor),
+                                    backgroundColor: Get.theme.primaryColor),
                                 title: Text(
                                   _foundIngs[index],
                                   style: Get.theme.textTheme.bodySmall,
@@ -612,101 +600,98 @@ class CategoriesChoice extends StatefulWidget {
 }
 
 class _CategoriesChoiceState extends State<CategoriesChoice> {
-
   @override
   Widget build(BuildContext context) {
     //
     return GetBuilder<FoodController>(
-      id: "foods",
-      builder: (foodCtrl) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // label
-            Text(
-              "Categories",
-              style: Get.theme.textTheme.bodySmall,
-            ),
-            // list
-            Expanded(
-              child: Obx(
-                () => Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 150,
-                      child: ListWheelScrollView(
-                        onSelectedItemChanged: (value) {},
-                        diameterRatio: 0.6,
-                        itemExtent: 30,
-                        children: List.generate(
-                          foodCtrl.availableCategories.length,
-                          (index) => InkWell(
-                            // add category
-                            onTap: () {
-                              setState(() {
-                                _food.value.categories.addIf(
-                                    !_food.value.categories.contains(
-                                        foodCtrl.availableCategories[index]),
-                                    foodCtrl.availableCategories[index]);
-                              });
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    colors: [
-                                      Get.theme
-                                          .primaryColor
-                                          .withOpacity(0.2),
-                                      Get.theme.primaryColor
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight),
-                                border: Border.all(),
-                              ),
-                              child: Text(
-                                foodCtrl.availableCategories[index],
-                                style: Get.theme.textTheme.bodySmall,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView(
-                        children: List.generate(
-                          _food.value.categories.length,
-                          (index) => ListTile(
-                            key: UniqueKey(),
-                            tileColor: Get.theme.primaryColor,
-                            title: Text(
-                              _food.value.categories[index],
-                              style: Get.theme.textTheme.bodySmall,
-                            ),
-                            // remove category
-                            leading: IconButton(
-                              icon: const Icon(Icons.clear, color: Colors.black),
-                              onPressed: () {
+        id: "foods",
+        builder: (foodCtrl) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // label
+              Text(
+                "Categories",
+                style: Get.theme.textTheme.bodySmall,
+              ),
+              // list
+              Expanded(
+                child: Obx(
+                  () => Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 150,
+                        child: ListWheelScrollView(
+                          onSelectedItemChanged: (value) {},
+                          diameterRatio: 0.6,
+                          itemExtent: 30,
+                          children: List.generate(
+                            foodCtrl.availableCategories.length,
+                            (index) => InkWell(
+                              // add category
+                              onTap: () {
                                 setState(() {
-                                  _food.value.categories
-                                      .remove(_food.value.categories[index]);
+                                  _food.value.categories.addIf(
+                                      !_food.value.categories.contains(
+                                          foodCtrl.availableCategories[index]),
+                                      foodCtrl.availableCategories[index]);
                                 });
                               },
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        Get.theme.primaryColor.withOpacity(0.2),
+                                        Get.theme.primaryColor
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight),
+                                  border: Border.all(),
+                                ),
+                                child: Text(
+                                  foodCtrl.availableCategories[index],
+                                  style: Get.theme.textTheme.bodySmall,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: ListView(
+                          children: List.generate(
+                            _food.value.categories.length,
+                            (index) => ListTile(
+                              key: UniqueKey(),
+                              tileColor: Get.theme.primaryColor,
+                              title: Text(
+                                _food.value.categories[index],
+                                style: Get.theme.textTheme.bodySmall,
+                              ),
+                              // remove category
+                              leading: IconButton(
+                                icon: const Icon(Icons.clear,
+                                    color: Colors.black),
+                                onPressed: () {
+                                  setState(() {
+                                    _food.value.categories
+                                        .remove(_food.value.categories[index]);
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
-        );
-      }
-    );
+              )
+            ],
+          );
+        });
   }
 }
 

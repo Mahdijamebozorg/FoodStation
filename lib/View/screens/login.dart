@@ -1,155 +1,182 @@
 import 'dart:async';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_app/Service/http_service.dart';
+import 'package:get/get.dart';
+
 import 'package:food_app/Constants/app_colors.dart';
 import 'package:food_app/Controller/auth_controller.dart';
 import 'package:food_app/gen/assets.gen.dart';
-import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = "/login";
 
-  static const appbarSize = 50;
-
   LoginScreen({Key? key}) : super(key: key);
 
-  // form state
+  final appbarSize = 50;
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-
   final auth = Get.find<AuthController>();
+  static Timer? timer;
 
   // set button text by step
   String _buttonText() {
     switch (auth.step.value) {
       case LoginState.phone:
         return "تایید و ادامه";
-      case LoginState.forgotSmsVld:
-      case LoginState.signupSmsVld:
+      case LoginState.pwdResetVerification:
+      case LoginState.phoneVerification:
         return "ادامه";
       case LoginState.signin:
         return "ورود";
       case LoginState.signup:
         return "ثبت نام";
-      case LoginState.resetPwd:
+      case LoginState.pwdReset:
         return "تایید";
       default:
         return "Error!";
     }
   }
 
-  void _saveForm() async {
-    // validate and save
-    if (!_form.currentState!.validate()) return;
-    _form.currentState!.save();
-
-    switch (auth.step.value) {
-      // --------------------------------------------------------
-      case LoginState.phone:
-        {
-          auth.loading.value = true;
-          final response = await auth.checkNumber();
-          auth.loading.value = false;
-
-          // TODO check response
-          if (response == "has account") {
-            auth.step.value = LoginState.signin;
-          } else if (response == "has not account") {
-            await auth.sendSmsValidation();
-            auth.step.value = LoginState.signupSmsVld;
-          } else if (response == "connection lost") {
-            auth.showErrorSnackBar("دستگاه به اینترنت متصل نیست");
-          } else {
-            auth.showErrorSnackBar("شماره وارد شده صحیح نمیباشد");
-          }
-        }
-        break;
-
-      // --------------------------------------------------------
-      case LoginState.signin:
-        {
-          auth.loading.value = true;
-          final response = await auth.signin();
-          auth.loading.value = false;
-
-          // TODO check response
-          if (response == "wrong password") {
-            auth.showErrorSnackBar("رمز وارد شده اشتباه است");
-          }
-        }
-        break;
-
-      // --------------------------------------------------------
-      case LoginState.forgotSmsVld:
-        {
-          auth.step.value = LoginState.resetPwd;
-        }
-        break;
-
-      // --------------------------------------------------------
-      case LoginState.signupSmsVld:
-        {
-          auth.step.value = LoginState.signup;
-        }
-        break;
-
-      // --------------------------------------------------------
-      case LoginState.resetPwd:
-        {
-          auth.loading.value = true;
-          final response = await auth.changePassword();
-          auth.loading.value = false;
-
-          // TODO check response
-          if (response == "...") {
-            auth.step.value = LoginState.phone;
-          } else {
-            auth.showErrorSnackBar("response");
-          }
-        }
-        break;
-
-      // --------------------------------------------------------
-      case LoginState.signup:
-        {
-          auth.loading.value = true;
-          final response = await auth.signup();
-          auth.loading.value = false;
-
-          // TODO check response
-          if (response == "...") {
-            auth.step.value = LoginState.phone;
-          } else {
-            auth.showErrorSnackBar("reponse");
-          }
-        }
-        break;
-
-      // --------------------------------------------------------
-      default:
-        break;
-    }
-  }
-
   // select current widget by step
   Widget _loginForm() {
+    // TODO: timer has some bugs
+    void startTimer(RxInt counter) {
+      if (timer != null) timer!.cancel();
+      timer = Timer.periodic(
+        const Duration(seconds: 1),
+        (Timer timer) {
+          if (counter.value == 0) {
+            timer.cancel();
+          } else {
+            counter.value--;
+          }
+        },
+      );
+    }
+
     switch (auth.step.value) {
       case LoginState.phone:
-        return _OneField(key: UniqueKey());
+        {
+          return _OneField(
+            key: UniqueKey(),
+            titleText: "ورود یا ثبت نام",
+            subtitleText: "شماره تلفن همراه خود را وارد کنید",
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            keyboardType: TextInputType.phone,
+            obscureText: false,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "شماره موبایل نباید خالی باشد";
+              } else if (value[0] != '0' ||
+                  value[1] != '9' ||
+                  value.length != 11) {
+                return "شماره وارد شده صحیح نمیباشد";
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) async {
+              auth.phoneNumber.value = value!;
+            },
+            startTimer: (RxInt t) {},
+          );
+        }
+
       case LoginState.signin:
-        return _OneField(key: UniqueKey());
-      case LoginState.forgotSmsVld:
-        return _OneField(key: UniqueKey());
-      case LoginState.signupSmsVld:
-        return _OneField(key: UniqueKey());
-      case LoginState.resetPwd:
+        {
+          return _OneField(
+            key: UniqueKey(),
+            titleText: "ورود",
+            subtitleText: "رمز عبور خود را وارد کنید",
+            inputFormatters: const [],
+            keyboardType: TextInputType.text,
+            obscureText: true,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "رمز نمیتواند خالی باشد";
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) async {
+              auth.password.value = value!;
+            },
+            startTimer: (RxInt t) {},
+          );
+        }
+
+      case LoginState.pwdResetVerification:
+        {
+          return _OneField(
+            key: UniqueKey(),
+            titleText: "بازیابی رمز عبور",
+            subtitleText: "رمز  یک بار مصرف ارسالی را وارد کنید",
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            keyboardType: TextInputType.number,
+            obscureText: false,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "کد نمیتواند خالی باشد";
+              } else if (timer == null || !timer!.isActive) {
+                return "زمان کد تمام شده است";
+              }
+              // TODO: use flutter_form_bloc and await for validaion here
+              // else if (!auth.checkCode(value)) {
+              // return "کد وارد شده صحیح نمیباشد";
+              // }
+              else {
+                return null;
+              }
+            },
+            onSaved: (value) async {
+              timer!.cancel();
+            },
+            startTimer: startTimer,
+          );
+        }
+
+      case LoginState.phoneVerification:
+        {
+          return _OneField(
+            key: UniqueKey(),
+            titleText: "ثبت نام",
+            subtitleText: "رمز  یک بار مصرف ارسالی را وارد کنید",
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            keyboardType: TextInputType.number,
+            obscureText: false,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "کد نمیتواند خالی باشد";
+              } else if (timer == null || !timer!.isActive) {
+                return "زمان کد تمام شده است";
+              }
+              // TODO: use flutter_form_bloc and await for validaion here
+              // else if (!auth.checkCode(value)) {
+              // return "کد وارد شده صحیح نمیباشد";
+              // }
+              else {
+                return null;
+              }
+            },
+            onSaved: (value) async {
+              timer!.cancel();
+            },
+            startTimer: startTimer,
+          );
+        }
+
+      case LoginState.pwdReset:
         return _RestPassword();
+
       case LoginState.signup:
         return _Signup();
+
       default:
-        return _OneField(key: UniqueKey());
+        return Container();
     }
   }
 
@@ -169,6 +196,7 @@ class LoginScreen extends StatelessWidget {
                   : BackButton(
                       onPressed: () {
                         auth.step.value = LoginState.phone;
+                        if (timer != null) timer!.cancel();
                       },
                     ),
             ),
@@ -188,8 +216,8 @@ class LoginScreen extends StatelessWidget {
                     child: SizedBox(
                       height: screenSize.height * 0.5 - appbarSize,
                       width: screenSize.width,
-                      child: Image(
-                        image: Assets.images.rectangle12.provider(),
+                      child: SvgPicture.asset(
+                        Assets.images.rectangle,
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -223,7 +251,7 @@ class LoginScreen extends StatelessWidget {
                                 child:
                                     SpinKitFadingCircle(color: SolidColors.bg))
                             : InkWell(
-                                onTap: _saveForm,
+                                onTap: () => auth.saveForm(_form),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
                                   child: Row(
@@ -256,135 +284,54 @@ class LoginScreen extends StatelessWidget {
 class _OneField extends StatelessWidget {
   _OneField({
     Key? key,
+    required this.titleText,
+    required this.subtitleText,
+    required this.validator,
+    required this.onSaved,
+    required this.inputFormatters,
+    required this.keyboardType,
+    required this.obscureText,
+    required this.startTimer,
   }) : super(key: key);
 
   final auth = Get.find<AuthController>();
 
-  late String titleText;
-  late String subtitleText;
-  late String? Function(String?) validator;
-  late Future Function(String?) onSaved;
-  late List<TextInputFormatter> inputFormatters;
-  late TextInputType keyboardType;
-  late bool obscureText;
+  final String titleText;
+  final String subtitleText;
+  final String? Function(String?) validator;
+  final Future Function(String?) onSaved;
+  final List<TextInputFormatter> inputFormatters;
+  final TextInputType keyboardType;
+  final bool obscureText;
+  final Function startTimer;
 
-  Timer? timer;
-  final RxInt counter = 5.obs;
-  void startTimer() {
-    if (timer != null) timer!.cancel();
-    timer = Timer.periodic(
-      const Duration(seconds: 1),
-      (Timer timer) {
-        if (counter.value == 0) {
-          timer.cancel();
-        } else {
-          counter.value--;
-        }
-      },
-    );
-  }
+  static final RxInt counter = 120.obs;
 
-  // set texts and fucntions for each field
-  void setAtts() {
-    switch (auth.step.value) {
-      case LoginState.phone:
-        {
-          titleText = "ورود یا ثبت نام";
-          subtitleText = "شماره تلفن همراه خود را وارد کنید";
-          inputFormatters = [FilteringTextInputFormatter.digitsOnly];
-          keyboardType = TextInputType.phone;
-          obscureText = false;
-          validator = (value) {
-            if (value == null || value.isEmpty) {
-              return "شماره موبایل نباید خالی باشد";
-            } else if (value[0] != '0' ||
-                value[1] != '9' ||
-                value.length != 11) {
-              return "شماره وارد شده صحیح نمیباشد";
-            } else {
-              return null;
-            }
-          };
-          onSaved = (value) async {
-            auth.phoneNumber.value = value!;
-          };
-        }
-        break;
-      case LoginState.signin:
-        {
-          titleText = "ورود";
-          subtitleText = "رمز عبور خود را وارد کنید";
-          inputFormatters = [];
-          keyboardType = TextInputType.text;
-          obscureText = true;
-          validator = (value) {
-            if (value == null || value.isEmpty) {
-              return "رمز نمیتواند خالی باشد";
-            } else {
-              return null;
-            }
-          };
-          onSaved = (value) async {
-            auth.password.value = value!;
-          };
-        }
-        break;
-      case LoginState.signupSmsVld:
-        {
-          titleText = "ثبت نام";
-          subtitleText = "کد  یک بار مصرف ارسالی را وارد کنید";
-          inputFormatters = [FilteringTextInputFormatter.digitsOnly];
-          keyboardType = TextInputType.number;
-          obscureText = false;
-          startTimer();
-          validator = (value) {
-            if (value == null || value.isEmpty) {
-              return "کد نمیتواند خالی باشد";
-            } else if (timer == null || !timer!.isActive) {
-              return "زمان کد تمام شده است";
-            } else if (!auth.checkCode(value)) {
-              return "کد وارد شده صحیح نمیباشد";
-            } else {
-              return null;
-            }
-          };
-          onSaved = (value) async {
-            timer!.cancel();
-          };
-        }
-        break;
-      case LoginState.forgotSmsVld:
-        {
-          titleText = "بازیابی رمز عبور";
-          subtitleText = "بازیابی رمز عبور";
-          inputFormatters = [FilteringTextInputFormatter.digitsOnly];
-          keyboardType = TextInputType.number;
-          obscureText = false;
-          startTimer();
-          validator = (value) {
-            if (value == null || value.isEmpty) {
-              return "کد نمیتواند خالی باشد";
-            } else if (timer == null || !timer!.isActive) {
-              return "زمان کد تمام شده است";
-            } else if (!auth.checkCode(value)) {
-              return "کد وارد شده صحیح نمیباشد";
-            } else {
-              return null;
-            }
-          };
-          onSaved = (value) async {
-            timer!.cancel();
-          };
-        }
-        break;
-      default:
+  void resetPwdFunction() async {
+    try {
+      auth.loading.value = true;
+      final response = await auth.sendResetPwd();
+
+      if (response == null) {
+        auth.showErrorSnackBar("مشکلی پیش آمده است");
+      } else if (HttpService.cmpFirstLetter(
+          code: response.statusCode!, num: 2)) {
+        auth.step.value = LoginState.pwdReset;
+        auth.update(['step']);
+      } else {
+        auth.showErrorSnackBar("مشکلی پیش آمده است ${response.statusCode}");
+      }
+    } catch (error) {
+      log(error.toString());
+      auth.showErrorSnackBar(error.toString());
     }
+    auth.loading.value = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    // set attributes
-    setAtts();
+    // start timer if not started
+    if (counter.value == 120) startTimer(counter);
     final screenSize = MediaQuery.sizeOf(context);
     return Positioned(
       height: 320,
@@ -405,52 +352,34 @@ class _OneField extends StatelessWidget {
           // form
           Container(
             width: screenSize.width * 0.88,
-            height: 90,
             decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                color: Get.theme.scaffoldBackgroundColor),
-            child: TextFormField(
-                style: Get.theme.textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-                inputFormatters: inputFormatters,
-                keyboardType: keyboardType,
-                obscureText: obscureText,
-                decoration: InputDecoration(
-                  errorStyle: Get.theme.textTheme.labelMedium!.copyWith(
-                    color: Colors.red,
-                  ),
-                  contentPadding: const EdgeInsets.all(20),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide:
-                        BorderSide(color: SolidColors.primary, width: 1),
-                  ),
-                  border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(color: SolidColors.disabled),
-                  ),
-                ),
-                validator: validator,
-                onSaved: onSaved),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              color: Get.theme.scaffoldBackgroundColor,
+              border: Border.all(color: SolidColors.disabled),
+            ),
+            child: Center(
+              child: TextFormField(
+                  style: Get.theme.textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                  inputFormatters: inputFormatters,
+                  keyboardType: keyboardType,
+                  obscureText: obscureText,
+                  validator: validator,
+                  onSaved: onSaved),
+            ),
           ),
           const SizedBox(height: 12),
 
           // show forgot password
           if (auth.step.value == LoginState.signin)
             TextButton(
-              onPressed: () async {
-                auth.loading.value = true;
-                // TODO check response
-                await auth.sendresetPwdValidation();
-                auth.loading.value = false;
-                auth.step.value = LoginState.forgotSmsVld;
-              },
+              onPressed: resetPwdFunction,
               child: const Text("رمز عبور خود را فراموش کرده اید؟"),
             )
 
           // show counter
-          else if (auth.step.value == LoginState.forgotSmsVld ||
-              auth.step.value == LoginState.signupSmsVld)
+          else if (auth.step.value == LoginState.pwdResetVerification ||
+              auth.step.value == LoginState.phoneVerification)
             // left and right padding
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -473,7 +402,7 @@ class _OneField extends StatelessWidget {
                             onPressed: () {
                               // send request
                               counter.value = 120;
-                              startTimer();
+                              startTimer(counter);
                             },
                             child: Text(
                               "ارسال مجدد",
@@ -526,6 +455,7 @@ class _RestPassword extends StatelessWidget {
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
+            surfaceTintColor: Colors.transparent,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Column(
@@ -536,24 +466,9 @@ class _RestPassword extends StatelessWidget {
                     controller: resetPwdCtrl,
                     style: Get.theme.textTheme.bodyMedium,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      errorStyle: Get.theme.textTheme.labelMedium!.copyWith(
-                        color: Colors.red,
-                      ),
-                      labelText: "رمز عبور جدید *",
-                      labelStyle:
-                          Get.theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      contentPadding: const EdgeInsets.all(8),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide:
-                            BorderSide(color: SolidColors.primary, width: 1),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: SolidColors.disabled),
-                      ),
-                    ),
+                    decoration: const InputDecoration()
+                        .applyDefaults(Get.theme.inputDecorationTheme)
+                        .copyWith(labelText: "رمز عبور جدید *"),
                     validator: (value) {
                       if (value == null || value.length < 8) {
                         return "رمز عبور باید بیشتر از 8 حرف داشته باشد";
@@ -565,24 +480,9 @@ class _RestPassword extends StatelessWidget {
                     obscureText: true,
                     style: Get.theme.textTheme.bodyMedium,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      errorStyle: Get.theme.textTheme.labelMedium!.copyWith(
-                        color: Colors.red,
-                      ),
-                      labelText: "تکرار رمز عبور جدید *",
-                      labelStyle:
-                          Get.theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      contentPadding: const EdgeInsets.all(8),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide:
-                            BorderSide(color: SolidColors.primary, width: 1),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: SolidColors.disabled),
-                      ),
-                    ),
+                    decoration: const InputDecoration()
+                        .applyDefaults(Get.theme.inputDecorationTheme)
+                        .copyWith(labelText: "رمز عبور جدید *"),
                     validator: (value) {
                       if (value == null ||
                           value.isEmpty ||
@@ -592,7 +492,7 @@ class _RestPassword extends StatelessWidget {
                       return null;
                     },
                     onSaved: (value) async {
-                      auth.resetPwd.value = value!;
+                      auth.newPassword.value = value!;
                     },
                   ),
                 ],
@@ -640,24 +540,9 @@ class _Signup extends StatelessWidget {
                   TextFormField(
                     style: Get.theme.textTheme.bodyMedium,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      errorStyle: Get.theme.textTheme.labelMedium!.copyWith(
-                        color: Colors.red,
-                      ),
-                      labelText: "نام کاربری *",
-                      labelStyle:
-                          Get.theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      contentPadding: const EdgeInsets.all(8),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide:
-                            BorderSide(color: SolidColors.primary, width: 1),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: SolidColors.disabled),
-                      ),
-                    ),
+                    decoration: const InputDecoration()
+                        .applyDefaults(Get.theme.inputDecorationTheme)
+                        .copyWith(labelText: "نام کاربری"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "نام کاربری نمیتواند خالی باشد";
@@ -673,26 +558,11 @@ class _Signup extends StatelessWidget {
                   TextFormField(
                     style: Get.theme.textTheme.bodyMedium,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      errorStyle: Get.theme.textTheme.labelMedium!.copyWith(
-                        color: Colors.red,
-                      ),
-                      labelText: "نام مستعار",
-                      labelStyle:
-                          Get.theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      contentPadding: const EdgeInsets.all(8),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide:
-                            BorderSide(color: SolidColors.primary, width: 1),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: SolidColors.disabled),
-                      ),
-                    ),
+                    decoration: const InputDecoration()
+                        .applyDefaults(Get.theme.inputDecorationTheme)
+                        .copyWith(labelText: "نام مستعار"),
                     onSaved: (value) {
-                      auth.surname.value = value!;
+                      auth.surname.value = value ?? "";
                     },
                   ),
 
@@ -702,24 +572,9 @@ class _Signup extends StatelessWidget {
                     obscureText: true,
                     style: Get.theme.textTheme.bodyMedium,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      errorStyle: Get.theme.textTheme.labelMedium!.copyWith(
-                        color: Colors.red,
-                      ),
-                      labelText: "رمز عبور جدید *",
-                      labelStyle:
-                          Get.theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      contentPadding: const EdgeInsets.all(8),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide:
-                            BorderSide(color: SolidColors.primary, width: 1),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: SolidColors.disabled),
-                      ),
-                    ),
+                    decoration: const InputDecoration()
+                        .applyDefaults(Get.theme.inputDecorationTheme)
+                        .copyWith(labelText: "رمز عبور حدید"),
                     validator: (value) {
                       if (value == null || value.length < 8) {
                         return "رمز عبور باید بیشتر از 8 حرف داشته باشد";
@@ -736,24 +591,9 @@ class _Signup extends StatelessWidget {
                     obscureText: true,
                     style: Get.theme.textTheme.bodyMedium,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      errorStyle: Get.theme.textTheme.labelMedium!.copyWith(
-                        color: Colors.red,
-                      ),
-                      labelText: "تکرار رمز عبور جدید *",
-                      labelStyle:
-                          Get.theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                      contentPadding: const EdgeInsets.all(8),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide:
-                            BorderSide(color: SolidColors.primary, width: 1),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: SolidColors.disabled),
-                      ),
-                    ),
+                    decoration: const InputDecoration()
+                        .applyDefaults(Get.theme.inputDecorationTheme)
+                        .copyWith(labelText: "تکرار رمز عبور جدید"),
                     validator: (value) {
                       if (value == null ||
                           value.isEmpty ||

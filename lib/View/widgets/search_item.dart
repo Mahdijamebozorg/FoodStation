@@ -64,18 +64,23 @@ class SearchItem extends StatelessWidget {
                   ),
                   child: Hero(
                     tag: food.id,
-                    child: CachedNetworkImage(
-                      imageUrl: food.imageUrl,
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(image: imageProvider),
-                        ),
-                      ),
-                      placeholder: (context, url) => SpinKitFoldingCube(),
-                      errorWidget: (context, url, error) => const Icon(
-                        Icons.image_not_supported_outlined,
-                        color: Colors.grey,
-                      ),
+                    // TODO: replace with these when data server is ready
+                    // child: CachedNetworkImage(
+                    //   imageUrl: food.imageUrl,
+                    //   imageBuilder: (context, imageProvider) => Container(
+                    //     decoration: BoxDecoration(
+                    //       image: DecorationImage(image: imageProvider),
+                    //     ),
+                    //   ),
+                    //   placeholder: (context, url) => SpinKitFoldingCube(),
+                    //   errorWidget: (context, url, error) => const Icon(
+                    //     Icons.image_not_supported_outlined,
+                    //     color: Colors.grey,
+                    //   ),
+                    // ),
+                    child: Image.asset(
+                      food.imageUrl,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),

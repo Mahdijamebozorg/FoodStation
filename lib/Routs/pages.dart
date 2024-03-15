@@ -9,12 +9,12 @@ import 'package:get/get.dart';
 
 class AppPages {
   static final List<GetPage> pages = [
+    GetPage(name: HomeScreen.routeName, page: () => HomeScreen()),
     GetPage(name: LoginScreen.routeName, page: () => LoginScreen()),
-    GetPage(name: '/home', page: () => const HomeScreen()),
     GetPage(name: FoodScreen.routeName, page: () => const FoodScreen()),
     GetPage(name: CategoryScreen.routeName, page: () => const CategoryScreen()),
     GetPage(name: SettingScreen.routeName, page: () => const SettingScreen()),
-    GetPage(name: EditScreen.routeName, page: () =>  EditScreen()),
+    GetPage(name: EditScreen.routeName, page: () => EditScreen()),
     GetPage(name: CrashScreen.routeName, page: () => const CrashScreen())
   ];
 }

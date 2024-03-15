@@ -68,7 +68,6 @@ class EditScreen extends StatelessWidget {
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(20)),
             ),
-            // main col
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,6 +78,7 @@ class EditScreen extends StatelessWidget {
                   child: Form(
                     key: _form,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -117,7 +117,7 @@ class EditScreen extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          Expanded(child: CategoryChoice()),
+                                          Expanded(child: Ingredients()),
                                           SizedBox(width: 20.0),
                                           Expanded(child: CategoriesChoice()),
                                         ],
@@ -145,10 +145,20 @@ class EditScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30.0),
-                // save button
-                ElevatedButton(
-                  onPressed: saveData,
-                  child: const Text("Save"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // save button
+                    ElevatedButton(
+                      onPressed: saveData,
+                      child: const Text("Save"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Get.close(1),
+                      child: const Text("Discard"),
+                    ),
+                  ],
                 )
               ],
             ),
@@ -170,130 +180,107 @@ class TextInputs extends StatelessWidget {
     final FocusNode duration = FocusNode();
     final FocusNode imageUrl = FocusNode();
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // title
         Flexible(
-          child: Container(
-            padding:
-                const EdgeInsets.only(bottom: 8.0, right: 12.0, left: 12.0),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              border: Border.all(color: Colors.black54),
+          child: TextFormField(
+            cursorHeight: 24,
+            maxLength: 50,
+            style: Get.theme.textTheme.bodySmall,
+            initialValue: _food.value.title,
+            decoration: InputDecoration(
+              labelText: 'Title',
+              errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
+              floatingLabelStyle:
+                  TextStyle(color: Get.theme.primaryColor, fontSize: 14),
+              hintStyle: Get.theme.textTheme.bodySmall,
+              labelStyle: Get.theme.textTheme.bodySmall,
+              counterStyle:
+                  TextStyle(fontSize: 8, color: Get.theme.primaryColor),
             ),
-            child: TextFormField(
-              cursorHeight: 24,
-              maxLength: 50,
-              style: Get.theme.textTheme.bodySmall,
-              initialValue: _food.value.title,
-              decoration: InputDecoration(
-                labelText: 'Title',
-                errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
-                floatingLabelStyle: TextStyle(
-                    color: Get.theme.primaryColor, fontSize: 14),
-                hintStyle: Get.theme.textTheme.bodySmall,
-                labelStyle: Get.theme.textTheme.bodySmall,
-                counterStyle: TextStyle(
-                    fontSize: 8, color: Get.theme.primaryColor),
-              ),
-              textInputAction: TextInputAction.next,
-              onFieldSubmitted: (value) =>
-                  FocusScope.of(context).requestFocus(duration),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please provide a value.';
-                }
-                return null;
-              },
-              onSaved: (newValue) {
-                _food.value.title = newValue!;
-              },
-            ),
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (value) =>
+                FocusScope.of(context).requestFocus(duration),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please provide a value.';
+              }
+              return null;
+            },
+            onSaved: (newValue) {
+              _food.value.title = newValue!;
+            },
           ),
         ),
         const SizedBox(width: 8.0),
         // duration
         Flexible(
-          child: Container(
-            padding:
-                const EdgeInsets.only(bottom: 8.0, right: 12.0, left: 12.0),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              border: Border.all(color: Colors.black54),
+          child: TextFormField(
+            cursorHeight: 24,
+            maxLength: 3,
+            style: Get.theme.textTheme.bodySmall,
+            focusNode: duration,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            initialValue: _food.value.duration == 0
+                ? null
+                : _food.value.duration.toString(),
+            decoration: InputDecoration(
+              labelText: 'Duration',
+              errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
+              floatingLabelStyle:
+                  TextStyle(color: Get.theme.primaryColor, fontSize: 14),
+              hintStyle: Get.theme.textTheme.bodySmall,
+              labelStyle: Get.theme.textTheme.bodySmall,
+              counterStyle:
+                  TextStyle(fontSize: 8, color: Get.theme.primaryColor),
             ),
-            child: TextFormField(
-              cursorHeight: 24,
-              maxLength: 3,
-              style: Get.theme.textTheme.bodySmall,
-              focusNode: duration,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              initialValue: _food.value.duration == 0
-                  ? null
-                  : _food.value.duration.toString(),
-              decoration: InputDecoration(
-                labelText: 'Duration',
-                errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
-                floatingLabelStyle: TextStyle(
-                    color: Get.theme.primaryColor, fontSize: 14),
-                hintStyle: Get.theme.textTheme.bodySmall,
-                labelStyle: Get.theme.textTheme.bodySmall,
-                counterStyle: TextStyle(
-                    fontSize: 8, color: Get.theme.primaryColor),
-              ),
-              textInputAction: TextInputAction.next,
-              onFieldSubmitted: (value) =>
-                  FocusScope.of(context).requestFocus(imageUrl),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please provide a value.';
-                }
-                return null;
-              },
-              onSaved: (newValue) {
-                _food.value.duration = int.parse(newValue!);
-              },
-            ),
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (value) =>
+                FocusScope.of(context).requestFocus(imageUrl),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please provide a value.';
+              }
+              return null;
+            },
+            onSaved: (newValue) {
+              _food.value.duration = int.parse(newValue!);
+            },
           ),
         ),
         const SizedBox(width: 8.0),
         // imageUrl
         Flexible(
-          child: Container(
-            padding:
-                const EdgeInsets.only(bottom: 8.0, right: 12.0, left: 12.0),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-              border: Border.all(color: Colors.black54),
+          child: TextFormField(
+            cursorHeight: 24,
+            maxLength: 200,
+            style: Get.theme.textTheme.bodySmall,
+            keyboardType: TextInputType.url,
+            focusNode: imageUrl,
+            initialValue: _food.value.imageUrl,
+            decoration: InputDecoration(
+              labelText: 'image URL',
+              errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
+              floatingLabelStyle:
+                  TextStyle(color: Get.theme.primaryColor, fontSize: 14),
+              hintStyle: Get.theme.textTheme.bodySmall,
+              labelStyle: Get.theme.textTheme.bodySmall,
+              counterStyle:
+                  TextStyle(fontSize: 8, color: Get.theme.primaryColor),
             ),
-            child: TextFormField(
-              cursorHeight: 24,
-              maxLength: 200,
-              style: Get.theme.textTheme.bodySmall,
-              keyboardType: TextInputType.url,
-              focusNode: imageUrl,
-              initialValue: _food.value.imageUrl,
-              decoration: InputDecoration(
-                labelText: 'image URL',
-                errorStyle: TextStyle(color: Colors.red[800], fontSize: 12),
-                floatingLabelStyle: TextStyle(
-                    color: Get.theme.primaryColor, fontSize: 14),
-                hintStyle: Get.theme.textTheme.bodySmall,
-                labelStyle: Get.theme.textTheme.bodySmall,
-                counterStyle: TextStyle(
-                    fontSize: 8, color: Get.theme.primaryColor),
-              ),
-              textInputAction: TextInputAction.next,
-              onFieldSubmitted: (value) => imageUrl.unfocus(),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please provide a value.';
-                }
-                return null;
-              },
-              onSaved: (newValue) {
-                _food.value.imageUrl = newValue!;
-              },
-            ),
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (value) => imageUrl.unfocus(),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please provide a value.';
+              }
+              return null;
+            },
+            onSaved: (newValue) {
+              _food.value.imageUrl = newValue!;
+            },
           ),
         ),
       ],
@@ -509,14 +496,14 @@ class AffordablilityView extends StatelessWidget {
 }
 
 //_____________________
-class CategoryChoice extends StatefulWidget {
-  const CategoryChoice({Key? key}) : super(key: key);
+class Ingredients extends StatefulWidget {
+  const Ingredients({Key? key}) : super(key: key);
 
   @override
-  State<CategoryChoice> createState() => _CategoryChoiceState();
+  State<Ingredients> createState() => _IngredientsState();
 }
 
-class _CategoryChoiceState extends State<CategoryChoice> {
+class _IngredientsState extends State<Ingredients> {
   final foodCtrl = Get.find<FoodController>();
   List<String> _foundIngs = Get.find<FoodController>().availableIngredientNames;
 
@@ -581,6 +568,7 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                       // found ings list
                       : Expanded(
                           child: ListView.builder(
+                            scrollDirection: Axis.vertical,
                             itemCount: _foundIngs.length,
                             itemBuilder: (context, index) {
                               return ListTile(
@@ -595,8 +583,7 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                                   });
                                 },
                                 leading: CircleAvatar(
-                                    backgroundColor:
-                                        Get.theme.primaryColor),
+                                    backgroundColor: Get.theme.primaryColor),
                                 title: Text(
                                   _foundIngs[index],
                                   style: Get.theme.textTheme.bodySmall,
@@ -633,7 +620,7 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                // remove ing
+                                // removeing
                                 IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -653,6 +640,8 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                                 // set Unit
                                 Flexible(
                                   child: DropdownMenu<Unit?>(
+                                    width: 120,
+                                    textStyle: Get.theme.textTheme.bodySmall,
                                     initialSelection:
                                         _hasNotQuentity ? null : quantity.unit,
                                     // hide count if no unit
@@ -678,58 +667,42 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                                       DropdownMenuEntry(
                                         value: null,
                                         label: "Custom",
-                                        style: Get.theme
-                                            .menuButtonTheme
-                                            .style,
+                                        style: Get.theme.menuButtonTheme.style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.bottle,
                                         label: "Bottle",
-                                        style: Get.theme
-                                            .menuButtonTheme
-                                            .style,
+                                        style: Get.theme.menuButtonTheme.style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.grams,
                                         label: "g",
-                                        style: Get.theme
-                                            .menuButtonTheme
-                                            .style,
+                                        style: Get.theme.menuButtonTheme.style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.miliLitre,
                                         label: "mL",
-                                        style: Get.theme
-                                            .menuButtonTheme
-                                            .style,
+                                        style: Get.theme.menuButtonTheme.style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.litre,
                                         label: "L",
-                                        style: Get.theme
-                                            .menuButtonTheme
-                                            .style,
+                                        style: Get.theme.menuButtonTheme.style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.piece,
                                         label: "Piece",
-                                        style: Get.theme
-                                            .menuButtonTheme
-                                            .style,
+                                        style: Get.theme.menuButtonTheme.style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.tableSpoon,
                                         label: "Table Spoon",
-                                        style: Get.theme
-                                            .menuButtonTheme
-                                            .style,
+                                        style: Get.theme.menuButtonTheme.style,
                                       ),
                                       DropdownMenuEntry(
                                         value: Unit.teaSpoon,
                                         label: "Tea Spoon",
-                                        style: Get.theme
-                                            .menuButtonTheme
-                                            .style,
+                                        style: Get.theme.menuButtonTheme.style,
                                       ),
                                     ],
                                   ),
@@ -740,6 +713,7 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                                 if (!_hasNotQuentity)
                                   SizedBox(
                                     width: 50,
+                                    // height: 50,
                                     child: TextField(
                                       controller: TextEditingController()
                                         ..text = quantity.count.toString(),
@@ -756,15 +730,13 @@ class _CategoryChoiceState extends State<CategoryChoice> {
                                       inputFormatters: [
                                         FilteringTextInputFormatter.digitsOnly,
                                       ],
-                                      style:
-                                          Get.theme.textTheme.bodySmall,
+                                      style: Get.theme.textTheme.bodySmall,
                                       maxLength: 4,
                                       decoration: InputDecoration(
                                         hintText: "count",
                                         counterStyle: TextStyle(
                                             fontSize: 8,
-                                            color:
-                                                Get.theme.primaryColor),
+                                            color: Get.theme.primaryColor),
                                       ),
                                     ),
                                   ),
@@ -833,9 +805,7 @@ class _CategoriesChoiceState extends State<CategoriesChoice> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                                 colors: [
-                                  Get.theme
-                                      .primaryColor
-                                      .withOpacity(0.2),
+                                  Get.theme.primaryColor.withOpacity(0.2),
                                   Get.theme.primaryColor
                                 ],
                                 begin: Alignment.topLeft,

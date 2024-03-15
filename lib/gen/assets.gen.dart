@@ -12,12 +12,14 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/Rectangle 12.png
-  AssetGenImage get rectangle12 =>
-      const AssetGenImage('assets/images/Rectangle 12.png');
+  /// File path: assets/images/Rectangle.svg
+  String get rectangle => 'assets/images/Rectangle.svg';
 
   /// File path: assets/images/arrow-left-solid.svg
   String get arrowLeftSolid => 'assets/images/arrow-left-solid.svg';
+
+  /// File path: assets/images/food.png
+  AssetGenImage get food => const AssetGenImage('assets/images/food.png');
 
   /// File path: assets/images/triangle-exclamation-solid.svg
   String get triangleExclamationSolid =>
@@ -28,7 +30,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values =>
-      [rectangle12, arrowLeftSolid, triangleExclamationSolid, waiting];
+      [rectangle, arrowLeftSolid, food, triangleExclamationSolid, waiting];
 }
 
 class Assets {
