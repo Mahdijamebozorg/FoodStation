@@ -66,8 +66,8 @@ A food and health application
 <p>&nbsp;</p>
 
 ## Built With
-* [![Flutter][Flutter.com]][Flutter-url]
-* [![Dart][Dart.com]][Dart-url]
+<img src="https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg" width=100 height=50>
+<img src="https://dart.dev/assets/img/logo/logo-white-text.svg" width=100 height=50>
 
 
 
@@ -121,15 +121,3 @@ Some works increases your negative score , if your negative score reachs 15 , yo
 [![Promotion Screen Shot][Promotion]][Promotion]
 
 --->
-
-[cats]: screenShots/catScreen.png
-[edit]: screenShots/edit.png
-[food]: screenShots/food.png
-[ings]: screenShots/ings.png
-[login]: screenShots/login.png
-[search]: screenShots/search.png
-
-[Flutter-url]: https://flutter.dev/
-[Flutter.com]: https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg
-[Dart-url]: https://dart.dev/
-[Dart.com]: https://dart.dev/assets/img/logo/logo-white-text.svg
