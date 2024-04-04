@@ -40,9 +40,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       // locale: const Locale('fa'),
       debugShowCheckedModeBanner: false,
-      title: 'Food App',
+      title: 'Pishband',
       theme: appTheme(),
       getPages: AppPages.pages,
+      // TODO: change this to login after adding API
       initialRoute: '/home',
       // on startup
       onInit: () async {

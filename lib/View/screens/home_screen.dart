@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:food_app/Constants/app_colors.dart';
 import 'package:food_app/Controller/food_controller.dart';
 import 'package:food_app/Controller/user_controller.dart';

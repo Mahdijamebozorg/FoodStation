@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_app/Model/food.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class SearchItem extends StatelessWidget {
                   ),
                   child: Hero(
                     tag: food.id,
-                    // TODO: replace with these when data server is ready
+                    // TODO: replace with these when data API is ready
                     // child: CachedNetworkImage(
                     //   imageUrl: food.imageUrl,
                     //   imageBuilder: (context, imageProvider) => Container(

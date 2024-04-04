@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:food_app/Constants/app_colors.dart';
 import 'package:food_app/Controller/comment_controller.dart';
 import 'package:food_app/Controller/food_controller.dart';
@@ -72,7 +72,7 @@ class FoodScreen extends StatelessWidget {
                     flexibleSpace: FlexibleSpaceBar(
                       background: Hero(
                         tag: food.id,
-                        // TODO: replace with these when data server is ready
+                        // TODO: replace with these when data API is ready
                         // child: CachedNetworkImage(
                         //   imageUrl: food.imageUrl,
                         //   imageBuilder: (context, imageProvider) => Container(
@@ -192,6 +192,8 @@ class IngredientsView extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           height: screenSize.height * 0.06,
+
+          // TODO: repalce this with staggered gird view
           child: ListView.builder(
             itemCount: food.ingredients.length,
             scrollDirection: Axis.horizontal,

@@ -40,18 +40,23 @@ class FoodController extends GetxController {
     });
 
     ever(Get.find<UserController>().selectedCategories, (List<String> cats) {
-      var newAvailablefoods = dummyfoods.where((food) {
-        for (var cat in food.categories) {
-          if (cats.contains(cat)) return true;
-        }
-        return false;
-      }).toList();
-      setAvailablefoods(newAvailablefoods);
+      if (cats.isEmpty) {
+        setAvailablefoods(dummyfoods);
+        setAvailableCategories(dummyCats);
+      } else {
+        var newAvailablefoods = dummyfoods.where((food) {
+          for (var cat in food.categories) {
+            if (cats.contains(cat)) return true;
+          }
+          return false;
+        }).toList();
+        setAvailablefoods(newAvailablefoods);
 
-      var newAvailableCategories = dummyCats.where((cat) {
-        return cats.contains(cat);
-      }).toList();
-      setAvailableCategories(newAvailableCategories);
+        var newAvailableCategories = dummyCats.where((cat) {
+          return cats.contains(cat);
+        }).toList();
+        setAvailableCategories(newAvailableCategories);
+      }
 
       log("user cats changed to: $cats");
     });
@@ -70,7 +75,6 @@ class FoodController extends GetxController {
   }
 
   List<Food> getCategoryfoods(String catId) {
-    final cats = Get.find<UserController>().selectedCategories.value;
     return availableFoods.where((food) {
       return food.categories.contains(catId);
     }).toList();
