@@ -143,9 +143,9 @@ Some works increases your negative score , if your negative score reachs 15 , yo
 [cats]: screenShots/catScreen.png
 [edit]: screenShots/edit.png
 [food]: screenShots/food.png
-[ings]: ScreenShots/ings.png
-[login]: ScreenShots/login.png
-[search]: ScreenShots/search.png
+[ings]: screenShots/ings.png
+[login]: screenShots/login.png
+[search]: screenShots/search.png
 
 [flutter-url]: https://flutter.dev/
 [fluter.com]: https://storage.googleapis.com/cms-storage-bucket/847ae81f5430402216fd.svg
