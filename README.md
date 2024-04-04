@@ -1,4 +1,4 @@
-![image](https://github.com/Mahdijamebozorg/FoodStation/assets/86207009/0f9b1a18-d53b-4d1d-81e9-1b75f5ca39a5)# Food Station
+# Food Station
 A food and health application
 
 <div align="center">
@@ -7,25 +7,33 @@ A food and health application
   </a>
 </div>
 
-## Catergories & Tags
 
+<center><img src="screenShots/login.png" width="300"></center>
+
+<p>&nbsp;</p>
+
+## Catergories & Tags
   Every food has a list of categories,
   you can change your favorite categories in setting,
   so only foods having at least one of those categories will be shown in all App parts.
 
+  <center><img src="screenShots/catScreen.png" width="1000"></center>
 
+<p>&nbsp;</p>
   
 ## Simple food search
-
   in home page, tap on serach button and enter the food name.
 
 
-  
 ## Advanced search
-
   User can search foods by their categories, ingredients, duration ...
 
+  <center><img src="screenShots/ings.png" width="300"></center>
+<!--
+  <center><img src="screenShots/search.png" width="400" height="600"></center>
+-->
 
+<p>&nbsp;</p>
   
 ## Add your own food!
 
@@ -33,14 +41,19 @@ A food and health application
   the food can be private and only visible to that user,
   or public and so all users can see it and add comment bellow it.
 
+  <center><img src="screenShots/edit.png" width="1000"></center>
+  
+<p>&nbsp;</p>
 
 ## Add your customization
   Also you can customize a food by editing other's foods.
   all food's customizations are shown in its screen.
 
+  <center><img src="screenShots/food.png" width="300"></center>
+  
+<p>&nbsp;</p>
 
 ## Favorites
-
   If you like any food, you can push the like button in food screen,
   and the food will be added to your favorite foods screen
 
@@ -49,44 +62,13 @@ A food and health application
   Users can add comment under foods,
   and other users can reply, like or dislike it.
   
-<!---
+
 <p>&nbsp;</p>
 
 ## Built With
-* [![Qt][Qt.com]][Qt-url]
-* [![C++][C++.com]][C++-url]
+* [![Flutter][Flutter.com]][Flutter-url]
+* [![Dart][Dart.com]][Dart-url]
 
-<p>&nbsp;</p>
-
---->
-
-## Login Screen
-[![Home ScreenShot][login]][login]
-
-<p>&nbsp;</p>
-
-## Ingredients
-[![Ingredients ScreenShot][ings]][ings]
-
-<p>&nbsp;</p>
-
-## Food Screen
-[![Food ScreenShot][food]][food]
-
-<p>&nbsp;</p>
-
-## Advanced search
-[![Search ScreenShot][search]][search]
-
-<p>&nbsp;</p>
-  
-## Add / Edit Screen
-[![Edit ScreenShot][edit]][edit]
-
-<p>&nbsp;</p>
-  
-## Categories Screen
-[![Categories ScreenShot][cats]][cats]
 
 
 
@@ -147,7 +129,7 @@ Some works increases your negative score , if your negative score reachs 15 , yo
 [login]: screenShots/login.png
 [search]: screenShots/search.png
 
-[flutter-url]: https://flutter.dev/
-[fluter.com]: https://storage.googleapis.com/cms-storage-bucket/847ae81f5430402216fd.svg
+[Flutter-url]: https://flutter.dev/
+[Flutter.com]: https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg
 [Dart-url]: https://dart.dev/
 [Dart.com]: https://dart.dev/assets/img/logo/logo-white-text.svg
