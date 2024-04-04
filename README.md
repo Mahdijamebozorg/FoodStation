@@ -1,5 +1,5 @@
 # Food Station
-A food and health application
+where you can monitor and manage your health and diet
 
 <div align="center">
   <a>
