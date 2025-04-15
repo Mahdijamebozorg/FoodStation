@@ -1,4 +1,4 @@
-# Food Station
+# Pishband
 where you can monitor and manage your health and diet
 
 <div align="center">
@@ -12,57 +12,12 @@ where you can monitor and manage your health and diet
 
 <p>&nbsp;</p>
 
-## Catergories & Tags
-  Every food has a list of categories,
-  you can change your favorite categories in setting,
-  so only foods having at least one of those categories will be shown in all App parts.
-
-  <center><img src="screenShots/catScreen.png" width="1000"></center>
+<center><img src="screenShots/ings.png" width="300"></center>
 
 <p>&nbsp;</p>
+
+<center><img src="screenShots/food.png" width="300"></center>
   
-## Simple food search
-  in home page, tap on serach button and enter the food name.
-
-
-## Advanced search
-  User can search foods by their categories, ingredients, duration ...
-
-  <center><img src="screenShots/ings.png" width="300"></center>
-<!--
-  <center><img src="screenShots/search.png" width="400" height="600"></center>
--->
-
-<p>&nbsp;</p>
-  
-## Add your own food!
-
-  Every user can add, edit or remove his/her own food and recipes,
-  the food can be private and only visible to that user,
-  or public and so all users can see it and add comment bellow it.
-
-  <center><img src="screenShots/edit.png" width="1000"></center>
-  
-<p>&nbsp;</p>
-
-## Add your customization
-  Also you can customize a food by editing other's foods.
-  all food's customizations are shown in its screen.
-
-  <center><img src="screenShots/food.png" width="300"></center>
-  
-<p>&nbsp;</p>
-
-## Favorites
-  If you like any food, you can push the like button in food screen,
-  and the food will be added to your favorite foods screen
-
-
-## Comment
-  Users can add comment under foods,
-  and other users can reply, like or dislike it.
-  
-
 <p>&nbsp;</p>
 
 ## Built With
